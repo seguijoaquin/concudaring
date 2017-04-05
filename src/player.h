@@ -2,9 +2,12 @@
 #define CONCUDARING_PLAYER_H
 
 
+#include "deckOfCards.h"
+
 class Player {
 private:
     int id;
+    DeckOfCards myDeckOfCards;
 public:
     Player(int _id);
     ~Player();

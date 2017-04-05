@@ -5,10 +5,12 @@
 #include <vector>
 #include "table.h"
 #include "player.h"
+#include "creatorDeckOfCards.h"
 
 class Concudaring {
     Table table;
     std::vector<Player> players;
+    CreatorDeckOfCards creator;
     void createPlayers(int numberPlayers);
 
 public:
