@@ -10,6 +10,12 @@
 
 Concudaring::Concudaring(int numberPlayers) {
     createPlayers(numberPlayers);
+    creator.setNumberOfCards(48);
+    creator.createDeckOfCards();
+    creator.setNumbers(1,12);
+    creator.mixCards();
+    creator.setNumberOfPlayers(numberPlayers);
+    creator.getDeckOfCards();
 }
 
 

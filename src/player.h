@@ -3,6 +3,7 @@
 
 
 #include "../playground/Semaforo.h"
+#include "deckOfCards.h"
 
 class Player {
 private:
@@ -10,6 +11,7 @@ private:
     Semaforo *waitForACard;
     int numberOfPlayers;
     Semaforo *waitToSeeIfThereIsAWinner;
+    DeckOfCards myDeckOfCards;
 public:
     Player(int _id, Semaforo *semaforo, Semaforo *numberOfPlayers, int i);
     ~Player();
