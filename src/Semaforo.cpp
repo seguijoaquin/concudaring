@@ -13,13 +13,10 @@ void printAndExitOnError(int status,const char* message) {
 
 Semaforo :: Semaforo ( char* nombre, int valorInicial ) {
     this->valorInicial = valorInicial;
-
     key_t clave = ftok ( nombre,'a' );
     printAndExitOnError(clave,"Error Semaforo Constructor ftok");
-
     this->id = semget ( clave,1,0666 | IPC_CREAT );
     printAndExitOnError(this->id,"Error Semaforo Constructor smget");
-
     this->inicializar ();
 }
 

@@ -2,7 +2,7 @@
 #define CONCUDARING_PLAYER_H
 
 
-#include "../playground/Semaforo.h"
+#include "Semaforo.h"
 #include "deckOfCards.h"
 
 class Player {

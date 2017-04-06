@@ -1,7 +1,7 @@
 #include <iostream>
 #include <unistd.h>
 #include "concudaring.h"
-#include "../playground/Semaforo.h"
+#include "Semaforo.h"
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -23,7 +23,7 @@ void Concudaring::createPlayers(int numberPlayers){
 
     //TODO: REFACTOR USANDO UN SOLO SEMAFORO QUE CREO QUE SE PUEDE
     //Podriamos inicializar todos los recursos aca.
-    Semaforo* waitForACard = new Semaforo((char*) NOMBRE,0);
+    Semaforo* waitForACard = new Semaforo((char*) NOMBRE, 0);
     Semaforo* waitToSeeIfThereIsAWinner = new Semaforo((char*) NOMBRE2,0);
 
     for (int i = 0; i < numberPlayers ; ++i) {
