@@ -2,13 +2,29 @@
 #define CONCUDARING_PLAYER_H
 
 
+#include "../playground/Semaforo.h"
+#include "deckOfCards.h"
+
 class Player {
 private:
     int id;
+    Semaforo *waitForACard;
+    int numberOfPlayers;
+    Semaforo *waitToSeeIfThereIsAWinner;
+    DeckOfCards myDeckOfCards;
 public:
-    Player(int _id);
+    Player(int _id, Semaforo *semaforo, Semaforo *numberOfPlayers, int i);
     ~Player();
     void present();
+
+    void play();
+
+    bool itIsMyTurn(int turnNumber);
+
+    bool iHaveNoCardsInMyDeck();
+
+
+
 };
 
 
