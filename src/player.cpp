@@ -61,12 +61,17 @@ void Player::play() {
 bool Player::itIsMyTurn(int turnNumber) {
     //TODO: ver si lo vamos a hacer asi
     int nextToPlay = turnNumber % numberOfPlayers;
-    if ( nextToPlay == this->id )
-        return true;
-    return false;
+    return nextToPlay == this->id;
 }
 
+void Player::setDeckOfCards(DeckOfCards deck){
+    myDeckOfCards = deck;
+}
+
+
+
 bool Player::iHaveNoCardsInMyDeck() {
+    //return myDeckOfCards.isEmpty();
     return false;
 }
 

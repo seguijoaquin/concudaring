@@ -9,8 +9,11 @@ private:
 public:
     DeckOfCards();
     ~DeckOfCards();
-    void addDeckOfCards(DeckOfCards& otherDeckOfCards);
+    DeckOfCards& operator+(DeckOfCards anotherDeck);
+    DeckOfCards& operator=(DeckOfCards anotherDeck);
     void addCard(int card);
+    void print();
+    bool isEmpty();
     int getCard();
 };
 

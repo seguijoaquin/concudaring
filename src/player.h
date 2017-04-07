@@ -18,7 +18,7 @@ public:
     void present();
 
     void play();
-
+    void setDeckOfCards(DeckOfCards deck);
     bool itIsMyTurn(int turnNumber);
 
     bool iHaveNoCardsInMyDeck();

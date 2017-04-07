@@ -21,6 +21,7 @@ public:
     void setNumbers(int _firstNumber,int _lastNumber);
     void createDeckOfCards();
     void mixCards();
+    void print();
     std::vector<DeckOfCards> getDeckOfCards();
     void setNumberOfPlayers(int _quantityPlayers);
 };
