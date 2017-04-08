@@ -1,11 +1,9 @@
 #include <iostream>
 #include <unistd.h>
 #include "concudaring.h"
-#include "Semaforo.h"
+#include "utils/Semaforo.h"
 #include <sys/types.h>
 #include <sys/wait.h>
-#define NOMBRE "/bin/ls"
-#define NOMBRE2 "/bin/echo"
 
 Concudaring::Concudaring(int numberPlayers) {
     configureCreator(numberPlayers);
@@ -26,16 +24,17 @@ void Concudaring::createPlayers(int numberPlayers,std::vector<DeckOfCards>& deck
 
     //TODO: REFACTOR USANDO UN SOLO SEMAFORO QUE CREO QUE SE PUEDE
     //Podriamos inicializar todos los recursos aca.
-    Semaforo* waitForACard = new Semaforo((char*) NOMBRE, 0);
-    Semaforo* waitToSeeIfThereIsAWinner = new Semaforo((char*) NOMBRE2,0);
+    Semaforo* waitForACard = new Semaforo(FILE_CONCUDARING,0, KEY_SEM_WAIT_FOR_A_CARD);
+    Semaforo* endOfTurnGathering = new Semaforo(FILE_CONCUDARING,0, KEY_SEM_END_OF_TURN_GATHERING);
 
     for (int i = 0; i < numberPlayers ; ++i) {
         pid_t pid = fork();
         if (pid == 0){
-            Player player(i, waitForACard, waitToSeeIfThereIsAWinner, numberPlayers);
+            Player player(i, waitForACard, endOfTurnGathering, numberPlayers);
             DeckOfCards deck = decks[i];
             player.setDeckOfCards(deck);
             player.play();
+
             exit(0);
         }
     }
@@ -46,10 +45,8 @@ void Concudaring::createPlayers(int numberPlayers,std::vector<DeckOfCards>& deck
         wait(NULL);
     }
 
-    waitForACard->eliminar();
-    free(waitForACard);
-    waitToSeeIfThereIsAWinner->eliminar();
-    free(waitToSeeIfThereIsAWinner);
+    delete(endOfTurnGathering);
+    delete(waitForACard);
 
 }
 

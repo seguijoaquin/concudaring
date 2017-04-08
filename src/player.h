@@ -2,7 +2,7 @@
 #define CONCUDARING_PLAYER_H
 
 
-#include "Semaforo.h"
+#include "utils/Semaforo.h"
 #include "deckOfCards.h"
 #include "utils/MemoriaCompartida.h"
 #include "utils/types.h"

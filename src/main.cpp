@@ -1,8 +1,10 @@
 #include <iostream>
+#include <cstring>
 #include "concudaring.h"
 #include "utils/constants.h"
 #include "utils/types.h"
 #include "utils/MemoriaCompartida.h"
+
 
 bool createTmpFile() {
   FILE* file = fopen(FILE_CONCUDARING, "w");
