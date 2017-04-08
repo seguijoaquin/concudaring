@@ -37,52 +37,6 @@
 					<DistClean command="/usr/bin/make -j2 -f &quot;/home/diego/Desktop/concudaring/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="Playground">
-				<Option output="/home/diego/Desktop/concudaring/cmake-build-debug/Playground" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/diego/Desktop/concudaring/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j2 -f &quot;/home/diego/Desktop/concudaring/cmake-build-debug/Makefile&quot;  VERBOSE=1 Playground"/>
-					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/diego/Desktop/concudaring/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j2 -f &quot;/home/diego/Desktop/concudaring/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j2 -f &quot;/home/diego/Desktop/concudaring/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="Playground/fast">
-				<Option output="/home/diego/Desktop/concudaring/cmake-build-debug/Playground" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/diego/Desktop/concudaring/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j2 -f &quot;/home/diego/Desktop/concudaring/cmake-build-debug/Makefile&quot;  VERBOSE=1 Playground/fast"/>
-					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/diego/Desktop/concudaring/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j2 -f &quot;/home/diego/Desktop/concudaring/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j2 -f &quot;/home/diego/Desktop/concudaring/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
 			<Target title="Concudaring">
 				<Option output="/home/diego/Desktop/concudaring/cmake-build-debug/Concudaring" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/diego/Desktop/concudaring/cmake-build-debug"/>
@@ -131,18 +85,9 @@
 			</Target>
 		</Build>
 		<Unit filename="/home/diego/Desktop/concudaring/playground/Semaforo.cpp">
-			<Option target="Playground"/>
-		</Unit>
-		<Unit filename="/home/diego/Desktop/concudaring/playground/Semaforo.h">
-			<Option target="Playground"/>
-		</Unit>
-		<Unit filename="/home/diego/Desktop/concudaring/playground/main.cpp">
-			<Option target="Playground"/>
-		</Unit>
-		<Unit filename="/home/diego/Desktop/concudaring/src/Semaforo.cpp">
 			<Option target="Concudaring"/>
 		</Unit>
-		<Unit filename="/home/diego/Desktop/concudaring/src/Semaforo.h">
+		<Unit filename="/home/diego/Desktop/concudaring/playground/Semaforo.h">
 			<Option target="Concudaring"/>
 		</Unit>
 		<Unit filename="/home/diego/Desktop/concudaring/src/concudaring.cpp">
@@ -176,6 +121,15 @@
 			<Option target="Concudaring"/>
 		</Unit>
 		<Unit filename="/home/diego/Desktop/concudaring/src/table.h">
+			<Option target="Concudaring"/>
+		</Unit>
+		<Unit filename="/home/diego/Desktop/concudaring/src/utils/MemoriaCompartida.h">
+			<Option target="Concudaring"/>
+		</Unit>
+		<Unit filename="/home/diego/Desktop/concudaring/src/utils/constants.h">
+			<Option target="Concudaring"/>
+		</Unit>
+		<Unit filename="/home/diego/Desktop/concudaring/src/utils/types.h">
 			<Option target="Concudaring"/>
 		</Unit>
 		<Unit filename="/home/diego/Desktop/concudaring/CMakeLists.txt">
