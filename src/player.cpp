@@ -7,6 +7,8 @@ Player::Player(int _id, Semaforo *waitForACard, Semaforo * waitToSeeIfThereIsAWi
     this->waitForACard = waitForACard;
     this->waitToSeeIfThereIsAWinner = waitToSeeIfThereIsAWinner;
     this->numberOfPlayers = numberOfPlayers;
+
+    sharedMemory.crear(FILE_CONCUDARING,KEY_MEMORY);
 }
 
 Player::~Player(){
@@ -18,9 +20,21 @@ void Player::present() {
     std::cout << "Mi id es:"<< id << std::endl;
 }
 
+void Player::checkWinner() const {
+  Game_t game = this->sharedMemory.leer();
+
+  return game.gameFinished;
+}
 
 void Player::play() {
 
+  while (!this->gameFinished()) {
+    //MIENTRAS EL JUEGO NO HAYA TERMINADO
+    sleep(3);
+    break;
+  }
+
+/*
     //TODO: Cambiar por una condicion real
     //Simulo 2 turnos
     for ( int i =0; i < 2 ; i ++ ) { //while ( theGameIsNotOver() ){
@@ -56,6 +70,7 @@ void Player::play() {
         }
         //SI gano entonces sale del while sino hay otro turno.
     }
+*/
 }
 
 bool Player::itIsMyTurn(int turnNumber) {
@@ -74,4 +89,3 @@ bool Player::iHaveNoCardsInMyDeck() {
     //return myDeckOfCards.isEmpty();
     return false;
 }
-

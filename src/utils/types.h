@@ -3,13 +3,13 @@
 
 #include <iostream>
 
-struct card {
+struct Card {
   unsigned int number ;
   char letter;
 };
 
-struct table {
-
+struct Game_t {
+  bool gameFinished = false;
 };
 
 #endif //CONCUDARING_TYPES_H

@@ -2,5 +2,8 @@
 #ifndef CONCUDARING_CONSTANTS_H
 #define CONCUDARING_CONSTANTS_H
 
+//SHARED MEMORY CONSTS
+#define FILE_CONCUDARING "/tmp/concu/concudaring.tmp"
+#define KEY_MEMORY "m"
 
 #endif //CONCUDARING_CONSTANTS_H
