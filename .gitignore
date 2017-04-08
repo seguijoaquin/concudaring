@@ -34,3 +34,10 @@ CMakeFiles/
 Concudaring
 cmake_install.cmake
 Makefile
+cmake-build-debug/*
+
+#IntelliJ Conf Files
+.idea/*
+
+#Playground files
+playground/*
