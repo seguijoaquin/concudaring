@@ -1,16 +1,26 @@
-//
-// Created by diego on 05/04/17.
-//
+#ifndef SEMAFORO_H_
+#define SEMAFORO_H_
 
-#ifndef CONCUDARING_SEMAFORO_H
-#define CONCUDARING_SEMAFORO_H
-
-
+#include <sys/ipc.h>
+#include <sys/sem.h>
+#include <sys/types.h>
 
 class Semaforo {
 
+private:
+    int id;
+    int valorInicial;
+
+    int inicializar ();
+public:
+    Semaforo ( char* nombre ,int valorInicial );
+    virtual ~Semaforo();
+
+    int p (); // decrementa
+    int v (); // incrementa
+    void eliminar ();
+    int numberOfPlayersWaiting();
+    int add(int value); //incrementa en value
 };
 
-
-
-#endif //CONCUDARING_SEMAFORO_H
+#endif /* SEMAFORO_H_ */

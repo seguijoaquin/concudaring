@@ -19,8 +19,9 @@ public:
     int p (); // decrementa
     int v (); // incrementa
     void eliminar ();
-
+    int numberOfPlayersWaiting();
     int add(int value); //incrementa en value
+    int numberOfProcessesWaiting();
 };
 
 #endif /* SEMAFORO_H_ */

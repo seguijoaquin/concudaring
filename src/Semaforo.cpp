@@ -69,8 +69,19 @@ int Semaforo :: add (int value) {
     return resultado;
 }
 
+
 void Semaforo :: eliminar () {
     int semctlStatus = semctl ( this->id,0,IPC_RMID );
     printAndExitOnError(semctlStatus,"Error semaforo eliminar semctl");
     //TODO: chequear
+}
+
+int Semaforo::numberOfProcessesWaiting() {
+
+    int status = semctl(this->id,0,GETNCNT);
+    if (status == -1 ){
+        perror("numberOfPlayersWaiting GETNCNT");
+    }
+    return status;
+
 }

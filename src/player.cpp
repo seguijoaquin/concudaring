@@ -3,9 +3,9 @@
 #include <unistd.h>
 
 
-Player::Player(int _id, Semaforo *waitForACard, Semaforo * waitToSeeIfThereIsAWinner, int numberOfPlayers) : id(_id){
+Player::Player(int _id, Semaforo *waitForACard, Semaforo * endOfTurnGathering, int numberOfPlayers) : id(_id){
     this->waitForACard = waitForACard;
-    this->waitToSeeIfThereIsAWinner = waitToSeeIfThereIsAWinner;
+    this->endOfTurnGathering = endOfTurnGathering;
     this->numberOfPlayers = numberOfPlayers;
 }
 
@@ -22,16 +22,23 @@ void Player::present() {
 void Player::play() {
 
     //TODO: Cambiar por una condicion real
-    //Simulo 2 turnos
-    for ( int i =0; i < 2 ; i ++ ) { //while ( theGameIsNotOver() ){
 
-        if ( itIsMyTurn(i)) {
+    int turno = 0;
+
+    while ( turno < 3 ){
+
+        if ( itIsMyTurn(turno)) {
+
             //TODO: Logica de tirar carta y demas
+
             std::cout << id << ": ES mi turno" << std::endl;
             //TODO: BORRAR EL SLEEP!!
+
             sleep(3);
             std::cout << id << ": PUSE LA CARTA" << std::endl;
+
             //Al terminar de jugar habilita N - 1 lugares en el semaforo para que puedan pasar los demas.
+
             this->waitForACard->add(numberOfPlayers - 1);
 
         } else {
@@ -39,23 +46,23 @@ void Player::play() {
             this->waitForACard->p();
         }
         std::cout << id << ": VER CARTA" << std::endl;
+
+
+
+
         //TODO: Logica de actuar con respecto a que carta salio.
 
-        if (itIsMyTurn(i)){
-            std::cout << id << ": ME FIJO SI GANE" << std::endl;
 
-            if ( iHaveNoCardsInMyDeck() ){
-                //TODO: GANO HACER LA LOGICA PARA SALIR DEL WHILE
-            }
-            waitToSeeIfThereIsAWinner->add(numberOfPlayers - 1);
+
+
+        if ( this->endOfTurnGathering->numberOfProcessesWaiting() == numberOfPlayers - 1 ){
+            endOfTurnGathering->add(numberOfPlayers - 1 );
         } else {
-            //TODO: Otro Semaforo para ver si gano
-            std::cout << id << ": Espero a ver si la persona que jugo gano" << std::endl;
-            this->waitToSeeIfThereIsAWinner->p();
-
+            endOfTurnGathering->p();
         }
-        //SI gano entonces sale del while sino hay otro turno.
+        turno++;
     }
+
 }
 
 bool Player::itIsMyTurn(int turnNumber) {
@@ -64,14 +71,7 @@ bool Player::itIsMyTurn(int turnNumber) {
     return nextToPlay == this->id;
 }
 
-void Player::setDeckOfCards(DeckOfCards deck){
+void Player::setDeckOfCards(DeckOfCards deck) {
     myDeckOfCards = deck;
-}
-
-
-
-bool Player::iHaveNoCardsInMyDeck() {
-    //return myDeckOfCards.isEmpty();
-    return false;
 }
 

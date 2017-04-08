@@ -10,7 +10,7 @@ private:
     int id;
     Semaforo *waitForACard;
     int numberOfPlayers;
-    Semaforo *waitToSeeIfThereIsAWinner;
+    Semaforo *endOfTurnGathering;
     DeckOfCards myDeckOfCards;
 public:
     Player(int _id, Semaforo *semaforo, Semaforo *numberOfPlayers, int i);
@@ -22,6 +22,7 @@ public:
     bool itIsMyTurn(int turnNumber);
 
     bool iHaveNoCardsInMyDeck();
+    void func();
 
 
 
