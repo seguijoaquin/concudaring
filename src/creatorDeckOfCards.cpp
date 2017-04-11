@@ -14,7 +14,8 @@ void CreatorDeckOfCards::setNumberOfCards(int _quantity) {
 }
 
 CreatorDeckOfCards::~CreatorDeckOfCards() {
-    delete[] cards;
+    if (quantity != 0)
+        delete[] cards;
 }
 
 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "player.h"
+#include "table.h"
 #include <unistd.h>
 
 
@@ -22,68 +23,29 @@ void Player::present() {
 
 bool Player::checkWinner() const {
   Game_t game = this->sharedMemory.leer();
-
   return game.gameFinished;
 }
 
 void Player::play() {
-
-  while (!this->checkWinner()) {
-    //MIENTRAS EL JUEGO NO HAYA TERMINADO
-    sleep(3);
-    break;
-  }
-
-/*
-    //TODO: Cambiar por una condicion real
-
+    std::cout << "play" << std::endl;
+    Table& table = Table::getInstance();
     int turno = 0;
-
-    while ( turno < 3 ){
-
-        if ( itIsMyTurn(turno)) {
-
-            //TODO: Logica de tirar carta y demas
-
-            std::cout << id << ": ES mi turno" << std::endl;
-            //TODO: BORRAR EL SLEEP!!
-
-            sleep(3);
-            std::cout << id << ": PUSE LA CARTA" << std::endl;
-
-            //Al terminar de jugar habilita N - 1 lugares en el semaforo para que puedan pasar los demas.
-
-            this->waitForACard->add(numberOfPlayers - 1);
-
-        } else {
-            std::cout << id << ": NO es mi turno. Espero a que jueguen" << std::endl;
-            this->waitForACard->p();
-        }
-        std::cout << id << ": VER CARTA" << std::endl;
-
-
-
-
-        //TODO: Logica de actuar con respecto a que carta salio.
-
-
-
-
-        if ( this->endOfTurnGathering->numberOfProcessesWaiting() == numberOfPlayers - 1 ){
-            endOfTurnGathering->add(numberOfPlayers - 1 );
-        } else {
-            endOfTurnGathering->p();
+    while ( turno <= 5 ){
+        if (itIsMyTurn(turno)){
+            std::cout << "Es mi turno:" << id << "!!!!\n";
+            std::cout << "Voy a dormir un rato antes de poner la carta.. zzzz" << "\n";
+            sleep(2);
+            table.putHand(id);
+        }else{
+            table.printCards(id);
         }
         turno++;
     }
-
-*/
 }
 
 bool Player::itIsMyTurn(int turnNumber) {
-    //TODO: ver si lo vamos a hacer asi
     int nextToPlay = turnNumber % numberOfPlayers;
-    return nextToPlay == this->id;
+        return nextToPlay == this->id;
 }
 
 void Player::setDeckOfCards(DeckOfCards deck) {

@@ -8,9 +8,10 @@
 #define NOMBRE2 "/bin/echo"
 
 Concudaring::Concudaring(int numberPlayers) {
-    configureCreator(numberPlayers);
-    std::vector<DeckOfCards> decks = creator.getDeckOfCards();
-    createPlayers(numberPlayers,decks);
+    //TODO falta ver bien el creator, el valgrind tira error.
+    //configureCreator(numberPlayers);
+    //std::vector<DeckOfCards> decks = creator.getDeckOfCards();
+    createPlayers(numberPlayers);
 }
 
 
@@ -22,7 +23,7 @@ void Concudaring::configureCreator(int numberPlayers){
     creator.setNumberOfPlayers(numberPlayers); //seteo cantidad de jugadores
 }
 
-void Concudaring::createPlayers(int numberPlayers,std::vector<DeckOfCards>& decks){
+void Concudaring::createPlayers(int numberPlayers){
 
     //TODO: REFACTOR USANDO UN SOLO SEMAFORO QUE CREO QUE SE PUEDE
     //Podriamos inicializar todos los recursos aca.
@@ -33,8 +34,8 @@ void Concudaring::createPlayers(int numberPlayers,std::vector<DeckOfCards>& deck
         pid_t pid = fork();
         if (pid == 0){
             Player player(i, waitForACard, waitToSeeIfThereIsAWinner, numberPlayers);
-            DeckOfCards deck = decks[i];
-            player.setDeckOfCards(deck);
+            //DeckOfCards deck = decks[i];
+            //player.setDeckOfCards(deck);
             player.play();
             exit(0);
         }

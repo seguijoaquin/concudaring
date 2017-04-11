@@ -8,10 +8,9 @@
 #include "creatorDeckOfCards.h"
 
 class Concudaring {
-    Table table;
     std::vector<Player> players;
     CreatorDeckOfCards creator;
-    void createPlayers(int numberPlayers,std::vector<DeckOfCards>& decks);
+    void createPlayers(int numberPlayers);
     void configureCreator(int numberPlayers);
 
 public:

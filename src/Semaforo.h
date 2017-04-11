@@ -10,10 +10,10 @@ class Semaforo {
 private:
     int id;
     int valorInicial;
-
     int inicializar ();
 public:
     Semaforo ( char* nombre ,int valorInicial );
+    Semaforo();
     virtual ~Semaforo();
 
     int p (); // decrementa
