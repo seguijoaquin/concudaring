@@ -18,7 +18,7 @@ Table::Table(){
 
 void Table::createSemaforo() {
     char nombre[] = "/bin/cat";
-    putCard = Semaforo(nombre,0);
+    putCard = Semaforo(nombre,0,'a');
 
 }
 

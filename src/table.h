@@ -3,8 +3,8 @@
 
 
 #include "deckOfCards.h"
-#include "Semaforo.h"
 #include "utils/MemoriaCompartida2.h"
+#include "utils/Semaforo.h"
 
 class Table {
 private:

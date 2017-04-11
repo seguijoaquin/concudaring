@@ -9,7 +9,7 @@ Player::Player(int _id, Semaforo *waitForACard, Semaforo * endOfTurnGathering, i
     this->endOfTurnGathering = endOfTurnGathering;
     this->numberOfPlayers = numberOfPlayers;
 
-    sharedMemory.crear(FILE_CONCUDARING,KEY_MEMORY);
+    sharedMemory.crear(FILE_CONCUDARING,KEY_MEMORY,1);
 }
 
 Player::~Player(){

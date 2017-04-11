@@ -2,9 +2,9 @@
 #define CONCUDARING_PLAYER_H
 
 
-#include "Semaforo.h"
+#include "utils/Semaforo.h"
 #include "deckOfCards.h"
-#include "utils/MemoriaCompartida.h"
+#include "utils/MemoriaCompartida2.h"
 #include "utils/types.h"
 #include "utils/constants.h"
 
@@ -15,7 +15,7 @@ private:
     int numberOfPlayers;
     Semaforo *endOfTurnGathering;
     DeckOfCards myDeckOfCards;
-    MemoriaCompartida<Game_t> sharedMemory;
+    MemoriaCompartida2<Game_t> sharedMemory;
 
 public:
     Player(int _id, Semaforo *semaforo, Semaforo *numberOfPlayers, int i);

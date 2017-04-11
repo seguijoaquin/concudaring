@@ -14,7 +14,7 @@ void printAndExitOnError(int status,const char* message) {
 
 Semaforo::Semaforo() {}
 
-Semaforo :: Semaforo ( char* nombre, int valorInicial ) {
+Semaforo :: Semaforo ( char* nombre, int valorInicial,char fkey ) {
     this->valorInicial = valorInicial;
     key_t clave = ftok ( nombre,'a' );
     printAndExitOnError(clave,"Error Semaforo Constructor ftok");
