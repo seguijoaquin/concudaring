@@ -12,8 +12,7 @@
 #include <string>
 
 
-template <class T> class MemoriaCompartida2 {
-
+template <class T> class SharedMemory {
 private:
 	int shmId;
 	T*	ptrDatos;
@@ -21,10 +20,10 @@ private:
 	int cantidadProcesosAdosados () const;
 
 public:
-	MemoriaCompartida2 ();
-	~MemoriaCompartida2 ();
-	int crear ( const std::string& archivo,const char letra, int tamanio);
-	void escribir ( const T& dato );
+	SharedMemory ();
+	~SharedMemory ();
+	int create(const std::string &archivo, const char letra, int tamanio);
+	void writter( const T& dato );
 	T leer () const;
 	T& operator[](std::size_t idx);
 	const T& operator[](std::size_t idx) const;
@@ -32,10 +31,10 @@ public:
 
 };
 
-template <class T> MemoriaCompartida2<T> :: MemoriaCompartida2() : shmId(0), ptrDatos(NULL) {
+template <class T> SharedMemory<T> :: SharedMemory() : shmId(0), ptrDatos(NULL) {
 }
 
-template <class T> MemoriaCompartida2<T> :: ~MemoriaCompartida2() {
+template <class T> SharedMemory<T> :: ~SharedMemory() {
 	// detach del bloque de memoria
 	shmdt ( static_cast<void*> (this->ptrDatos) );
 
@@ -46,7 +45,7 @@ template <class T> MemoriaCompartida2<T> :: ~MemoriaCompartida2() {
 	}
 }
 
-template <class T> int MemoriaCompartida2<T> :: crear ( const std::string& archivo,const char letra, int tamanio ) {
+template <class T> int SharedMemory<T> :: create(const std::string &archivo, const char letra, int tamanio) {
 
 	// generacion de la clave
 	key_t clave = ftok ( archivo.c_str(),letra );
@@ -73,24 +72,24 @@ template <class T> int MemoriaCompartida2<T> :: crear ( const std::string& archi
 }
 
 
-template <class T> void MemoriaCompartida2<T> :: escribir ( const T& dato ) {
+template <class T> void SharedMemory<T> :: writter ( const T& dato ) {
 	* (this->ptrDatos) = dato;
 }
 
-template <class T> T MemoriaCompartida2<T> :: leer () const {
+template <class T> T SharedMemory<T> :: leer () const {
 	return ( *(this->ptrDatos) );
 }
 
-template <class T> const T& MemoriaCompartida2<T>::operator[](std::size_t idx) const {
+template <class T> const T& SharedMemory<T>::operator[](std::size_t idx) const {
 	return this->ptrDatos[idx];
 }
 
 
-template <class T> T& MemoriaCompartida2<T>::operator[](std::size_t idx){
+template <class T> T& SharedMemory<T>::operator[](std::size_t idx){
 	return this->ptrDatos[idx];
 }
 
-template <class T> int MemoriaCompartida2<T> :: cantidadProcesosAdosados () const {
+template <class T> int SharedMemory<T> :: cantidadProcesosAdosados () const {
 	shmid_ds estado;
 	shmctl ( this->shmId,IPC_STAT,&estado );
 	return estado.shm_nattch;
