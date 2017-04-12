@@ -4,27 +4,28 @@
 
 #include "utils/Semaforo.h"
 #include "deckOfCards.h"
-#include "utils/MemoriaCompartida2.h"
+#include "utils/SharedMemory.h"
 #include "utils/types.h"
 #include "utils/constants.h"
 
 class Player {
 private:
-    int id;
+    const int id;
     Semaforo *waitForACard;
-    int numberOfPlayers;
+    const int numberOfPlayers;
     Semaforo *endOfTurnGathering;
     DeckOfCards myDeckOfCards;
-    MemoriaCompartida2<Game_t> sharedMemory;
+    SharedMemory<Game_t> sharedMemory;
 
 public:
     Player(int _id, Semaforo *semaforo, Semaforo *numberOfPlayers, int i);
+    Player(int _id,int _numberOfPlayers);
     ~Player();
-    void present();
+    void present() const ;
 
     void play();
-    void setDeckOfCards(DeckOfCards deck);
-    bool itIsMyTurn(int turnNumber);
+    void setDeckOfCards(DeckOfCards& deck);
+    bool itIsMyTurn(int turnNumber) const;
     bool checkWinner() const;
 
 

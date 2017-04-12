@@ -3,7 +3,7 @@
 #include "concudaring.h"
 #include "utils/constants.h"
 #include "utils/types.h"
-#include "utils/MemoriaCompartida2.h"
+#include "utils/SharedMemory.h"
 
 
 bool createTmpFile() {
@@ -20,17 +20,17 @@ bool createTmpFile() {
 
 int main(int argc, char** argv) {
 
-  //if (createTmpFile()) {
-  //  MemoriaCompartida2<Game_t> sharedMemory;
-  //int memState = sharedMemory.crear(FILE_CONCUDARING,KEY_MEMORY,2);
-  // if (memState == SHM_OK) {
+  if (createTmpFile()) {
+   SharedMemory<Game_t> sharedMemory;
+  int memState = sharedMemory.create(FILE_CONCUDARING,KEY_MEMORY,2);
+  if (memState == SHM_OK) {
       Concudaring concudaring(atoi(argv[1]));
       concudaring.start();
-  //} else {
+  } else {
       //ERROR AL INICIALIZAR MEMORIA COMPARTIDA
       //Liberar recursos tomados y salir
-  //}
-  //} else {
+  }
+  } else {
     //ERROR AL QUERER CREAR ARCHIVO TEMPORAL PARA FTOK
-  //}
+  }
 }

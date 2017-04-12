@@ -23,8 +23,8 @@ public:
 	SharedMemory ();
 	~SharedMemory ();
 	int create(const std::string &archivo, const char letra, int tamanio);
-	void writter( const T& dato );
-	T leer () const;
+	void write(const T &dato);
+	T read() const;
 	T& operator[](std::size_t idx);
 	const T& operator[](std::size_t idx) const;
 
@@ -72,11 +72,11 @@ template <class T> int SharedMemory<T> :: create(const std::string &archivo, con
 }
 
 
-template <class T> void SharedMemory<T> :: writter ( const T& dato ) {
+template <class T> void SharedMemory<T> :: write(const T &dato) {
 	* (this->ptrDatos) = dato;
 }
 
-template <class T> T SharedMemory<T> :: leer () const {
+template <class T> T SharedMemory<T> :: read() const {
 	return ( *(this->ptrDatos) );
 }
 

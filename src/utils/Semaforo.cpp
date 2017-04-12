@@ -2,7 +2,8 @@
 #include <cstdlib>
 #include <iostream>
 #include "Semaforo.h"
-
+#include <unistd.h>
+#include <sys/types.h>
 
 void printAndExitOnError(int status,const char* message) {
     if( status == -1 ){
@@ -16,9 +17,10 @@ Semaforo::Semaforo() {}
 
 Semaforo :: Semaforo ( char* nombre, int valorInicial,char fkey ) {
     this->valorInicial = valorInicial;
-    key_t clave = ftok ( nombre,'a' );
+    key_t clave = ftok (nombre,fkey);
     printAndExitOnError(clave,"Error Semaforo Constructor ftok");
     this->id = semget ( clave,1,0666 | IPC_CREAT);
+    std::cout << "Create semaforo id:" << id << "en proceso :"<< getpid() <<std::endl;
     printAndExitOnError(this->id,"Error Semaforo Constructor smget");
     this->inicializar ();
 }
@@ -80,7 +82,6 @@ void Semaforo :: eliminar () {
 }
 
 int Semaforo::numberOfProcessesWaiting() {
-
     int status = semctl(this->id,0,GETNCNT);
     if (status == -1 ){
         perror("numberOfPlayersWaiting GETNCNT");

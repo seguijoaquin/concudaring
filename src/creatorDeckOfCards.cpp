@@ -4,18 +4,16 @@
 
 
 
-CreatorDeckOfCards::CreatorDeckOfCards() {}
-
-
-//quantity es la cantidad total de cartas en el mazo
-void CreatorDeckOfCards::setNumberOfCards(int _quantity) {
-    quantity = _quantity;
+CreatorDeckOfCards::CreatorDeckOfCards() {
+    quantity = 48;
     cards = new int[quantity];
+    setNumbers(1,12);
+    createDeckOfCards();
 }
 
+
 CreatorDeckOfCards::~CreatorDeckOfCards() {
-    if (quantity != 0)
-        delete[] cards;
+    delete[] cards;
 }
 
 
@@ -43,8 +41,10 @@ void CreatorDeckOfCards::mixCards() {
     for (int k = 0; k < 40 ; ++k) {
         int i = generateRandomPos();
         int j = generateRandomPos();
+        //std::cout <<"[i:"<<i<<"] [j:" << j <<"]";
         int aux = cards[i];
-        cards[i] = cards[j];
+        int aux2 = cards[j];
+        cards[i] = aux2;
         cards[j] = aux;
     }
 }

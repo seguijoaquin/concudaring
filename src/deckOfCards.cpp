@@ -25,7 +25,6 @@ DeckOfCards& DeckOfCards::operator+(DeckOfCards anotherDeck) {
 
 
 DeckOfCards& DeckOfCards::operator=(DeckOfCards anotherDeck) {
-    std::cout << "Copy Assigment DeckOfCards" << "\n";
     std::swap(cards,anotherDeck.cards);
     return *this;
 }

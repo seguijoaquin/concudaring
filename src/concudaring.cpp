@@ -7,48 +7,51 @@
 
 Concudaring::Concudaring(int numberPlayers) {
     //TODO falta ver bien el creator, el valgrind tira error.
-    //configureCreator(numberPlayers);
-    //std::vector<DeckOfCards> decks = creator.getDeckOfCards();
-    createPlayers(numberPlayers);
+    configureCreator(numberPlayers);
+    std::vector<DeckOfCards> decks = creator.getDeckOfCards();
+    createPlayers(numberPlayers,decks);
+    char nombre[] = "/bin/cat";
+    thereIsCard = Semaforo(nombre,0,'a');
+    std::cout << "Soy el concudaring con el process id:" << getpid() << std::endl;
 }
 
 
 void Concudaring::configureCreator(int numberPlayers){
-    creator.setNumberOfCards(48); //seteo cantidad de cartas
-    creator.setNumbers(1,12); //seteo numeros posibles
-    creator.createDeckOfCards(); // creo el mazo
     creator.mixCards(); //mezclo las cartas
     creator.setNumberOfPlayers(numberPlayers); //seteo cantidad de jugadores
 }
 
-void Concudaring::createPlayers(int numberPlayers){
+void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& decks){
 
     //TODO: REFACTOR USANDO UN SOLO SEMAFORO QUE CREO QUE SE PUEDE
     //Podriamos inicializar todos los recursos aca.
-    Semaforo* waitForACard = new Semaforo(FILE_CONCUDARING,0, KEY_SEM_WAIT_FOR_A_CARD);
-    Semaforo* endOfTurnGathering = new Semaforo(FILE_CONCUDARING,0, KEY_SEM_END_OF_TURN_GATHERING);
-
-    for (int i = 0; i < numberPlayers ; ++i) {
-        pid_t pid = fork();
-        if (pid == 0){
-            //DeckOfCards deck = decks[i];
-            //player.setDeckOfCards(deck);
-            Player player(i, waitForACard, endOfTurnGathering, numberPlayers);
-            //DeckOfCards deck = decks[i];
-            //player.setDeckOfCards(deck);
-            player.play();
-            exit(0);
-        }
-    }
-
+    //Semaforo* waitForACard = new Semaforo(FILE_CONCUDARING,0, KEY_SEM_WAIT_FOR_A_CARD);
+    //Semaforo* endOfTurnGathering = new Semaforo(FILE_CONCUDARING,0, KEY_SEM_END_OF_TURN_GATHERING);
     std::cout << "El juego inicia" << std::endl;
 
-    for (int j = 0; j <  numberPlayers; ++j) {
-        wait(NULL);
-    }
+    pid_t pid_padre = getpid();
 
-    delete(endOfTurnGathering);
-    delete(waitForACard);
+    for (int i = 0; i < numberPlayers ; ++i) {
+        //TODO: una mejor idea seria forkear dentro del player.play y que ahi devuelva el idProcess y con
+        //hacer el wait, asi no ahorammos el exit y se destruye todo de manera correcta.
+        pid_t pid = fork();
+        if (pid == 0){
+            DeckOfCards deck = decks[i];
+            //Player player(i, waitForACard, endOfTurnGathering, numberPlayers);
+            Player player(i,numberPlayers);
+            player.setDeckOfCards(deck);
+            player.play();
+            //exit(0);
+        }
+    }
+    if (pid_padre = getpid()) {
+      std::cout << "Todos los procesos fuern lanzados\n";
+      for (int j = 0; j <  numberPlayers; ++j) {
+            wait(NULL);
+          }
+    //delete(endOfTurnGathering);
+    //delete(waitForACard);
+  }
 
 }
 
@@ -57,4 +60,9 @@ void Concudaring::start(){
 
 }
 
-Concudaring::~Concudaring() {}
+Concudaring::~Concudaring() {
+  std::cout << "Soy el concudaring con el process id (destroy):" << getpid() << std::endl;
+
+  thereIsCard.eliminar();
+
+}

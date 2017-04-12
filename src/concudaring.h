@@ -8,10 +8,11 @@
 #include "creatorDeckOfCards.h"
 
 class Concudaring {
-    std::vector<Player> players;
+    //std::vector<Player> players;
     CreatorDeckOfCards creator;
-    void createPlayers(int numberPlayers);
+    void createPlayers(int numberPlayers,std::vector<DeckOfCards>& decks);
     void configureCreator(int numberPlayers);
+    Semaforo thereIsCard;
 
 public:
     Concudaring(int numberPlayers);
