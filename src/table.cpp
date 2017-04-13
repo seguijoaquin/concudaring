@@ -1,10 +1,5 @@
 #include <iostream>
 #include "table.h"
-#include <stdlib.h>  //rand()
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <unistd.h>
 
 #define NOMBRE "/bin/ls"
@@ -34,11 +29,10 @@ Table& Table::getInstance() {
 
 //Inserto una carta en la mesa
 void Table::putCard(int card) {
-    //turnOver.wait();
     int pos = i.read();
     cards[pos] = card;
     i.write(pos+1);
-    thereIsCard.add(2);
+    thereIsCard.add(numberOfPlayers-1us);
 }
 
 
@@ -63,6 +57,10 @@ DeckOfCards Table::getLastTwoCards(){
 }
 
 
+void Table::setNumberOfPlayers(int _numberOfPlayers) {
+    numberOfPlayers = _numberOfPlayers;
+}
+
 //Muestro el mazo de cartas que hay en la mesa
 void Table::printCards(int id) {
     thereIsCard.wait();
@@ -74,7 +72,6 @@ void Table::printCards(int id) {
     // std::cout << "\n";
 }
 
-//TODO:Acá tengo que poner un bloque para que no mas de un proceso este poniendo su mano
 void Table::putHand(int id) {
     idHand.write(id);
 }

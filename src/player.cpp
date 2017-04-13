@@ -32,6 +32,7 @@ bool Player::checkWinner() const {
 void Player::play() {
     //std::cout << "play" << std::endl;
     Table& table = Table::getInstance();
+    table.setNumberOfPlayers(numberOfPlayers);
     int turno = 0;
     while ( turno <= 2 ){
         if (itIsMyTurn(turno)){
