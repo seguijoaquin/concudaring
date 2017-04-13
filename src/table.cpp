@@ -19,7 +19,7 @@ Table::Table(){
 void Table::createSemaforo() {
     char nombre[] = "/bin/cat";
     thereIsCard = Semaforo(nombre,0,'a');
-    readIdLosser = Semaforo(nombre,1,'p');
+    writeIdLosser = Semaforo(nombre,1,'p');
 
 }
 
@@ -66,29 +66,27 @@ void Table::setNumberOfPlayers(int _numberOfPlayers) {
 //Muestro el mazo de cartas que hay en la mesa
 void Table::printCards(int id) {
     thereIsCard.wait();
-    // int size = i.read();
-    // std::cout << "Soy el JUGADOR:" << id << " Y muestro las cartas\n";
-    // for (int j = 0; j < size ; j++) {ma
-    //     std::cout << "["<<j<<"]:" << cards[j] <<" ";
-    // }
-    // std::cout << "\n";
+    int size = i.read();
+     std::cout << "Soy el JUGADOR:" << id << " Y muestro las cartas\n";
+     for (int j = 0; j < size ; j++) {ma
+         std::cout << "["<<j<<"]:" << cards[j] <<" ";
+     }
+    std::cout << "\n";
 }
 
 
 void Table::putHand(int id) {
-    readIdLosser.wait();
+    writeIdLosser.wait();
     idHand.write(id);
-    int number = numberOfPlayersPutHand.read();
-    if (number + 1 == numberOfPlayers){
-        readIdLosser.add(numberOfPlayers);
-    }else{
-        numberOfPlayersPutHand.write(number+1);
-    }
-    readIdLosser.signal();
+    writeIdLosser.signal();
 }
 
 int Table::getIdLosser() {
-    readIdLosser.wait();
+    if (readIdLosser.numberOfProcessesWaiting() == numberOfPlayers -1){
+        readIdLosser.add(numberOfPlayers-1);
+    }else{
+        readIdLosser.wait();
+    }
     return idHand.read();
 }
 
