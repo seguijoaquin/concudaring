@@ -16,7 +16,6 @@ private:
     Semaforo thereIsCard;
     Semaforo writeIdLosser;
     Semaforo readIdLosser;
-    //Semaforo turnOver;
     Table(const Table& table);
     void operator=(const Table& table);
     ~Table();

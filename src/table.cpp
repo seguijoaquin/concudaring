@@ -18,8 +18,9 @@ Table::Table(){
 
 void Table::createSemaforo() {
     char nombre[] = "/bin/cat";
-    thereIsCard = Semaforo(nombre,0,'a');
-    writeIdLosser = Semaforo(nombre,1,'p');
+    thereIsCard = Semaforo(nombre,0,'t');
+    writeIdLosser = Semaforo(nombre,1,'w');
+    readIdLosser = Semaforo(nombre,0,'r');
 
 }
 
