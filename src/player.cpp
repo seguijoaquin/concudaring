@@ -21,7 +21,7 @@ Player::~Player(){
 
 
 void Player::present() const {
-    std::cout << "Mi id es:"<< id << std::endl;
+    //std::cout << "Mi id es:"<< id << std::endl;
 }
 
 bool Player::checkWinner() const {
@@ -30,10 +30,10 @@ bool Player::checkWinner() const {
 }
 
 void Player::play() {
-    std::cout << "play" << std::endl;
+    //std::cout << "play" << std::endl;
     Table& table = Table::getInstance();
     int turno = 0;
-    while ( turno <= 10 ){
+    while ( turno <= 2 ){
         if (itIsMyTurn(turno)){
             //std::cout << "Es mi turno:" << id << "!!!!\n";
             //std::cout << "Voy a dormir un rato antes de poner la carta.. zzzz" << "\n";
@@ -44,6 +44,7 @@ void Player::play() {
             table.printCards(id);
         }
         turno++;
+        //turno = increaseTurn(turno);
     }
 }
 
@@ -54,4 +55,14 @@ bool Player::itIsMyTurn(int turnNumber) const {
 
 void Player::setDeckOfCards(DeckOfCards& deck) {
     myDeckOfCards = deck;
+}
+
+int Player::increaseTurn(int turn) {
+    if ( endOfTurnGathering->numberOfProcessesWaiting() == numberOfPlayers -1){
+        endOfTurnGathering->add(numberOfPlayers -1);
+    } else {
+        endOfTurnGathering->wait();
+    }
+    return turn++;
+
 }

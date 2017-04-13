@@ -43,7 +43,7 @@ int Semaforo :: inicializar () {
     return resultado;
 }
 
-int Semaforo :: p () {
+int Semaforo :: wait() {
 
     struct sembuf operacion;
     operacion.sem_num = 0; // numero de semaforo
@@ -56,7 +56,7 @@ int Semaforo :: p () {
     return resultado;
 }
 
-int Semaforo :: v () {
+int Semaforo :: signal() {
     return add(1);
 }
 

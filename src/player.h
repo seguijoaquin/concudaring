@@ -24,6 +24,7 @@ public:
     void present() const ;
 
     void play();
+    int increaseTurn(int turn);
     void setDeckOfCards(DeckOfCards& deck);
     bool itIsMyTurn(int turnNumber) const;
     bool checkWinner() const;

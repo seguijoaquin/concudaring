@@ -34,7 +34,7 @@ Table& Table::getInstance() {
 
 //Inserto una carta en la mesa
 void Table::putCard(int card) {
-    //turnOver.p();
+    //turnOver.wait();
     int pos = i.read();
     cards[pos] = card;
     i.write(pos+1);
@@ -65,7 +65,7 @@ DeckOfCards Table::getLastTwoCards(){
 
 //Muestro el mazo de cartas que hay en la mesa
 void Table::printCards(int id) {
-    thereIsCard.p();
+    thereIsCard.wait();
     // int size = i.read();
     // std::cout << "Soy el JUGADOR:" << id << " Y muestro las cartas\n";
     // for (int j = 0; j < size ; j++) {ma
