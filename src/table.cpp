@@ -9,15 +9,17 @@ using namespace std;
 
 Table::Table(){
     std::cout << "Construyendo una mesa con process id:" <<getpid()<< std::endl;
-    cards.create(NOMBRE,'o',40);
-    i.create(NOMBRE2,'r',1);
-    idHand.create(NOMBRE,'p',1);
+    cards.create(NOMBRE,'c',40);
+    i.create(NOMBRE2,'i',1);
+    idHand.create(NOMBRE,'d',1);
+    numberOfPlayersPutHand.create(NOMBRE,'n',1);
     createSemaforo();
 }
 
 void Table::createSemaforo() {
     char nombre[] = "/bin/cat";
     thereIsCard = Semaforo(nombre,0,'a');
+    readIdLosser = Semaforo(nombre,1,'p');
 
 }
 
@@ -32,7 +34,7 @@ void Table::putCard(int card) {
     int pos = i.read();
     cards[pos] = card;
     i.write(pos+1);
-    thereIsCard.add(numberOfPlayers-1us);
+    thereIsCard.add(numberOfPlayers-1);
 }
 
 
@@ -72,11 +74,21 @@ void Table::printCards(int id) {
     // std::cout << "\n";
 }
 
+
 void Table::putHand(int id) {
+    readIdLosser.wait();
     idHand.write(id);
+    int number = numberOfPlayersPutHand.read();
+    if (number + 1 == numberOfPlayers){
+        readIdLosser.add(numberOfPlayers);
+    }else{
+        numberOfPlayersPutHand.write(number+1);
+    }
+    readIdLosser.signal();
 }
 
 int Table::getIdLosser() {
+    readIdLosser.wait();
     return idHand.read();
 }
 

@@ -12,8 +12,10 @@ private:
     SharedMemory<int> cards; //destinado para colocar las cartas
     SharedMemory<int> i;     //destinado para colocar el puntero al mazo
     SharedMemory<int> idHand; //destinado para guardar el id del ultimo jugador que puso la mano
+    SharedMemory<int> numberOfPlayersPutHand; //destinado para guardar el id del ultimo jugador que puso la mano
     int numberOfPlayers;
     Semaforo thereIsCard;
+    Semaforo readIdLosser;
     //Semaforo turnOver;
     Table(const Table& table);
     void operator=(const Table& table);
