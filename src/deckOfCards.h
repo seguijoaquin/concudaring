@@ -14,6 +14,8 @@ public:
     void addCard(int card);
     void print();
     bool isEmpty();
+    int at() const;
+    bool theCardsAreSame();
     int getCard();
 };
 

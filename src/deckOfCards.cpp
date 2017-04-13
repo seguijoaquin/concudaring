@@ -29,7 +29,7 @@ DeckOfCards& DeckOfCards::operator=(DeckOfCards anotherDeck) {
     return *this;
 }
 
-void DeckOfCards::print() {
+void DeckOfCards::print(){
     for (int i = 0; i < cards.size(); ++i) {
         std::cout << cards[i] << ".";
     }
@@ -39,6 +39,22 @@ void DeckOfCards::print() {
 bool DeckOfCards::isEmpty() {
     return cards.empty();
 }
+
+bool DeckOfCards::theCardsAreSame() {
+    if (cards.size() == 1){
+        return false;
+    }else{
+        return cards[0] == cards[1];
+    }
+}
+
+//Obtengo la ultima carta pero la saco del maso
+int DeckOfCards::at() const {
+    int card = cards.back();
+    return card;
+}
+
+//Saca del maso la ultima carta y la devuelvo
 int DeckOfCards::getCard() {
     int card =  cards.back();
     cards.pop_back();

@@ -35,16 +35,22 @@ void Player::play() {
     int turno = 0;
     while ( turno <= 2 ){
         if (itIsMyTurn(turno)){
-            //std::cout << "Es mi turno:" << id << "!!!!\n";
-            //std::cout << "Voy a dormir un rato antes de poner la carta.. zzzz" << "\n";
             sleep(2);
             int card = myDeckOfCards.getCard();
             table.putCard(card);
-        }else{
-            table.printCards(id);
         }
-        turno++;
-        //turno = increaseTurn(turno);
+        //En este deck SOLO obtengo las 2 ultima cartas de la mesa
+        DeckOfCards deck = table.getLastTwoCards();
+        if (deck.theCardsAreSame() or deck.at() == 7){
+            table.putHand(id);
+        }
+        int idLosser = table.getIdLosser();
+        if (idLosser == id){
+            DeckOfCards deck = table.getCards();
+            myDeckOfCards =myDeckOfCards + deck;
+        }
+        //turno++;
+        increaseTurn(turno);
     }
 }
 
