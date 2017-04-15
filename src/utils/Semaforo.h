@@ -9,14 +9,12 @@ class Semaforo {
 
 private:
     int id;
-    int valorInicial;
-    int inicializar ();
 
 public:
     Semaforo();
-    Semaforo (char* nombre ,int valorInicial, char fkey );
+    Semaforo (char* nombre , char fkey );
     virtual ~Semaforo();
-
+    int inicializar (int valorInicial);
     int wait(); // decrementa
     int signal(); // incrementa
     void eliminar ();

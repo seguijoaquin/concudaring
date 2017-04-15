@@ -24,7 +24,7 @@ public:
     static Table& getInstance();
     void putCard(int card);
     void putHand(int id);
-    int  getIdLosser();
+    int  getIdLoser();
     void printCards(int id);
     DeckOfCards getLastTwoCards();
     DeckOfCards getCards();

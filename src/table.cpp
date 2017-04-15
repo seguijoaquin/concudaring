@@ -8,24 +8,24 @@
 using namespace std;
 
 Table::Table(){
-    std::cout << "Construyendo una mesa con process id:" <<getpid()<< std::endl;
+    //std::cout << "Construyendo una mesa con process id:" <<getpid()<< std::endl;
     cards.create(NOMBRE,'c',40);
     i.create(NOMBRE2,'i',1);
     idHand.create(NOMBRE,'d',1);
-    numberOfPlayersPutHand.create(NOMBRE,'n',1);
+    //numberOfPlayersPutHand.create(NOMBRE,'n',1);
     createSemaforo();
 }
 
 void Table::createSemaforo() {
     char nombre[] = "/bin/cat";
-    thereIsCard = Semaforo(nombre,0,'t');
-    writeIdLosser = Semaforo(nombre,1,'w');
-    readIdLosser = Semaforo(nombre,0,'r');
+    thereIsCard = Semaforo(nombre,'t');
+    writeIdLosser = Semaforo(nombre,'w');
+    readIdLosser = Semaforo(nombre,'r');
 
 }
 
 Table& Table::getInstance() {
-    std::cout << "getInstance" << std::endl;
+    //std::cout << "getInstance" << std::endl;
     static Table instance;
     return instance;
 }
@@ -69,7 +69,7 @@ void Table::printCards(int id) {
     thereIsCard.wait();
     int size = i.read();
      std::cout << "Soy el JUGADOR:" << id << " Y muestro las cartas\n";
-     for (int j = 0; j < size ; j++) {ma
+     for (int j = 0; j < size ; j++) {
          std::cout << "["<<j<<"]:" << cards[j] <<" ";
      }
     std::cout << "\n";
@@ -82,7 +82,7 @@ void Table::putHand(int id) {
     writeIdLosser.signal();
 }
 
-int Table::getIdLosser() {
+int Table::getIdLoser() {
     if (readIdLosser.numberOfProcessesWaiting() == numberOfPlayers -1){
         readIdLosser.add(numberOfPlayers-1);
     }else{
@@ -92,5 +92,5 @@ int Table::getIdLosser() {
 }
 
 Table::~Table(){
-  std::cout << "Destruyendo una mesa con process id:" <<getpid()<< std::endl;
+  //std::cout << "Destruyendo una mesa con process id:" <<getpid()<< std::endl;
 }

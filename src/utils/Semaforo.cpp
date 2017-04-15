@@ -5,30 +5,28 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-void printAndExitOnError(int status,const char* message) {
+void printOnError(int status, const char *message) {
+    //TODO: Agregar logger
     if( status == -1 ){
         perror(message);
-        exit(EXIT_FAILURE);
     }
 }
 
 
 Semaforo::Semaforo() {}
 
-Semaforo :: Semaforo ( char* nombre, int valorInicial,char fkey ) {
-    this->valorInicial = valorInicial;
+Semaforo :: Semaforo ( char* nombre,char fkey ) {
     key_t clave = ftok (nombre,fkey);
-    printAndExitOnError(clave,"Error Semaforo Constructor ftok");
+    printOnError(clave, "Error Semaforo Constructor ftok");
     this->id = semget ( clave,1,0666 | IPC_CREAT);
-    std::cout << "Create semaforo id:" << id << "en proceso :"<< getpid() <<std::endl;
-    printAndExitOnError(this->id,"Error Semaforo Constructor smget");
-    this->inicializar ();
+    //std::cout << "Create semaforo id:" << id << "en proceso :"<< getpid() <<std::endl;
+    printOnError(this->id, "Error Semaforo Constructor smget");
 }
 
 Semaforo ::~ Semaforo () {
 }
 
-int Semaforo :: inicializar () {
+int Semaforo :: inicializar (int valorInicial) {
     union semnum {
         int val;
         struct semid_ds* buf;
@@ -36,9 +34,9 @@ int Semaforo :: inicializar () {
     };
 
     semnum init;
-    init.val = this->valorInicial;
+    init.val = valorInicial;
     int resultado = semctl ( this->id,0,SETVAL,init );
-    printAndExitOnError(resultado,"Error inicializar semaforo semctl");
+    printOnError(resultado, "Error inicializar semaforo semctl");
     //TODO: chequear
     return resultado;
 }
@@ -51,7 +49,7 @@ int Semaforo :: wait() {
     operacion.sem_flg = SEM_UNDO;
 
     int resultado = semop ( this->id,&operacion,1 );
-    printAndExitOnError(resultado,"Error inicializar semaforo semctl");
+    printOnError(resultado, "Error inicializar semaforo semctl");
     //TODO: chequear
     return resultado;
 }
@@ -68,7 +66,7 @@ int Semaforo :: add (int value) {
     operacion.sem_flg = SEM_UNDO;
 
     int resultado = semop ( this->id,&operacion,1 );
-    printAndExitOnError(resultado,"Error inicializar semaforo semctl");
+    printOnError(resultado, "Error inicializar semaforo semctl");
     //TODO: chequear
 
     return resultado;
@@ -77,15 +75,14 @@ int Semaforo :: add (int value) {
 
 void Semaforo :: eliminar () {
     int semctlStatus = semctl ( this->id,0,IPC_RMID );
-    printAndExitOnError(semctlStatus,"Error semaforo eliminar semctl");
+    printOnError(semctlStatus, "Error semaforo eliminar semctl");
     //TODO: chequear
 }
 
 int Semaforo::numberOfProcessesWaiting() {
     int status = semctl(this->id,0,GETNCNT);
-    if (status == -1 ){
-        perror("numberOfPlayersWaiting GETNCNT");
-    }
+    printOnError(status,"numberOfPlayersWaiting GETNCNT");
     return status;
-
 }
+
+

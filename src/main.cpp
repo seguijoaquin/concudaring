@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
   int memState = sharedMemory.create(FILE_CONCUDARING,KEY_MEMORY,2);
   if (memState == SHM_OK) {
       Concudaring concudaring(atoi(argv[1]));
-      concudaring.start();
+      //concudaring.start();
   } else {
       //ERROR AL INICIALIZAR MEMORIA COMPARTIDA
       //Liberar recursos tomados y salir

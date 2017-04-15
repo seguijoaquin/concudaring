@@ -9,7 +9,8 @@ Concudaring::Concudaring(int numberPlayers) {
     configureCreator(numberPlayers);
     std::vector<DeckOfCards> decks = creator.getDeckOfCards();
     char nombre[] = "/bin/cat";
-    thereIsCard = Semaforo(nombre,0,'a');
+    thereIsCard = Semaforo(nombre,'a');
+    thereIsCard.inicializar(0);
     createPlayers(numberPlayers,decks);
 }
 
@@ -20,7 +21,19 @@ void Concudaring::configureCreator(int numberPlayers){
 }
 
 void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& decks){
-    pid_t pid_padre = getpid();
+
+    //TODO: PUEDE IR EN OTRA FUNCION DE CREAR SEMAFOROS
+    Semaforo endOfTurnGathering(FILE_CONCUDARING,KEY_SEM_END_OF_TURN_GATHERING);
+    endOfTurnGathering.inicializar(0);
+    char nombre[] = "/bin/cat";
+    Semaforo thereIsCard(nombre,'t');
+    thereIsCard.inicializar(0);
+    Semaforo writeIdLosser(nombre,'w');
+    writeIdLosser.inicializar(1);
+    Semaforo readIdLosser(nombre,'r');
+    readIdLosser.inicializar(0);
+
+
     for (int i = 0; i < numberPlayers ; ++i) {
         pid_t pid = fork();
         if (pid == 0){
@@ -29,18 +42,19 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
             player.setDeckOfCards(deck);
             player.play();
             return;
+        } else if ( pid == -1 ){
+            //TODO: PRINTEAR FORK ERROR
         }
-
-
     }
-
-    //TODO: Este if no seria necesario no?
-    if (pid_padre == getpid()) {
-      std::cout << "Todos los procesos fuern lanzados\n";
-      for (int j = 0; j <  numberPlayers; ++j) {
-            wait(NULL);
-          }
-  }
+    //std::cout << "SLKDJLFLSDKFJLDSKF" << std::endl;
+    for (int j = 0; j <  numberPlayers; ++j) {
+        wait(NULL);
+    }
+    thereIsCard.eliminar();
+    endOfTurnGathering.eliminar();
+    writeIdLosser.eliminar();
+    readIdLosser.eliminar();
+    thereIsCard.eliminar();
 
 }
 
@@ -50,6 +64,5 @@ void Concudaring::start(){
 }
 
 Concudaring::~Concudaring() {
-  thereIsCard.eliminar();
 
 }

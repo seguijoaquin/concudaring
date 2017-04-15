@@ -11,14 +11,13 @@
 class Player {
 private:
     const int id;
-    Semaforo *waitForACard;
+    Semaforo waitForACard;
     const int numberOfPlayers;
-    Semaforo *endOfTurnGathering;
+    Semaforo endOfTurnGathering;
     DeckOfCards myDeckOfCards;
     SharedMemory<Game_t> sharedMemory;
 
 public:
-    Player(int _id, Semaforo *semaforo, Semaforo *numberOfPlayers, int i);
     Player(int _id,int _numberOfPlayers);
     ~Player();
     void present() const ;
@@ -28,9 +27,6 @@ public:
     void setDeckOfCards(DeckOfCards& deck);
     bool itIsMyTurn(int turnNumber) const;
     bool checkWinner() const;
-
-
-
 
 };
 
