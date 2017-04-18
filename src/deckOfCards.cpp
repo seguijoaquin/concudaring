@@ -14,13 +14,12 @@ void DeckOfCards::addCard(int card){
     cards.push_back(card);
 }
 
-DeckOfCards& DeckOfCards::operator+(DeckOfCards anotherDeck) {
+void DeckOfCards::addDeck(DeckOfCards anotherDeck) {
     int card = anotherDeck.getCard();
-    while (card != 0){
+    while (!anotherDeck.isEmpty()){
         addCard(card);
         card = anotherDeck.getCard();
     }
-    return *this;
 }
 
 

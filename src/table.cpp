@@ -11,7 +11,7 @@ Table::Table(){
     //std::cout << "Construyendo una mesa con process id:" <<getpid()<< std::endl;
     cards.create(NOMBRE,'c',40);
     i.create(NOMBRE2,'i',1);
-    idHand.create(NOMBRE,'d',1);
+    idHand.create(NOMBRE,'d',1);  //acá es donde se pone los id de los jugadores, a medida que pone las mano.
     //numberOfPlayersPutHand.create(NOMBRE,'n',1);
     createSemaforo();
 }
@@ -35,7 +35,8 @@ void Table::putCard(int card) {
     int pos = i.read();
     cards[pos] = card;
     i.write(pos+1);
-    thereIsCard.add(numberOfPlayers-1);
+    printCards(90);
+    thereIsCard.add(numberOfPlayers);
 }
 
 
@@ -52,9 +53,15 @@ DeckOfCards Table::getCards() {
 
 //Devuelvo las 2 ultimas cartas que se encuentran en la mesa
 DeckOfCards Table::getLastTwoCards(){
-    int lastPosition = i.read() - 1;
+    thereIsCard.wait();
     DeckOfCards deck;
+    int lastPosition = i.read() -1;
+    //std::cout << "lastPOsition:" <<lastPosition << "i:["<< i.read()<<"]\n";
     deck.addCard(cards[lastPosition]);
+    if (lastPosition == 0){
+        //std::cout << "lastposicion es 0";
+        return deck;
+    }
     deck.addCard(cards[lastPosition-1]);
     return deck;
 }
@@ -66,7 +73,6 @@ void Table::setNumberOfPlayers(int _numberOfPlayers) {
 
 //Muestro el mazo de cartas que hay en la mesa
 void Table::printCards(int id) {
-    thereIsCard.wait();
     int size = i.read();
      std::cout << "Soy el JUGADOR:" << id << " Y muestro las cartas\n";
      for (int j = 0; j < size ; j++) {

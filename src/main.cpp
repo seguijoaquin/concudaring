@@ -7,8 +7,8 @@
 
 
 bool createTmpFile() {
+  std::cout << "createTmpFile" <<std::endl;
   FILE* file = fopen(FILE_CONCUDARING, "w");
-
   if (!file) {
     std::cerr << "Error en fopen():" << strerror(errno) << '\n';
     return false;
@@ -21,11 +21,10 @@ bool createTmpFile() {
 int main(int argc, char** argv) {
 
   if (createTmpFile()) {
-   SharedMemory<Game_t> sharedMemory;
+    SharedMemory<Game_t> sharedMemory;
   int memState = sharedMemory.create(FILE_CONCUDARING,KEY_MEMORY,2);
   if (memState == SHM_OK) {
       Concudaring concudaring(atoi(argv[1]));
-      //concudaring.start();
   } else {
       //ERROR AL INICIALIZAR MEMORIA COMPARTIDA
       //Liberar recursos tomados y salir

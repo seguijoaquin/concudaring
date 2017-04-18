@@ -8,9 +8,10 @@
 
 
 Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfPlayers){
-    //std::cout << "Se creo un player con el id:"<< getpid() << "\n";
     endOfTurnGathering = Semaforo(FILE_CONCUDARING,KEY_SEM_END_OF_TURN_GATHERING);
     waitForACard = Semaforo(FILE_CONCUDARING,KEY_SEM_WAIT_FOR_A_CARD);
+    noOneWon.create(FILE_CONCUDARING,KEY_MEM_NO_ONE_WON,1);
+    //noOneWon.write(false);
 }
 Player::~Player(){
   //std::cout << "Se destruye un player con el id:"<< getpid() << "\n";
@@ -27,34 +28,44 @@ bool Player::checkWinner() const {
 }
 
 void Player::play() {
-    //std::cout << "play" << std::endl;
     Table& table = Table::getInstance();
     table.setNumberOfPlayers(numberOfPlayers);
     int turno = 0;
-    while ( turno <= 2 ){
-        if (itIsMyTurn(turno)){
+    while (!noOneWon.read()){
+        if (itIsMyTurn(turno)) {
+            std::cout << "Soy el jugador ["<<id<<"] y  es mi turno\n";
             sleep(2); //TODO: ACORDARSE DE SACARLO
             int card = myDeckOfCards.getCard();
+            std::cout << "Soy el jugador ["<<id<<"] y  voy a poner la carta["<<card<<"]\n";
             table.putCard(card);
-            waitForACard.add(numberOfPlayers -1);
-        } else {
-            waitForACard.wait();
         }
-
         //En este deck SOLO obtengo las 2 ultima cartas de la mesa
+        std::cout << "Soy el jugador["<<id<<"] y  estoy esperando ver cartas\n";
         DeckOfCards deck = table.getLastTwoCards();
         deck.print();
+        int idLoser;
         if (deck.theCardsAreSame() or deck.at() == 7){
-            std::cout << "voy a poner la mano" << std::endl;
+            std::cout << "Soy el jugador ["<<id<<"] voy a poner la mano" << std::endl;
             table.putHand(id);
-            std::cout << "sali" << std::endl;
-            int idLoser = table.getIdLoser();
+            std::cout << "sali ["<< id <<"] y voy mirar quién perdió!" << std::endl;
+            idLoser = table.getIdLoser();
+            //Si perdí
             if (idLoser == id){
+                std::cout << "Soy el jugador ["<<id<<"] y  perdí\n";
                 DeckOfCards deck = table.getCards();
-                myDeckOfCards = myDeckOfCards + deck;
+                //myDeckOfCards = myDeckOfCards + deck;
+                //myDeckOfCards.addDeck(deck);
+                std::cout << "Soy el jugador ["<<id<<"] y  ya tomé todas las cartas de la mesa\n";
             }
         }
+        if (itIsMyTurn(turno) && idLoser != id){
+            std::cout << "Soy el jugador ["<<id<<"] y me fijo si gané\n";
+            if (myDeckOfCards.isEmpty()){
+                noOneWon.write(true);
+            }
 
+        }
+        std::cout << "Soy el jugador ["<<id<<"], incremento en turno\n";
         turno = increaseTurn(turno);
 
     }

@@ -9,7 +9,7 @@ private:
 public:
     DeckOfCards();
     ~DeckOfCards();
-    DeckOfCards& operator+(DeckOfCards anotherDeck);
+    void addDeck(DeckOfCards anotherDeck);
     DeckOfCards& operator=(DeckOfCards anotherDeck);
     void addCard(int card);
     void print();

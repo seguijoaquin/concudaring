@@ -16,6 +16,7 @@ private:
     Semaforo endOfTurnGathering;
     DeckOfCards myDeckOfCards;
     SharedMemory<Game_t> sharedMemory;
+    SharedMemory<bool> noOneWon;
 
 public:
     Player(int _id,int _numberOfPlayers);
