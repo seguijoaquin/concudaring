@@ -4,7 +4,7 @@
 
 //SHARED MEMORY CONSTS
 //TODO No se puede abrir el siguiente archivo
-#define FILE_CONCUDARING "/tmp/concu/concudaring.tmp"
+#define FILE_CONCUDARING "concudaring.tmp"
 
 
 #define KEY_MEMORY 'm'

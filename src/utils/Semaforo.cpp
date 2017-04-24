@@ -4,6 +4,7 @@
 #include "Semaforo.h"
 #include <unistd.h>
 #include <sys/types.h>
+#include <string.h>
 
 void printOnError(int status, const char *message) {
     //TODO: Agregar logger
@@ -15,8 +16,8 @@ void printOnError(int status, const char *message) {
 
 Semaforo::Semaforo() {}
 
-Semaforo :: Semaforo ( char* nombre,char fkey ) {
-    key_t clave = ftok (nombre,fkey);
+Semaforo :: Semaforo ( const std::string& nombre,char fkey ) {
+    key_t clave = ftok (nombre.c_str(),fkey);
     printOnError(clave, "Error Semaforo Constructor ftok");
     this->id = semget ( clave,1,0666 | IPC_CREAT);
     //std::cout << "Create semaforo id:" << id << "en proceso :"<< getpid() <<std::endl;
@@ -91,4 +92,3 @@ void Semaforo::barrier() {
 
     this->signal();
 }
-

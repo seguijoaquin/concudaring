@@ -12,7 +12,7 @@ private:
 
 public:
     Semaforo();
-    Semaforo (char* nombre , char fkey );
+    Semaforo (const std::string& nombre , char fkey );
     virtual ~Semaforo();
     int inicializar (int valorInicial);
     int wait(); // decrementa
