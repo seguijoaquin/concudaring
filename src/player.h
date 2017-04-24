@@ -7,6 +7,7 @@
 #include "utils/SharedMemory.h"
 #include "utils/types.h"
 #include "utils/constants.h"
+#include "table.h"
 
 class Player {
 private:
@@ -29,6 +30,7 @@ public:
     bool itIsMyTurn(int turnNumber) const;
     bool checkWinner() const;
 
+    void checkCardsAndPerformAction();
 };
 
 

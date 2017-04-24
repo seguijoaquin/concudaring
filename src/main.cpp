@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <sys/stat.h>
 #include "concudaring.h"
 #include "utils/constants.h"
 #include "utils/types.h"
@@ -7,6 +8,10 @@
 
 
 bool createTmpFile() {
+  /*struct stat st = {0};
+  if (stat("./tmp/concu", &st) == -1) {
+    mkdir("/tmp/concu", 0700);
+  }*/
   std::cout << "createTmpFile" <<std::endl;
   FILE* file = fopen(FILE_CONCUDARING, "w");
   if (!file) {

@@ -27,47 +27,44 @@ bool Player::checkWinner() const {
   return game.gameFinished;
 }
 
+
 void Player::play() {
     Table& table = Table::getInstance();
     table.setNumberOfPlayers(numberOfPlayers);
     int turno = 0;
     while (!noOneWon.read()){
+
+        this->myDeckOfCards.print();
+
         if (itIsMyTurn(turno)) {
             std::cout << "Soy el jugador ["<<id<<"] y  es mi turno\n";
-            sleep(2); //TODO: ACORDARSE DE SACARLO
+            //sleep(2); //TODO: ACORDARSE DE SACARLO
             int card = myDeckOfCards.getCard();
             std::cout << "Soy el jugador ["<<id<<"] y  voy a poner la carta["<<card<<"]\n";
             table.putCard(card);
+            std::cout << "Soy el jugador ["<<id<<"] y  mi mazo es: \n";
         }
         //En este deck SOLO obtengo las 2 ultima cartas de la mesa
         std::cout << "Soy el jugador["<<id<<"] y  estoy esperando ver cartas\n";
-        DeckOfCards deck = table.getLastTwoCards();
-        deck.print();
-        int idLoser;
-        if (deck.theCardsAreSame() or deck.at() == 7){
-            std::cout << "Soy el jugador ["<<id<<"] voy a poner la mano" << std::endl;
-            table.putHand(id);
-            std::cout << "sali ["<< id <<"] y voy mirar quién perdió!" << std::endl;
-            idLoser = table.getIdLoser();
-            //Si perdí
-            if (idLoser == id){
-                std::cout << "Soy el jugador ["<<id<<"] y  perdí\n";
-                DeckOfCards deck = table.getCards();
-                //myDeckOfCards = myDeckOfCards + deck;
-                //myDeckOfCards.addDeck(deck);
-                std::cout << "Soy el jugador ["<<id<<"] y  ya tomé todas las cartas de la mesa\n";
-            }
-        }
-        if (itIsMyTurn(turno) && idLoser != id){
+
+        checkCardsAndPerformAction();
+        std::cout << "Soy el jugador["<<id<<"] y  veo las cartas\n";
+
+
+
+        if (itIsMyTurn(turno)){
             std::cout << "Soy el jugador ["<<id<<"] y me fijo si gané\n";
             if (myDeckOfCards.isEmpty()){
                 noOneWon.write(true);
             }
-
         }
+
         std::cout << "Soy el jugador ["<<id<<"], incremento en turno\n";
         turno = increaseTurn(turno);
 
+        //TODO: BORRAR es para hacer clear screen despues de cada turno
+        if (itIsMyTurn(turno))
+            std::cout << std::string( 20, '\n' );
     }
 }
 
@@ -81,11 +78,37 @@ void Player::setDeckOfCards(DeckOfCards& deck) {
 }
 
 int Player::increaseTurn(int turn) {
-    if ( endOfTurnGathering.numberOfProcessesWaiting() == numberOfPlayers -1){
-        endOfTurnGathering.add(numberOfPlayers -1);
-    } else {
-        endOfTurnGathering.wait();
-    }
+    endOfTurnGathering.barrier();
     return turn + 1;
 
+}
+
+void Player::checkCardsAndPerformAction() {
+    Table& table = Table::getInstance();
+
+    DeckOfCards lastTwoCards = table.getLastTwoCards();
+    lastTwoCards.print();
+    int idLoser;
+
+    //TODO: CUANDO FUNCIONE REFACTORIZAR
+    if (lastTwoCards.theCardsAreSame() or lastTwoCards.at() == 7){
+        std::cout << "Soy el jugador ["<<id<<"] voy a poner la mano" << std::endl;
+        table.putHand(id);
+        std::cout << "sali ["<< id <<"] y voy mirar quién perdió!" << std::endl;
+        idLoser = table.getIdLoser();
+        //Si perdí
+        if (idLoser == id){
+            std::cout << "Soy el jugador ["<<id<<"] y  perdí\n";
+            DeckOfCards deck = table.getCards();
+            //myDeckOfCards = myDeckOfCards + deck;
+            //myDeckOfCards.addDeck(deck);
+            std::cout << "Soy el jugador ["<<id<<"] y  ya tomé todas las cartas de la mesa\n";
+        }
+    } else if(lastTwoCards.at() == 10){
+        //TODO: BUenos dias seniorita
+    } else if(lastTwoCards.at() == 11){
+        //TODO: Buenas noches caballero
+    } else if(lastTwoCards.at() == 12){
+        //TODO: Saludo militar.
+    }
 }

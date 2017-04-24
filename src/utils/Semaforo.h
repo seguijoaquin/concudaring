@@ -18,9 +18,8 @@ public:
     int wait(); // decrementa
     int signal(); // incrementa
     void eliminar ();
-    int numberOfPlayersWaiting();
     int add(int value); //incrementa en value
-    int numberOfProcessesWaiting();
+    void barrier();
 
 };
 

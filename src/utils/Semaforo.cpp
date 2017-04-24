@@ -46,7 +46,7 @@ int Semaforo :: wait() {
     struct sembuf operacion;
     operacion.sem_num = 0; // numero de semaforo
     operacion.sem_op = -1; // restar 1 al semaforo
-    operacion.sem_flg = SEM_UNDO;
+    //operacion.sem_flg = SEM_UNDO;
 
     int resultado = semop ( this->id,&operacion,1 );
     printOnError(resultado, "Error inicializar semaforo semctl");
@@ -62,8 +62,7 @@ int Semaforo :: add (int value) {
 
     struct sembuf operacion;
     operacion.sem_num = 0; // numero de semaforo
-    operacion.sem_op = value; // sumar 1 al semaforo
-    operacion.sem_flg = SEM_UNDO;
+    operacion.sem_op = value; // sumar value al semaforo
 
     int resultado = semop ( this->id,&operacion,1 );
     printOnError(resultado, "Error inicializar semaforo semctl");
@@ -79,10 +78,17 @@ void Semaforo :: eliminar () {
     //TODO: chequear
 }
 
-int Semaforo::numberOfProcessesWaiting() {
-    int status = semctl(this->id,0,GETNCNT);
-    printOnError(status,"numberOfPlayersWaiting GETNCNT");
-    return status;
-}
+void Semaforo::barrier() {
 
+    struct sembuf operaciones[2];
+    operaciones[0].sem_num = 0; // numero de semaforo
+    operaciones[0].sem_op = -1; // restar 1 al semaforo
+
+    operaciones[1].sem_num = 0; // numero de semaforo
+    operaciones[1].sem_op = 0; // restar 1 al semaforo
+
+    int resultado = semop ( this->id,operaciones,1 );
+
+    this->signal();
+}
 
