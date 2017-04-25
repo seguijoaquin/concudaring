@@ -43,7 +43,7 @@ bool DeckOfCards::theCardsAreSame() {
     if (cards.size() == 1){
         return false;
     }else{
-        return cards[0] == cards[1];
+        return (cards[0] == cards[1]);
     }
 }
 

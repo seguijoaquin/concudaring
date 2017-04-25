@@ -16,5 +16,16 @@
 //JUEZ
 #define CONSULTA_JUEZ "SE IMPRIME LA CONSULTA DEL JUEZ"
 
+//PLAYER
+#define MSJ_ES_MI_TURNO "Es mi turno."
+#define MSJ_PONIENDO_CARTA "Voy a poner la carta: "
+#define MSJ_ESPERANDO_VER_CARTA "Esperando ver cartas."
+#define MSJ_VIENDO_CARTA "Veo las cartas."
+#define MSJ_VERIFICO_SI_GANE "Verifico si gane el juego."
+#define MSJ_INCREMENTO_TURNO "Incremento el turno."
+#define MSJ_PONGO_MANO "Voy a poner la mano."
+#define MSJ_VERIFICO_PERDEDOR "Veo quien perdio."
+#define MSJ_PERDI "Soy el perdedor."
+#define MSJ_TOME_CARTAS_DE_MESA "Tome todas las cartas de la mesa."
 
 #endif //RESTORRENTE_MENSAJES_H

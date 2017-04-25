@@ -8,6 +8,8 @@
 #include "utils/types.h"
 #include "utils/constants.h"
 #include "table.h"
+#include "utils/logger/logger.h"
+#include "utils/logger/mensajes.h"
 
 class Player {
 private:

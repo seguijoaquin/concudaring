@@ -73,7 +73,7 @@ std::vector<DeckOfCards> CreatorDeckOfCards::getDeckOfCards(){
         deck.addCard(cards[i]);
     }
 
-
+    /*
     //TODO: este loop se debe borrar
     std::cout << "Imprimiendo los masos de los jugadores" << std::endl;
     for (int j = 0; j < myVector.size(); ++j) {
@@ -81,5 +81,6 @@ std::vector<DeckOfCards> CreatorDeckOfCards::getDeckOfCards(){
         DeckOfCards deck = myVector[j];
         deck.print();
     }
+    */
     return myVector;
 }

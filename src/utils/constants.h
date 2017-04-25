@@ -13,6 +13,9 @@
 
 #define KEY_SEM_WAIT_FOR_A_CARD 'a'
 #define KEY_SEM_END_OF_TURN_GATHERING 'b'
+#define KEY_SEM_THERE_IS_CARD 't'
+#define KEY_SEM_READ_LOSER 'r'
+#define KEY_SEM_WRITE_LOSER 'w'
 #define KEY_MEM_NO_ONE_WON 'c'
 
 

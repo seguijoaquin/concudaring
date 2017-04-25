@@ -5,6 +5,7 @@
 #include "deckOfCards.h"
 #include "utils/SharedMemory.h"
 #include "utils/Semaforo.h"
+#include "utils/constants.h"
 
 class Table {
 private:
