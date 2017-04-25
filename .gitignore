@@ -44,3 +44,6 @@ playground/*
 
 #TMP files
 *.tmp
+
+#LOG files
+*.log

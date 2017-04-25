@@ -33,7 +33,7 @@ void printHelp() {
 }
 
 
-static const char *optString = "icd:q:p:sh?";
+static const char *optString = "jcd:p:q:sh?";
 
 static const struct option longOpts[] = {
   { "judge", no_argument, NULL, 'j' },
@@ -41,6 +41,7 @@ static const struct option longOpts[] = {
   { "help", no_argument, NULL, 'h' },
   { NULL, no_argument, NULL, 0 }
 };
+
 
 int main(int argc, char** argv) {
 
@@ -56,10 +57,6 @@ int main(int argc, char** argv) {
 
       while (opt != -1) {
         switch (opt) {
-          case 'j' : {
-            Logger::getInstance()->insert(KEY_JUDGE, CONSULTA_JUEZ);
-            break;
-          }
           case 'p': {
             if (atoi(optarg) >= 4) {
               Logger::getInstance()->insert(KEY_GAME,MENSAJE_CANTIDAD_JUGADORES,atoi(optarg));
@@ -67,6 +64,10 @@ int main(int argc, char** argv) {
             } else {
               printMinPlayersError();
             }
+            break;
+          }
+          case 'j': {
+            Logger::getInstance()->insert(KEY_JUDGE, CONSULTA_JUEZ);
             break;
           }
           case 'h': {
