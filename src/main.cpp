@@ -28,12 +28,11 @@ void printMinPlayersError() {
 void printHelp() {
   std::cout << "Para lanzar el juego: ./Concudaring -p <cantidad_jugadores>" << '\n';
   std::cout << "NOTA: El juego no puede iniciar con menos de 4 jugadores." << '\n';
-  std::cout << '\n';
   std::cout << "Para consultar cantidad de cartas de cada jugador: ./Concudaring -j" << '\n';
 }
 
 
-static const char *optString = "jcd:p:q:sh?";
+static const char *optString = "jp:h";
 
 static const struct option longOpts[] = {
   { "judge", no_argument, NULL, 'j' },
