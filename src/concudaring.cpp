@@ -8,7 +8,7 @@
 Concudaring::Concudaring(int numberPlayers) {
     configureCreator(numberPlayers);
     std::vector<DeckOfCards> decks = creator.getDeckOfCards();
-    thereIsCard = Semaforo(FILE_CONCUDARING,'t');
+    thereIsCard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
     thereIsCard.inicializar(numberPlayers);
     createPlayers(numberPlayers,decks);
 }
@@ -26,35 +26,37 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
     endOfTurnGathering.inicializar(numberPlayers);
     //Semaforo thereIsCard(nombre,'t');
     //thereIsCard.inicializar(numberPlayers);
-    Semaforo writeIdLosser(FILE_CONCUDARING,'w');
+    Semaforo writeIdLosser(FILE_CONCUDARING,KEY_SEM_WRITE_LOSER);
     writeIdLosser.inicializar(1);
-    Semaforo readIdLosser(FILE_CONCUDARING,'r');
+    Semaforo readIdLosser(FILE_CONCUDARING,KEY_SEM_READ_LOSER);
     readIdLosser.inicializar(numberPlayers);
 
+    pid_t pid_padre = getpid();
+    pid_t pid = 0;
 
     for (int i = 0; i < numberPlayers ; ++i) {
-        pid_t pid = fork();
+        pid = fork(); //Creo un hijo
         if (pid == 0){
-            DeckOfCards deck = decks[i];
-            Player player(i,numberPlayers);
-            player.setDeckOfCards(deck);
-            player.play();
-            return;
-        } else if ( pid == -1 ){
-            //TODO: PRINTEAR FORK ERROR
+          //Si soy el hijo..
+          DeckOfCards deck = decks[i];
+          Player player(i,numberPlayers);
+          player.setDeckOfCards(deck);
+          player.play();
+          break; //Debo salir del for una vez que soy el hijo
         }
     }
-    //std::cout << "SLKDJLFLSDKFJLDSKF" << std::endl;
-    for (int j = 0; j <  numberPlayers; ++j) {
+
+    //Si soy el padre entonces espero a mis hijos y libero los recursos
+    if (pid_padre == getpid()) {
+      for (int j = 0; j <  numberPlayers; ++j) {
         wait(NULL);
+      }
+      std::cout << "eliminando semafotos\n" ;
+      thereIsCard.eliminar();
+      endOfTurnGathering.eliminar();
+      writeIdLosser.eliminar();
+      readIdLosser.eliminar();
     }
-
-    std::cout << "eliminando semafotos\n" ;
-    thereIsCard.eliminar();
-    endOfTurnGathering.eliminar();
-    writeIdLosser.eliminar();
-    readIdLosser.eliminar();
-
 }
 
 
