@@ -1,7 +1,5 @@
 #include <iostream>
 #include "table.h"
-#include <unistd.h>
-
 #define NOMBRE "/bin/ls"
 #define NOMBRE2 "/bin/echo"
 
@@ -35,7 +33,7 @@ void Table::putCard(int card) {
     int pos = i.read();
     cards[pos] = card;
     i.write(pos+1);
-    printCards(90);
+    printCards();
 }
 
 
@@ -47,6 +45,7 @@ DeckOfCards Table::getCards() {
         deck.addCard(cards[j]);
     }
     i.write(0); //Posicion el puntero al principio
+    return deck;
 }
 
 
@@ -72,9 +71,9 @@ void Table::setNumberOfPlayers(int _numberOfPlayers) {
 }
 
 //Muestro el mazo de cartas que hay en la mesa
-void Table::printCards(int id) {
+void Table::printCards() const {
     int size = i.read();
-     std::cout << "Soy el JUGADOR:" << id << " Y muestro las cartas\n";
+     std::cout << "Soy la mesa y muestro las cartas\n";
      for (int j = 0; j < size ; j++) {
          std::cout << "["<<j<<"]:" << cards[j] <<" ";
      }

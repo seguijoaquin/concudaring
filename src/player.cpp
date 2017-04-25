@@ -33,9 +33,7 @@ void Player::play() {
     table.setNumberOfPlayers(numberOfPlayers);
     int turno = 0;
     while (!noOneWon.read()){
-
         this->myDeckOfCards.print();
-
         if (itIsMyTurn(turno)) {
             std::cout << "Soy el jugador ["<<id<<"] y  es mi turno\n";
             //sleep(2); //TODO: ACORDARSE DE SACARLO
@@ -85,7 +83,6 @@ int Player::increaseTurn(int turn) {
 
 void Player::checkCardsAndPerformAction() {
     Table& table = Table::getInstance();
-
     DeckOfCards lastTwoCards = table.getLastTwoCards();
     lastTwoCards.print();
     int idLoser;

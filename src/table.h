@@ -20,12 +20,12 @@ private:
     void operator=(const Table& table);
     ~Table();
     void createSemaforo();
+    void printCards() const ;
 public:
     static Table& getInstance();
     void putCard(int card);
     void putHand(int id);
     int  getIdLoser();
-    void printCards(int id);
     DeckOfCards getLastTwoCards();
     DeckOfCards getCards();
     void setNumberOfPlayers(int _numberOfPlayers);
