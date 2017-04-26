@@ -8,8 +8,7 @@
 Concudaring::Concudaring(int numberPlayers) {
     configureCreator(numberPlayers);
     std::vector<DeckOfCards> decks = creator.getDeckOfCards();
-    thereIsCard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
-    thereIsCard.inicializar(numberPlayers);
+
     createPlayers(numberPlayers,decks);
 }
 
@@ -19,13 +18,14 @@ void Concudaring::configureCreator(int numberPlayers){
     creator.setNumberOfPlayers(numberPlayers); //seteo cantidad de jugadores
 }
 
+
 void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& decks){
 
     //TODO: PUEDE IR EN OTRA FUNCION DE CREAR SEMAFOROS
     Semaforo endOfTurnGathering(FILE_CONCUDARING,KEY_SEM_END_OF_TURN_GATHERING);
     endOfTurnGathering.inicializar(numberPlayers);
-    //Semaforo thereIsCard(nombre,'t');
-    //thereIsCard.inicializar(numberPlayers);
+    thereIsCard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
+    thereIsCard.inicializar(numberPlayers);
     Semaforo writeIdLosser(FILE_CONCUDARING,KEY_SEM_WRITE_LOSER);
     writeIdLosser.inicializar(1);
     Semaforo readIdLosser(FILE_CONCUDARING,KEY_SEM_READ_LOSER);

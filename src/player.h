@@ -10,6 +10,8 @@
 #include "table.h"
 #include "utils/logger/logger.h"
 #include "utils/logger/mensajes.h"
+#include "utils/FifoEscritura.h"
+#include "utils/FifoLectura.h"
 
 class Player {
 private:
@@ -20,6 +22,8 @@ private:
     DeckOfCards myDeckOfCards;
     SharedMemory<Game_t> sharedMemory;
     SharedMemory<bool> noOneWon;
+
+
 
 public:
     Player(int _id,int _numberOfPlayers);

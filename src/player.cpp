@@ -11,6 +11,9 @@ Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfP
     endOfTurnGathering = Semaforo(FILE_CONCUDARING,KEY_SEM_END_OF_TURN_GATHERING);
     waitForACard = Semaforo(FILE_CONCUDARING,KEY_SEM_WAIT_FOR_A_CARD);
     noOneWon.create(FILE_CONCUDARING,KEY_MEM_NO_ONE_WON,1);
+
+
+
     //noOneWon.write(false);
 }
 Player::~Player(){
@@ -29,6 +32,7 @@ bool Player::checkWinner() const {
 
 
 void Player::play() {
+
     Table& table = Table::getInstance();
     table.setNumberOfPlayers(numberOfPlayers);
     int turno = 0;

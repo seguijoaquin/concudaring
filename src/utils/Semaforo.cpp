@@ -80,15 +80,5 @@ void Semaforo :: eliminar () {
 }
 
 void Semaforo::barrier() {
-
-    struct sembuf operaciones[2];
-    operaciones[0].sem_num = 0; // numero de semaforo
-    operaciones[0].sem_op = -1; // restar 1 al semaforo
-
-    operaciones[1].sem_num = 0; // numero de semaforo
-    operaciones[1].sem_op = 0; // restar 1 al semaforo
-
-    int resultado = semop ( this->id,operaciones,1 );
-
-    this->signal();
+    this->add(0);
 }
