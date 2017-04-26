@@ -41,13 +41,25 @@ static const struct option longOpts[] = {
   { NULL, no_argument, NULL, 0 }
 };
 
-
 int main(int argc, char** argv) {
+
+  __pid_t pid_main = getpid();
+
+  Semaforo thereIsCard(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
+  Semaforo endOfTurnGathering(FILE_CONCUDARING,KEY_SEM_END_OF_TURN_GATHERING);
+  Semaforo writeIdLosser(FILE_CONCUDARING,KEY_SEM_WRITE_LOSER);
+  Semaforo readIdLosser(FILE_CONCUDARING,KEY_SEM_READ_LOSER);
+  thereIsCard.inicializar(0);
+  endOfTurnGathering.inicializar(0);
+  writeIdLosser.inicializar(1);
+  readIdLosser.inicializar(0);
 
   if (createTmpFile()) {
     SharedMemory<Game_t> sharedMemory;
     int memState = sharedMemory.create(FILE_CONCUDARING,KEY_MEMORY,2);
     if (memState == SHM_OK) {
+
+
       Logger::getInstance()->insert(KEY_GAME, MENSAJE_INICIO_JUEGO);
 
       int opt = 0;
@@ -57,9 +69,10 @@ int main(int argc, char** argv) {
       while (opt != -1) {
         switch (opt) {
           case 'p': {
-            if (atoi(optarg) >= 4) {
+            int numberPlayers = atoi(optarg);
+            if (numberPlayers >= 4) {
               Logger::getInstance()->insert(KEY_GAME,MENSAJE_CANTIDAD_JUGADORES,atoi(optarg));
-              Concudaring concudaring(atoi(optarg));
+              Concudaring concudaring(numberPlayers);
             } else {
               printMinPlayersError();
             }
@@ -76,6 +89,8 @@ int main(int argc, char** argv) {
         }
         break;
       }
+
+
     } else {
       //ERROR AL INICIALIZAR MEMORIA COMPARTIDA
       Logger::getInstance()->insert(KEY_ERROR, ERROR_INICIO_MEMORIA);
@@ -85,5 +100,12 @@ int main(int argc, char** argv) {
     Logger::getInstance()->insert(KEY_ERROR, ERROR_CREACION_TMP_FILE);
     //ERROR AL QUERER CREAR ARCHIVO TEMPORAL PARA FTOK
   }
-  Logger::getInstance()->insert(KEY_GAME, MENSAJE_FIN_JUEGO);
+  if (pid_main == getpid()) {
+    //Libero recursos
+    thereIsCard.eliminar();
+    endOfTurnGathering.eliminar();
+    writeIdLosser.eliminar();
+    readIdLosser.eliminar();
+    Logger::getInstance()->insert(KEY_GAME, MENSAJE_FIN_JUEGO);
+  }
 }

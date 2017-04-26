@@ -33,6 +33,7 @@ void Table::putCard(int card) {
     cards[pos] = card;
     i.write(pos+1);
     printCards();
+    thereIsCard.add(numberOfPlayers);
 }
 
 
@@ -50,8 +51,7 @@ DeckOfCards Table::getCards() {
 
 //Devuelvo las 2 ultimas cartas que se encuentran en la mesa
 DeckOfCards Table::getLastTwoCards(){
-
-    thereIsCard.barrier();
+    thereIsCard.wait();
     DeckOfCards deck;
     int lastPosition = i.read() -1;
     //std::cout << "lastPOsition:" <<lastPosition << "i:["<< i.read()<<"]\n";
@@ -87,7 +87,11 @@ void Table::putHand(int id) {
 }
 
 int Table::getIdLoser() {
-    readIdLosser.barrier();
+    if (readIdLosser.numberOfProcessesWaiting() == numberOfPlayers -1){
+        readIdLosser.add(numberOfPlayers-1);
+    }else{
+        readIdLosser.wait();
+    }
     return idHand.read();
 }
 

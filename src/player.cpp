@@ -9,7 +9,6 @@
 
 Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfPlayers){
     endOfTurnGathering = Semaforo(FILE_CONCUDARING,KEY_SEM_END_OF_TURN_GATHERING);
-    waitForACard = Semaforo(FILE_CONCUDARING,KEY_SEM_WAIT_FOR_A_CARD);
     noOneWon.create(FILE_CONCUDARING,KEY_MEM_NO_ONE_WON,1);
     //noOneWon.write(false);
 }
@@ -22,11 +21,6 @@ void Player::present() const {
     //std::cout << "Mi id es:"<< id << std::endl;
 }
 
-bool Player::checkWinner() const {
-  Game_t game = this->sharedMemory.read();
-  return game.gameFinished;
-}
-
 
 void Player::play() {
     Table& table = Table::getInstance();
@@ -35,31 +29,27 @@ void Player::play() {
     while (!noOneWon.read()){
         this->myDeckOfCards.print();
         if (itIsMyTurn(turno)) {
-            Logger::getInstance()->insert(KEY_PLAYER,MSJ_ES_MI_TURNO);
+            Logger::getInstance()->insert(KEY_PLAYER,MSJ_ES_MI_TURNO,id);
             int card = myDeckOfCards.getCard();
             Logger::getInstance()->insert(KEY_PLAYER,MSJ_PONIENDO_CARTA,card);
             table.putCard(card);
             //std::cout << "Soy el jugador ["<<id<<"] y  mi mazo es: \n";
         }
         //En este deck SOLO obtengo las 2 ultima cartas de la mesa
-        Logger::getInstance()->insert(KEY_PLAYER,MSJ_ESPERANDO_VER_CARTA);
+        Logger::getInstance()->insert(KEY_PLAYER,MSJ_ESPERANDO_VER_CARTA,id);
 
         checkCardsAndPerformAction();
-        Logger::getInstance()->insert(KEY_PLAYER,MSJ_VIENDO_CARTA);
+        Logger::getInstance()->insert(KEY_PLAYER,MSJ_VIENDO_CARTA,id);
 
         if (itIsMyTurn(turno)){
-            Logger::getInstance()->insert(KEY_PLAYER,MSJ_VERIFICO_SI_GANE);
+            Logger::getInstance()->insert(KEY_PLAYER,MSJ_VERIFICO_SI_GANE,id);
             if (myDeckOfCards.isEmpty()){
                 noOneWon.write(true);
             }
         }
 
-        Logger::getInstance()->insert(KEY_PLAYER,MSJ_INCREMENTO_TURNO);
+        Logger::getInstance()->insert(KEY_PLAYER,MSJ_INCREMENTO_TURNO,id);
         turno = increaseTurn(turno);
-
-        //TODO: BORRAR es para hacer clear screen despues de cada turno
-        if (itIsMyTurn(turno))
-            std::cout << std::string( 20, '\n' );
     }
 }
 
@@ -73,9 +63,12 @@ void Player::setDeckOfCards(DeckOfCards& deck) {
 }
 
 int Player::increaseTurn(int turn) {
-    endOfTurnGathering.barrier();
+    if ( endOfTurnGathering.numberOfProcessesWaiting() == numberOfPlayers -1){
+        endOfTurnGathering.add(numberOfPlayers -1);
+    } else {
+          endOfTurnGathering.wait();
+    }
     return turn + 1;
-
 }
 
 void Player::checkCardsAndPerformAction() {
@@ -86,9 +79,9 @@ void Player::checkCardsAndPerformAction() {
 
     //TODO: CUANDO FUNCIONE REFACTORIZAR
     if (lastTwoCards.theCardsAreSame() or lastTwoCards.at() == 7){
-        Logger::getInstance()->insert(KEY_PLAYER,MSJ_PONGO_MANO);
+        Logger::getInstance()->insert(KEY_PLAYER,MSJ_PONGO_MANO,id);
         table.putHand(id);
-        Logger::getInstance()->insert(KEY_PLAYER,MSJ_VERIFICO_PERDEDOR);
+        Logger::getInstance()->insert(KEY_PLAYER,MSJ_VERIFICO_PERDEDOR,id);
         idLoser = table.getIdLoser();
         //Si perdí
         if (idLoser == id){
@@ -96,7 +89,7 @@ void Player::checkCardsAndPerformAction() {
             DeckOfCards deck = table.getCards();
             //myDeckOfCards = myDeckOfCards + deck;
             //myDeckOfCards.addDeck(deck);
-            Logger::getInstance()->insert(KEY_PLAYER,MSJ_TOME_CARTAS_DE_MESA);
+            Logger::getInstance()->insert(KEY_PLAYER,MSJ_TOME_CARTAS_DE_MESA,id);
         }
     } else if(lastTwoCards.at() == 10){
         //TODO: BUenos dias seniorita

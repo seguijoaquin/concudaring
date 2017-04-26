@@ -14,11 +14,9 @@
 class Player {
 private:
     const int id;
-    Semaforo waitForACard;
     const int numberOfPlayers;
     Semaforo endOfTurnGathering;
     DeckOfCards myDeckOfCards;
-    SharedMemory<Game_t> sharedMemory;
     SharedMemory<bool> noOneWon;
 
 public:
