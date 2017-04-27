@@ -43,7 +43,7 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
           Player player(i,numberPlayers);
           player.setDeckOfCards(deck);
           player.play();
-          return; //Debo salir del for una vez que soy el hijo
+          exit(0); //Debo salir del for una vez que soy el hijo
         } else {
             childIds.push_back(pid);
         }

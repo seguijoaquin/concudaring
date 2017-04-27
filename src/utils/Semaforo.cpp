@@ -83,4 +83,5 @@ void Semaforo::barrier() {
     std::cout << "entro al barrier\n";
     this->add(0);
     std::cout << "salgo del barrier\n";
+    std::cout << "El valor del semaforo es:" << semctl(id,0,GETVAL)<< "\n";
 }
