@@ -12,18 +12,18 @@
 #include "utils/logger/mensajes.h"
 #include "utils/FifoEscritura.h"
 #include "utils/FifoLectura.h"
+#include "CommunicationChannel.h"
 
 class Player {
 private:
     const int id;
-    Semaforo waitForACard;
     const int numberOfPlayers;
     Semaforo endOfTurnGathering;
     DeckOfCards myDeckOfCards;
     SharedMemory<Game_t> sharedMemory;
     SharedMemory<bool> noOneWon;
 
-
+    CommunicationChannel communicationChannel;
 
 public:
     Player(int _id,int _numberOfPlayers);

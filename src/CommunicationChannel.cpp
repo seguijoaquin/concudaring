@@ -23,6 +23,9 @@ CommunicationChannel::CommunicationChannel(int numberOfProcesses, int _id):id(_i
         }
     }
 }
+CommunicationChannel::CommunicationChannel() {
+
+}
 
 
 
@@ -56,7 +59,6 @@ int CommunicationChannel::sendToAll(std::string data) {
 std::string CommunicationChannel::receive(int length) {
     char buffer[BUFFSIZE];
     ssize_t bytes_readed =  myReadFifo.leer( buffer,length);
-    std::cout << "numero de bytes leidos: " << bytes_readed<< std::endl;
 
     std::string message(buffer);
     message.resize(bytes_readed);

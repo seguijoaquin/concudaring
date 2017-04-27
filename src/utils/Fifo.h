@@ -9,6 +9,7 @@
 
 class Fifo {
 public:
+	Fifo();
 	Fifo(const std::string nombre);
 	virtual ~Fifo();
 	virtual void abrir() = 0;

@@ -94,3 +94,7 @@ int Table::getIdLoser() {
 Table::~Table(){
   //std::cout << "Destruyendo una mesa con process id:" <<getpid()<< std::endl;
 }
+
+void Table::eliminar() {
+    this->writeIdLosser.eliminar();
+}

@@ -13,3 +13,6 @@ void FifoEscritura::abrir() {
 ssize_t FifoEscritura::escribir(const void* buffer,const ssize_t buffsize) const {
 	return write ( fd,buffer,buffsize );
 }
+
+FifoEscritura::FifoEscritura() {
+}

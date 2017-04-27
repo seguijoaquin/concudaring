@@ -9,6 +9,7 @@
 void printOnError(int status, const char *message) {
     //TODO: Agregar logger
     if( status == -1 ){
+        std::cout <<"errno: "<< errno << std::endl;
         perror(message);
     }
 }
@@ -47,10 +48,9 @@ int Semaforo :: wait() {
     struct sembuf operacion;
     operacion.sem_num = 0; // numero de semaforo
     operacion.sem_op = -1; // restar 1 al semaforo
-    //operacion.sem_flg = SEM_UNDO;
 
     int resultado = semop ( this->id,&operacion,1 );
-    printOnError(resultado, "Error inicializar semaforo semctl");
+    printOnError(resultado, "Error Semaforo wait()");
     //TODO: chequear
     return resultado;
 }
@@ -59,14 +59,14 @@ int Semaforo :: signal() {
     return add(1);
 }
 
-int Semaforo :: add (int value) {
+int Semaforo :: add (short value) {
 
     struct sembuf operacion;
     operacion.sem_num = 0; // numero de semaforo
     operacion.sem_op = value; // sumar value al semaforo
 
     int resultado = semop ( this->id,&operacion,1 );
-    printOnError(resultado, "Error inicializar semaforo semctl");
+    printOnError(resultado, "Error Semaforo add()");
     //TODO: chequear
 
     return resultado;
@@ -80,5 +80,7 @@ void Semaforo :: eliminar () {
 }
 
 void Semaforo::barrier() {
+    std::cout << "entro al barrier\n";
     this->add(0);
+    std::cout << "salgo del barrier\n";
 }

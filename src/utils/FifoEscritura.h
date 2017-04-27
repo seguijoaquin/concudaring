@@ -5,6 +5,7 @@
 
 class FifoEscritura : public Fifo {
 public:
+	FifoEscritura();
 	FifoEscritura(const std::string nombre);
 	~FifoEscritura();
 

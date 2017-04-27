@@ -13,3 +13,7 @@ void FifoLectura::abrir() {
 ssize_t FifoLectura::leer(void* buffer,const ssize_t buffsize) const {
 	return read ( fd,buffer,buffsize );
 }
+
+FifoLectura::FifoLectura() {
+
+}

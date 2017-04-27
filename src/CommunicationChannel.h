@@ -7,8 +7,8 @@
 
 
 #include <vector>
-#include "FifoEscritura.h"
-#include "FifoLectura.h"
+#include "utils/FifoEscritura.h"
+#include "utils/FifoLectura.h"
 
 class CommunicationChannel {
 private:
@@ -19,6 +19,7 @@ private:
 public:
 
     CommunicationChannel(int numberOfProcesses,int id);
+    CommunicationChannel();
     ~CommunicationChannel();
     void cerrar();
     void eliminar();

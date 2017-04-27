@@ -9,11 +9,8 @@
 
 Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfPlayers){
     endOfTurnGathering = Semaforo(FILE_CONCUDARING,KEY_SEM_END_OF_TURN_GATHERING);
-    waitForACard = Semaforo(FILE_CONCUDARING,KEY_SEM_WAIT_FOR_A_CARD);
     noOneWon.create(FILE_CONCUDARING,KEY_MEM_NO_ONE_WON,1);
-
-
-
+    communicationChannel = CommunicationChannel(numberOfPlayers,id);
     //noOneWon.write(false);
 }
 Player::~Player(){
@@ -36,8 +33,24 @@ void Player::play() {
     Table& table = Table::getInstance();
     table.setNumberOfPlayers(numberOfPlayers);
     int turno = 0;
-    while (!noOneWon.read()){
-        this->myDeckOfCards.print();
+    while (turno < 3 ) {
+
+
+        if (itIsMyTurn(turno)){
+            std::cout << id << ": es mi turno\n";
+            endOfTurnGathering.barrier();
+            communicationChannel.sendToAll("hola");
+            endOfTurnGathering.add(numberOfPlayers -1);
+
+        } else {
+            std::cout << id << ": NO es mi turno\n";
+            endOfTurnGathering.wait();
+            communicationChannel.receive(4);
+        }
+        turno++;
+        //std::cout << id << ": al siguiente turno\n";
+
+        /*this->myDeckOfCards.print();
         if (itIsMyTurn(turno)) {
             Logger::getInstance()->insert(KEY_PLAYER,MSJ_ES_MI_TURNO);
             int card = myDeckOfCards.getCard();
@@ -59,12 +72,15 @@ void Player::play() {
         }
 
         Logger::getInstance()->insert(KEY_PLAYER,MSJ_INCREMENTO_TURNO);
-        turno = increaseTurn(turno);
+        turno = increaseTurn(turno);*/
 
         //TODO: BORRAR es para hacer clear screen despues de cada turno
-        if (itIsMyTurn(turno))
-            std::cout << std::string( 20, '\n' );
+        //if (itIsMyTurn(turno))
+         //   std::cout << std::string( 20, '\n' );
     }
+    communicationChannel.cerrar();
+    communicationChannel.eliminar();
+
 }
 
 bool Player::itIsMyTurn(int turnNumber) const {
@@ -77,7 +93,7 @@ void Player::setDeckOfCards(DeckOfCards& deck) {
 }
 
 int Player::increaseTurn(int turn) {
-    endOfTurnGathering.barrier();
+    //endOfTurnGathering.barrier();
     return turn + 1;
 
 }

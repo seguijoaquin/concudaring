@@ -23,7 +23,7 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
 
     //TODO: PUEDE IR EN OTRA FUNCION DE CREAR SEMAFOROS
     Semaforo endOfTurnGathering(FILE_CONCUDARING,KEY_SEM_END_OF_TURN_GATHERING);
-    endOfTurnGathering.inicializar(numberPlayers);
+    endOfTurnGathering.inicializar(numberPlayers - 1);
     thereIsCard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
     thereIsCard.inicializar(numberPlayers);
     Semaforo writeIdLosser(FILE_CONCUDARING,KEY_SEM_WRITE_LOSER);
@@ -31,6 +31,7 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
     Semaforo readIdLosser(FILE_CONCUDARING,KEY_SEM_READ_LOSER);
     readIdLosser.inicializar(numberPlayers);
 
+    std::vector<pid_t> childIds;
     pid_t pid_padre = getpid();
     pid_t pid = 0;
 
@@ -42,14 +43,16 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
           Player player(i,numberPlayers);
           player.setDeckOfCards(deck);
           player.play();
-          break; //Debo salir del for una vez que soy el hijo
+          return; //Debo salir del for una vez que soy el hijo
+        } else {
+            childIds.push_back(pid);
         }
     }
 
     //Si soy el padre entonces espero a mis hijos y libero los recursos
     if (pid_padre == getpid()) {
       for (int j = 0; j <  numberPlayers; ++j) {
-        wait(NULL);
+        waitpid(childIds[j],NULL,0);
       }
       std::cout << "eliminando semafotos\n" ;
       thereIsCard.eliminar();

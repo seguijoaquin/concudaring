@@ -30,6 +30,7 @@ public:
     DeckOfCards getLastTwoCards();
     DeckOfCards getCards();
     void setNumberOfPlayers(int _numberOfPlayers);
+    void eliminar();
 };
 
 

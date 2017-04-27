@@ -18,7 +18,7 @@ public:
     int wait(); // decrementa
     int signal(); // incrementa
     void eliminar ();
-    int add(int value); //incrementa en value
+    int add(short value); //incrementa en value
     void barrier();
 
 };
