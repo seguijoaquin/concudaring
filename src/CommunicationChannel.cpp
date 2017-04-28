@@ -17,6 +17,8 @@ CommunicationChannel::CommunicationChannel(int numberOfProcesses, int _id):id(_i
             writeFifos.push_back(FifoEscritura(aux));
             writeFifos[i].abrir();
         } else{
+            //pusheo un FIFO de juguete para poder manejarlos segun el id en caso de ser necesario
+            //es decir si quiero escribir en el fifo del que tiene id 10 hago writeFifos[10].escribir
             writeFifos.push_back(FifoEscritura());
             myReadFifo= FifoLectura(aux);
             myReadFifo.abrir();
@@ -44,6 +46,7 @@ void CommunicationChannel::eliminar() {
 int CommunicationChannel::sendToAll(std::string data) {
     for (int i = 0; i < writeFifos.size() ; ++i) {
         if (i != id){
+            //Creo un nuevo proceso para que no se bloquee al escribir el proceso principal.
             int pid = fork();
             if (pid == 0 ){
                 writeFifos[i].escribir( static_cast<const void*> (data.c_str()),data.length());

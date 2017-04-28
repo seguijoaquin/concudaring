@@ -10,7 +10,7 @@ Table::Table(){
     cards.create(NOMBRE,'c',40);
     i.create(NOMBRE2,'i',1);
     idHand.create(NOMBRE,'d',1);  //acá es donde se pone los id de los jugadores, a medida que pone las mano.
-    //numberOfPlayersPutHand.create(NOMBRE,'n',1);
+    numberOfPlayersPutHand.create(FILE_CONCUDARING,'n',1);
     createSemaforo();
 }
 
@@ -33,6 +33,7 @@ void Table::putCard(int card) {
     cards[pos] = card;
     i.write(pos+1);
     printCards();
+    thereIsCard.add(numberOfPlayers);
 }
 
 
@@ -50,14 +51,11 @@ DeckOfCards Table::getCards() {
 
 //Devuelvo las 2 ultimas cartas que se encuentran en la mesa
 DeckOfCards Table::getLastTwoCards(){
-
-    thereIsCard.barrier();
+    thereIsCard.wait();
     DeckOfCards deck;
     int lastPosition = i.read() -1;
-    //std::cout << "lastPOsition:" <<lastPosition << "i:["<< i.read()<<"]\n";
     deck.addCard(cards[lastPosition]);
     if (lastPosition == 0){
-        //std::cout << "lastposicion es 0";
         return deck;
     }
     deck.addCard(cards[lastPosition-1]);
@@ -83,18 +81,22 @@ void Table::printCards() const {
 void Table::putHand(int id) {
     writeIdLosser.wait();
     idHand.write(id);
+    int aux = numberOfPlayersPutHand.read() + 1;
+    numberOfPlayersPutHand.write(aux);
     writeIdLosser.signal();
 }
 
 int Table::getIdLoser() {
-    readIdLosser.barrier();
-    return idHand.read();
+    int result = -1;
+    writeIdLosser.wait();
+    if (numberOfPlayersPutHand.read() == numberOfPlayers){
+        result = idHand.read();
+    }
+    writeIdLosser.signal();
+    return result;
 }
 
 Table::~Table(){
   //std::cout << "Destruyendo una mesa con process id:" <<getpid()<< std::endl;
 }
 
-void Table::eliminar() {
-    this->writeIdLosser.eliminar();
-}

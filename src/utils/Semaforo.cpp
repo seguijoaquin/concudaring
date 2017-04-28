@@ -48,7 +48,7 @@ int Semaforo :: wait() {
     struct sembuf operacion;
     operacion.sem_num = 0; // numero de semaforo
     operacion.sem_op = -1; // restar 1 al semaforo
-
+    operacion.sem_flg = 0;
     int resultado = semop ( this->id,&operacion,1 );
     printOnError(resultado, "Error Semaforo wait()");
     //TODO: chequear
@@ -64,7 +64,7 @@ int Semaforo :: add (short value) {
     struct sembuf operacion;
     operacion.sem_num = 0; // numero de semaforo
     operacion.sem_op = value; // sumar value al semaforo
-
+    operacion.sem_flg = 0;
     int resultado = semop ( this->id,&operacion,1 );
     printOnError(resultado, "Error Semaforo add()");
     //TODO: chequear
@@ -83,5 +83,5 @@ void Semaforo::barrier() {
     std::cout << "entro al barrier\n";
     this->add(0);
     std::cout << "salgo del barrier\n";
-    std::cout << "El valor del semaforo es:" << semctl(id,0,GETVAL)<< "\n";
+    //std::cout << "El valor del semaforo es:" << semctl(id,0,GETVAL)<< "\n";
 }

@@ -29,28 +29,12 @@ bool Player::checkWinner() const {
 
 
 void Player::play() {
-
     Table& table = Table::getInstance();
     table.setNumberOfPlayers(numberOfPlayers);
     int turno = 0;
     while (turno < 3 ) {
 
-
-        if (itIsMyTurn(turno)){
-            std::cout << id << ": es mi turno\n";
-            endOfTurnGathering.barrier();
-            communicationChannel.sendToAll("hola");
-            endOfTurnGathering.add(numberOfPlayers -1);
-
-        } else {
-            std::cout << id << ": NO es mi turno\n";
-            endOfTurnGathering.wait();
-            communicationChannel.receive(4);
-        }
-        turno++;
-        //std::cout << id << ": al siguiente turno\n";
-
-        /*this->myDeckOfCards.print();
+        this->myDeckOfCards.print();
         if (itIsMyTurn(turno)) {
             Logger::getInstance()->insert(KEY_PLAYER,MSJ_ES_MI_TURNO);
             int card = myDeckOfCards.getCard();
@@ -72,11 +56,16 @@ void Player::play() {
         }
 
         Logger::getInstance()->insert(KEY_PLAYER,MSJ_INCREMENTO_TURNO);
-        turno = increaseTurn(turno);*/
+        //turno = increaseTurn(turno);
 
         //TODO: BORRAR es para hacer clear screen despues de cada turno
         //if (itIsMyTurn(turno))
          //   std::cout << std::string( 20, '\n' );
+        communicationChannel.sendToAll("hola");
+        for (int i = 0; i < numberOfPlayers - 1 ; ++i) {
+            communicationChannel.receive(4);
+        }
+        turno++;
     }
     communicationChannel.cerrar();
     communicationChannel.eliminar();

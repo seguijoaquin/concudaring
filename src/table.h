@@ -22,6 +22,7 @@ private:
     ~Table();
     void createSemaforo();
     void printCards() const ;
+    SharedMemory<int> numberOfPlayersPutHand;
 public:
     static Table& getInstance();
     void putCard(int card);
@@ -31,6 +32,8 @@ public:
     DeckOfCards getCards();
     void setNumberOfPlayers(int _numberOfPlayers);
     void eliminar();
+
+
 };
 
 

@@ -25,11 +25,15 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
     Semaforo endOfTurnGathering(FILE_CONCUDARING,KEY_SEM_END_OF_TURN_GATHERING);
     endOfTurnGathering.inicializar(numberPlayers - 1);
     thereIsCard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
-    thereIsCard.inicializar(numberPlayers);
+    thereIsCard.inicializar(0);
     Semaforo writeIdLosser(FILE_CONCUDARING,KEY_SEM_WRITE_LOSER);
     writeIdLosser.inicializar(1);
     Semaforo readIdLosser(FILE_CONCUDARING,KEY_SEM_READ_LOSER);
     readIdLosser.inicializar(numberPlayers);
+    SharedMemory<int> numberOfPlayersPutHand;
+    numberOfPlayersPutHand.create(FILE_CONCUDARING,'n',1);
+    int initialValue =0;
+    numberOfPlayersPutHand.write(initialValue);
 
     std::vector<pid_t> childIds;
     pid_t pid_padre = getpid();
