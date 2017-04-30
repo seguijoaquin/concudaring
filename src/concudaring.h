@@ -14,14 +14,19 @@ class Concudaring {
     Semaforo thereIsCard;
     Semaforo readIdLoser;
     Semaforo writeIdLoser;
+    Semaforo gatheringPoint;
     void createSemaphores(int numberOfPlayers);
     void freeSemaphores();
     void createSharedMemories();
+
 
 public:
     Concudaring(int numberPlayers);
     ~Concudaring();
     void start();
+
+
+
 };
 
 

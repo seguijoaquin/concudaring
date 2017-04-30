@@ -61,15 +61,18 @@ void Concudaring::createSemaphores(int numberOfPlayers) {
     thereIsCard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
     writeIdLoser = Semaforo(FILE_CONCUDARING,KEY_SEM_WRITE_LOSER);
     readIdLoser = Semaforo(FILE_CONCUDARING,KEY_SEM_READ_LOSER);
+    gatheringPoint = Semaforo(FILE_CONCUDARING,'g');
     writeIdLoser.inicializar(1);
     thereIsCard.inicializar(0);
     readIdLoser.inicializar(numberOfPlayers);
+    gatheringPoint.inicializar(numberOfPlayers);
 }
 
 void Concudaring::freeSemaphores() {
     thereIsCard.eliminar();
     writeIdLoser.eliminar();
     readIdLoser.eliminar();
+    gatheringPoint.eliminar();
 }
 
 void Concudaring::createSharedMemories() {

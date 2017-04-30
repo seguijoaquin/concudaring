@@ -61,6 +61,7 @@ void Logger::insert(std::string key, std::string value, int param) {
     Logger::insert(key, log.str());
 }
 
+
 void Logger::insert(std::string key, std::string value) {
     if (ioFile.is_open()) {
 

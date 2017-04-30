@@ -10,21 +10,27 @@
 #include "utils/FifoEscritura.h"
 #include "utils/FifoLectura.h"
 
+typedef struct MSG {
+    int32_t id;
+    std::string message;
+}MSG_t;
+
+
 class CommunicationChannel {
 private:
     std::vector<FifoEscritura> writeFifos;
     FifoLectura myReadFifo;
-    int id;
+    int32_t id;
     static const int BUFFSIZE = 100;
 public:
 
-    CommunicationChannel(int numberOfProcesses,int id);
+    CommunicationChannel(std::string nombre, int numberOfProcesses,int id);
     CommunicationChannel();
     ~CommunicationChannel();
     void cerrar();
     void eliminar();
     int sendToAll(std::string data);
-    std::string receive(int length);
+    MSG_t receive(ssize_t length);
 };
 
 

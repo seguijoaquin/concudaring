@@ -27,5 +27,7 @@
 #define MSJ_VERIFICO_PERDEDOR "Veo quien perdio. Soy: "
 #define MSJ_PERDI "Soy el perdedor. Soy: "
 #define MSJ_TOME_CARTAS_DE_MESA "Tome todas las cartas de la mesa. Soy: "
+#define MSJ_GANE_Y_LE_AVISO_A_LOS_DEMAS "Gane! Y le aviso a los demas. Soy:"
+#define MSJ_OTRO_JUGADOR_GANO "Gano el jugador: "
 
 #endif //RESTORRENTE_MENSAJES_H

@@ -8,9 +8,7 @@ DeckOfCards::DeckOfCards() {}
 DeckOfCards::~DeckOfCards() {}
 
 
-
-
-void DeckOfCards::addCard(int card){
+void DeckOfCards::addCard (int card) {
     cards.push_back(card);
 }
 
@@ -42,7 +40,7 @@ bool DeckOfCards::isEmpty() {
 bool DeckOfCards::theCardsAreSame() {
     if (cards.size() == 1){
         return false;
-    }else{
+    } else {
         return (cards[0] == cards[1]);
     }
 }

@@ -19,8 +19,11 @@ private:
     const int id;
     const int numberOfPlayers;
     DeckOfCards myDeckOfCards;
+    Semaforo thereIsACard;
+    Semaforo gatheringPoint;
 
     CommunicationChannel communicationChannel;
+    CommunicationChannel specialCardActions;
 
 public:
     Player(int _id,int _numberOfPlayers);
@@ -30,11 +33,14 @@ public:
     void play();
     void setDeckOfCards(DeckOfCards& deck);
     bool itIsMyTurn(int turnNumber) const;
-    bool checkWinner();
-
-    void checkCardsAndPerformAction();
-
+    void checkCardsAndPerformAction(int turno);
     bool thereIsAWinner();
+    void waitUntilTheOtherPlayersSaid(std::string message);
+    void gather();
+    void sayOrDoSomethingAndWaitForTheRestToDoTheSame(std::string messageOrAction);
+    void freeCommunicationChannels();
+
+
 };
 
 
