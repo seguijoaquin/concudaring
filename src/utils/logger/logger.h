@@ -34,6 +34,7 @@ public:
     void warn(std::string message);
     void error(std::string message);
     void insert(std::string key, std::string value, int param);
+    void insert(std::string key, std::string value, int param1, int param2);
     void insert(std::string key, std::string value);
     virtual ~Logger();
 };
