@@ -55,6 +55,10 @@ int main(int argc, char** argv) {
   writeIdLosser.inicializar(1);
   readIdLosser.inicializar(0);*/
 
+  //Solo para borrar en cada arranque el archivo log.
+  system("chmod +x deleteFile.sh");
+  system("./deleteFile.sh");
+
   if (createTmpFile()) {
     SharedMemory<Game_t> sharedMemory;
     int memState = sharedMemory.create(FILE_CONCUDARING,KEY_MEMORY,2);
