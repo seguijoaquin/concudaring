@@ -32,6 +32,7 @@ void Table::putCard(int card) {
     int pos = i.read();
     cards[pos] = card;
     i.write(pos+1);
+    //TODO: Acordarse de borrarlo
     //printCards();
     thereIsCard.add(numberOfPlayers);
 }
@@ -100,5 +101,4 @@ int Table::getIdLoser() {
 }
 
 Table::~Table(){
-  //std::cout << "Destruyendo una mesa con process id:" <<getpid()<< std::endl;
 }

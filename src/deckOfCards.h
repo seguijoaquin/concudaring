@@ -11,12 +11,15 @@ public:
     ~DeckOfCards();
     void addDeck(DeckOfCards anotherDeck);
     DeckOfCards& operator=(DeckOfCards anotherDeck);
+    DeckOfCards& operator+(DeckOfCards anotherDeck);
     void addCard(int card);
     void print();
     bool isEmpty();
     int at() const;
     bool theCardsAreSame();
     int getCard();
+
+    int amountOfCards();
 };
 
 

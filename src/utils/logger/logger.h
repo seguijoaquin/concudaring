@@ -18,6 +18,8 @@
 #define KEY_JUDGE "Juez"
 #define KEY_SEMAPHORE "Semaforo"
 
+const std::string TURN_KEY("Turno");
+
 class Logger {
 
 private:
@@ -33,9 +35,9 @@ public:
     void info(std::string message);
     void warn(std::string message);
     void error(std::string message);
-    void insert(std::string key, int id ,std::string value,int param);
     void insert(std::string key, std::string value, int param);
-    void insert(std::string key,int id,std::string value);
+    void insert(std::string key,int id, int turn,std::string value);
+    void insert(std::string key,int id, int turn,std::string value,int param);
     void insert(std::string key, std::string value);
     virtual ~Logger();
 

@@ -17,6 +17,9 @@
 const std::string BUENOS_DIAS_SENIORITA("¡Buenos dias seniorita!");
 const std::string BUENAS_NOCHES_CABALLERO("¡Buenas noches caballero!");
 const std::string SALUDO_MILITAR("¡Saludo militar!");
+const std::string GANE("g");
+const std::string NO_GANE("n");
+const std::string ATREVIDO("¡Atrevido!");
 
 class Player {
 private:

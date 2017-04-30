@@ -26,13 +26,12 @@ void Player::play() {
     table.setNumberOfPlayers(numberOfPlayers);
     do  {
         if (itIsMyTurn(turno)) {
-            Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_ES_MI_TURNO);
+            Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_ES_MI_TURNO);
             int card = myDeckOfCards.getCard();
-            Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_PONIENDO_CARTA,card);
+            Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_PONIENDO_CARTA,card);
             table.putCard(card);
         }
         checkCardsAndPerformAction();
-        turno++;
     } while ( !thereIsAWinner() );
     gather();
     freeCommunicationChannels();
@@ -50,23 +49,28 @@ void Player::setDeckOfCards(DeckOfCards& deck) {
 
 void Player::checkCardsAndPerformAction() {
     Table& table = Table::getInstance();
+    Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_ESPERANDO_VER_CARTA);
     DeckOfCards lastTwoCards = table.getLastTwoCards();
-    Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_ESPERANDO_VER_CARTA,turno);
+
     int idLoser;
-    Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_VIENDO_CARTA);
+
+    Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_VIENDO_CARTA);
     //TODO: CUANDO FUNCIONE REFACTORIZAR
     if (lastTwoCards.theCardsAreSame() or lastTwoCards.at() == 7){
-        Logger::getInstance()->insert(KEY_PLAYER,MSJ_PONGO_MANO,id);
+        Logger::getInstance()->insert(KEY_PLAYER,id,turno,ATREVIDO);
+        specialCardActions.sendToAll(ATREVIDO);
+        Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_PONGO_MANO);
         table.putHand(id);
-        Logger::getInstance()->insert(KEY_PLAYER,MSJ_VERIFICO_PERDEDOR,id);
+        waitUntilTheOtherPlayersSaid(ATREVIDO);
+        Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_VERIFICO_PERDEDOR);
         idLoser = table.getIdLoser();
         //Si perdí
         if (idLoser == id){
-            Logger::getInstance()->insert(KEY_PLAYER,MSJ_PERDI);
+            Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_PERDI);
             DeckOfCards deck = table.getCards();
-            //myDeckOfCards = myDeckOfCards + deck;
-            //myDeckOfCards.addDeck(deck);
-            Logger::getInstance()->insert(KEY_PLAYER,MSJ_TOME_CARTAS_DE_MESA,id);
+            myDeckOfCards = myDeckOfCards + deck;
+            myDeckOfCards.print();
+            Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_TOME_CARTAS_DE_MESA);
         }
     } else if(lastTwoCards.at() == 10){
         sayOrDoSomethingAndWaitForTheRestToDoTheSame(BUENOS_DIAS_SENIORITA);
@@ -77,7 +81,6 @@ void Player::checkCardsAndPerformAction() {
     }
 }
 
-
 //TODO: Ver si es necesario
 void Player:: gather(){
     gatheringPoint.wait();
@@ -87,25 +90,24 @@ void Player:: gather(){
 bool Player::thereIsAWinner() {
     //Aviso a los demas si gane o no
     if (myDeckOfCards.isEmpty()){
-        Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_GANE_Y_LE_AVISO_A_LOS_DEMAS);
-        communicationChannel.sendToAll("g");
+        Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_GANE_Y_LE_AVISO_A_LOS_DEMAS);
+        communicationChannel.sendToAll(GANE);
         return true;
     } else {
-        communicationChannel.sendToAll("n");
+        communicationChannel.sendToAll(NO_GANE);
     }
-    Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_INCREMENTO_TURNO);
+    Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_INCREMENTO_TURNO);
     // Me fijo si alguno de los demas gano
     for (int i = 0; i < numberOfPlayers - 1 ; ++i) {
-        MSG_t data = communicationChannel.receive(1);
-        if(data.message == "g"){
+        MSG_t data = communicationChannel.receive(GANE.size());
+        if(data.message == GANE){
             std::stringstream ss;
             ss << MSJ_OTRO_JUGADOR_GANO << data.id;
-
-            Logger::getInstance()->insert(KEY_PLAYER,id,ss.str());
+            Logger::getInstance()->insert(KEY_PLAYER,id,turno,ss.str());
             return true;
         }
     }
-
+    turno++;
     return false;
 }
 
@@ -117,7 +119,7 @@ void Player::waitUntilTheOtherPlayersSaid(std::string message) {
         MSG_t data = specialCardActions.receive(message.size());
         std::stringstream ss;
         ss << "Recibi: " + data.message + " de: " << data.id;
-        Logger::getInstance()->insert(KEY_PLAYER,id,ss.str());
+        Logger::getInstance()->insert(KEY_PLAYER,id,turno,ss.str());
         if(data.message == message){
             thePlayerSaidTheMessage[data.id] = true;
         }
@@ -134,7 +136,7 @@ void Player::waitUntilTheOtherPlayersSaid(std::string message) {
 }
 
 void Player::sayOrDoSomethingAndWaitForTheRestToDoTheSame(std::string messageOrAction) {
-    Logger::getInstance()->insert(KEY_PLAYER,id,messageOrAction);
+    Logger::getInstance()->insert(KEY_PLAYER,id,turno,messageOrAction);
     specialCardActions.sendToAll(messageOrAction);
     waitUntilTheOtherPlayersSaid(messageOrAction);
 }
