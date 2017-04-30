@@ -12,6 +12,7 @@ Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfP
     thereIsACard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
     communicationChannel = CommunicationChannel("./communicationChannel",numberOfPlayers,id);
     specialCardActions = CommunicationChannel("./specialCardActions", numberOfPlayers,id);
+    turno = 0;
 }
 
 Player::~Player(){
@@ -23,15 +24,14 @@ void Player::present() const {
 void Player::play() {
     Table& table = Table::getInstance();
     table.setNumberOfPlayers(numberOfPlayers);
-    int turno = 0;
     do  {
         if (itIsMyTurn(turno)) {
-            Logger::getInstance()->insert(KEY_PLAYER,MSJ_ES_MI_TURNO,id);
+            Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_ES_MI_TURNO);
             int card = myDeckOfCards.getCard();
-            Logger::getInstance()->insert(KEY_PLAYER,MSJ_PONIENDO_CARTA,card);
+            Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_PONIENDO_CARTA,card);
             table.putCard(card);
         }
-        checkCardsAndPerformAction(turno);
+        checkCardsAndPerformAction();
         turno++;
     } while ( !thereIsAWinner() );
     gather();
@@ -48,12 +48,12 @@ void Player::setDeckOfCards(DeckOfCards& deck) {
 }
 
 
-void Player::checkCardsAndPerformAction(int turno) {
+void Player::checkCardsAndPerformAction() {
     Table& table = Table::getInstance();
-    Logger::getInstance()->insert(KEY_PLAYER,MSJ_ESPERANDO_VER_CARTA,id);
     DeckOfCards lastTwoCards = table.getLastTwoCards();
+    Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_ESPERANDO_VER_CARTA,turno);
     int idLoser;
-    Logger::getInstance()->insert(KEY_PLAYER,MSJ_VIENDO_CARTA,id);
+    Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_VIENDO_CARTA);
     //TODO: CUANDO FUNCIONE REFACTORIZAR
     if (lastTwoCards.theCardsAreSame() or lastTwoCards.at() == 7){
         /*Logger::getInstance()->insert(KEY_PLAYER,MSJ_PONGO_MANO,id);
@@ -72,10 +72,10 @@ void Player::checkCardsAndPerformAction(int turno) {
         std::string message("Buenos dias seniorita");
         sayOrDoSomethingAndWaitForTheRestToDoTheSame(message);
     } else if(lastTwoCards.at() == 11){
-        std::string message("Buenas noches caballero");
+        std::string message("¡Buenas noches caballero!");
         sayOrDoSomethingAndWaitForTheRestToDoTheSame(message);
     } else if(lastTwoCards.at() == 12){
-        std::string message("Saludo militar");
+        std::string message("¡Saludo militar!");
         sayOrDoSomethingAndWaitForTheRestToDoTheSame(message);
     }
 }
@@ -90,21 +90,21 @@ void Player:: gather(){
 bool Player::thereIsAWinner() {
     //Aviso a los demas si gane o no
     if (myDeckOfCards.isEmpty()){
-        Logger::getInstance()->insert(KEY_PLAYER,MSJ_GANE_Y_LE_AVISO_A_LOS_DEMAS,id);
+        Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_GANE_Y_LE_AVISO_A_LOS_DEMAS);
         communicationChannel.sendToAll("g");
         return true;
     } else {
         communicationChannel.sendToAll("n");
     }
-    Logger::getInstance()->insert(KEY_PLAYER,MSJ_INCREMENTO_TURNO,id);
+    Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_INCREMENTO_TURNO);
     // Me fijo si alguno de los demas gano
     for (int i = 0; i < numberOfPlayers - 1 ; ++i) {
         MSG_t data = communicationChannel.receive(1);
         if(data.message == "g"){
             std::stringstream ss;
-            ss << MSJ_OTRO_JUGADOR_GANO << data.id << ". Soy:";
+            ss << MSJ_OTRO_JUGADOR_GANO << data.id;
 
-            Logger::getInstance()->insert(KEY_PLAYER,ss.str(),id);
+            Logger::getInstance()->insert(KEY_PLAYER,id,ss.str());
             return true;
         }
     }
@@ -119,8 +119,8 @@ void Player::waitUntilTheOtherPlayersSaid(std::string message) {
     for (int i = 0; i < numberOfPlayers - 1 ; ++i) {
         MSG_t data = specialCardActions.receive(message.size());
         std::stringstream ss;
-        ss << "Recibi: " + data.message + " de: " << data.id << ". Soy: ";
-        Logger::getInstance()->insert(KEY_PLAYER, ss.str(),id);
+        ss << "Recibi: " + data.message + " de: " << data.id;
+        Logger::getInstance()->insert(KEY_PLAYER,id,ss.str());
         if(data.message == message){
             thePlayerSaidTheMessage[data.id] = true;
         }
@@ -137,7 +137,7 @@ void Player::waitUntilTheOtherPlayersSaid(std::string message) {
 }
 
 void Player::sayOrDoSomethingAndWaitForTheRestToDoTheSame(std::string messageOrAction) {
-    Logger::getInstance()->insert(KEY_PLAYER, messageOrAction + ". Soy: ",id);
+    Logger::getInstance()->insert(KEY_PLAYER,id,messageOrAction);
     specialCardActions.sendToAll(messageOrAction);
     waitUntilTheOtherPlayersSaid(messageOrAction);
 }

@@ -17,17 +17,17 @@
 #define CONSULTA_JUEZ "SE IMPRIME LA CONSULTA DEL JUEZ"
 
 //PLAYER
-#define MSJ_ES_MI_TURNO "######## Es mi turno. ############ Soy: "
+#define MSJ_ES_MI_TURNO "######## Es mi turno. ############"
 #define MSJ_PONIENDO_CARTA "Voy a poner la carta: "
-#define MSJ_ESPERANDO_VER_CARTA "Esperando ver cartas. Soy: "
-#define MSJ_VIENDO_CARTA "Veo las cartas.  Soy: "
-#define MSJ_VERIFICO_SI_GANE "Verifico si gane el juego. Soy: "
-#define MSJ_INCREMENTO_TURNO "Estoy en el final del turno/id."
+#define MSJ_ESPERANDO_VER_CARTA "Esperando ver cartas.Turno:"
+#define MSJ_VIENDO_CARTA "Veo las cartas."
+#define MSJ_VERIFICO_SI_GANE "Verifico si gane el juego."
+#define MSJ_INCREMENTO_TURNO "Estoy en el final del turno."
 #define MSJ_PONGO_MANO "Voy a poner la mano. Soy: "
 #define MSJ_VERIFICO_PERDEDOR "Veo quien perdio. Soy: "
 #define MSJ_PERDI "Soy el perdedor. Soy: "
-#define MSJ_TOME_CARTAS_DE_MESA "Tome todas las cartas de la mesa. Soy: "
-#define MSJ_GANE_Y_LE_AVISO_A_LOS_DEMAS "Gane! Y le aviso a los demas. Soy:"
+#define MSJ_TOME_CARTAS_DE_MESA "Tome todas las cartas de la mesa."
+#define MSJ_GANE_Y_LE_AVISO_A_LOS_DEMAS "Gane! Y le aviso a los demas."
 #define MSJ_OTRO_JUGADOR_GANO "Gano el jugador: "
 
 #endif //RESTORRENTE_MENSAJES_H

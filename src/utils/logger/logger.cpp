@@ -62,12 +62,25 @@ void Logger::insert(std::string key, std::string value, int param) {
 }
 
 
-void Logger::insert(std::string key, std::string value, int param1,int param2){
-  std::stringstream log;
-  log << value << param1 << param2;
-  Logger::insert(key,log.str());
+//TODO:Refactor
+void Logger::insert(std::string key, int id,std::string value, int param) {
+    std::stringstream log;
+    log << value << param;
+    Logger::insert(key,id,log.str());
 }
 
+//TODO: Refactor
+void Logger::insert(std::string key,int id,std::string value) {
+    if (ioFile.is_open()) {
+
+        std::cout << "[" << key << ":" << id << "] " << value
+                  << std::endl;
+
+        ioFile << Logger::getTime() << "[" << key << ":" << id << "] "
+               << value << std::endl;
+        ioFile.flush();
+    }
+}
 
 void Logger::insert(std::string key, std::string value) {
     if (ioFile.is_open()) {

@@ -14,7 +14,3 @@ add_executable(Concudaring ${SOURCE_FILES})
 
 #add_executable(Test Test/main.cpp)
 #target_link_libraries(Test ${CMAKE_SOURCE_DIR}/gtest/libgtest.a ${CMAKE_SOURCE_DIR}/gtest/libgtest_main.a)
-
-
-set(PLAYGROUND_FILES playground/main.cpp playground/Semaforo.cpp playground/Semaforo.h playground/CommunicationChannel.h playground/CommunicationChannel.cpp playground/Fifo.h playground/FifoEscritura.cpp playground/FifoEscritura.h playground/FifoLectura.cpp playground/FifoLectura.h playground/Fifo.cpp)
-add_executable(Playground ${PLAYGROUND_FILES})

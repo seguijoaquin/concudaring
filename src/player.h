@@ -16,12 +16,12 @@
 
 class Player {
 private:
+    int turno;
     const int id;
     const int numberOfPlayers;
     DeckOfCards myDeckOfCards;
     Semaforo thereIsACard;
     Semaforo gatheringPoint;
-
     CommunicationChannel communicationChannel;
     CommunicationChannel specialCardActions;
 
@@ -33,7 +33,7 @@ public:
     void play();
     void setDeckOfCards(DeckOfCards& deck);
     bool itIsMyTurn(int turnNumber) const;
-    void checkCardsAndPerformAction(int turno);
+    void checkCardsAndPerformAction();
     bool thereIsAWinner();
     void waitUntilTheOtherPlayersSaid(std::string message);
     void gather();
