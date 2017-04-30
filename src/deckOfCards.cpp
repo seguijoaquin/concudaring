@@ -47,7 +47,7 @@ bool DeckOfCards::theCardsAreSame() {
 
 //Obtengo la ultima carta pero la saco del maso
 int DeckOfCards::at() const {
-    int card = cards.back();
+    int card = cards.front();
     return card;
 }
 
