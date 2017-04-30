@@ -14,6 +14,10 @@
 #include "utils/FifoLectura.h"
 #include "CommunicationChannel.h"
 
+const std::string BUENOS_DIAS_SENIORITA("¡Buenos dias seniorita!");
+const std::string BUENAS_NOCHES_CABALLERO("¡Buenas noches caballero!");
+const std::string SALUDO_MILITAR("¡Saludo militar!");
+
 class Player {
 private:
     int turno;

@@ -56,7 +56,7 @@ void Player::checkCardsAndPerformAction() {
     Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_VIENDO_CARTA);
     //TODO: CUANDO FUNCIONE REFACTORIZAR
     if (lastTwoCards.theCardsAreSame() or lastTwoCards.at() == 7){
-        /*Logger::getInstance()->insert(KEY_PLAYER,MSJ_PONGO_MANO,id);
+        Logger::getInstance()->insert(KEY_PLAYER,MSJ_PONGO_MANO,id);
         table.putHand(id);
         Logger::getInstance()->insert(KEY_PLAYER,MSJ_VERIFICO_PERDEDOR,id);
         idLoser = table.getIdLoser();
@@ -67,16 +67,13 @@ void Player::checkCardsAndPerformAction() {
             //myDeckOfCards = myDeckOfCards + deck;
             //myDeckOfCards.addDeck(deck);
             Logger::getInstance()->insert(KEY_PLAYER,MSJ_TOME_CARTAS_DE_MESA,id);
-        }*/
+        }
     } else if(lastTwoCards.at() == 10){
-        std::string message("Buenos dias seniorita");
-        sayOrDoSomethingAndWaitForTheRestToDoTheSame(message);
+        sayOrDoSomethingAndWaitForTheRestToDoTheSame(BUENOS_DIAS_SENIORITA);
     } else if(lastTwoCards.at() == 11){
-        std::string message("¡Buenas noches caballero!");
-        sayOrDoSomethingAndWaitForTheRestToDoTheSame(message);
+        sayOrDoSomethingAndWaitForTheRestToDoTheSame(BUENAS_NOCHES_CABALLERO);
     } else if(lastTwoCards.at() == 12){
-        std::string message("¡Saludo militar!");
-        sayOrDoSomethingAndWaitForTheRestToDoTheSame(message);
+        sayOrDoSomethingAndWaitForTheRestToDoTheSame(SALUDO_MILITAR);
     }
 }
 

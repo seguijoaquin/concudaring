@@ -54,11 +54,13 @@ DeckOfCards Table::getLastTwoCards(){
     thereIsCard.wait();
     DeckOfCards deck;
     int lastPosition = i.read() -1;
-    deck.addCard(cards[lastPosition]);
+
     if (lastPosition == 0){
+        deck.addCard(cards[lastPosition]);
         return deck;
     }
     deck.addCard(cards[lastPosition-1]);
+    deck.addCard(cards[lastPosition]);
     return deck;
 }
 
