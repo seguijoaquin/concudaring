@@ -20,6 +20,8 @@ private:
 	int cantidadProcesosAdosados () const;
 
 public:
+	//TODO: Borrar
+	void printID();
 	SharedMemory ();
 	~SharedMemory ();
 	int create(const std::string &archivo, const char letra, int tamanio);
@@ -36,10 +38,9 @@ template <class T> SharedMemory<T> :: SharedMemory() : shmId(0), ptrDatos(NULL) 
 
 template <class T> SharedMemory<T> :: ~SharedMemory() {
 	// detach del bloque de memoria
-	shmdt ( static_cast<void*> (this->ptrDatos) );
-
+	int status = shmdt ( static_cast<void*> (this->ptrDatos) );
+	if(status == -1 ) perror("Error shmdt:");
 	int procAdosados = this->cantidadProcesosAdosados ();
-
 	if ( procAdosados == 0 ) {
 		shmctl ( this->shmId,IPC_RMID,NULL );
 	}
@@ -93,6 +94,10 @@ template <class T> int SharedMemory<T> :: cantidadProcesosAdosados () const {
 	shmid_ds estado;
 	shmctl ( this->shmId,IPC_STAT,&estado );
 	return estado.shm_nattch;
+}
+
+template <class T> void SharedMemory<T> ::printID() {
+	std::cout << this->shmId << std::endl;
 }
 
 

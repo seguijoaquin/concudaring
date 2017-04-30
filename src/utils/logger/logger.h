@@ -16,6 +16,7 @@
 #define KEY_ERROR "ERROR"
 #define KEY_GAME "Game"
 #define KEY_JUDGE "Juez"
+#define KEY_SEMAPHORE "Semaforo"
 
 class Logger {
 

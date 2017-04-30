@@ -94,6 +94,7 @@ int Table::getIdLoser() {
     }
     writeIdLosser.signal();
     return result;
+
 }
 
 Table::~Table(){

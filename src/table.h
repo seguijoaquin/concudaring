@@ -4,8 +4,8 @@
 
 #include "deckOfCards.h"
 #include "utils/SharedMemory.h"
-#include "utils/Semaforo.h"
 #include "utils/constants.h"
+#include "utils/Semaforo.h"
 
 class Table {
 private:
@@ -32,8 +32,6 @@ public:
     DeckOfCards getCards();
     void setNumberOfPlayers(int _numberOfPlayers);
     void eliminar();
-
-
 };
 
 

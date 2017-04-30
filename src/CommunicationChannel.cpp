@@ -47,12 +47,12 @@ int CommunicationChannel::sendToAll(std::string data) {
     for (int i = 0; i < writeFifos.size() ; ++i) {
         if (i != id){
             //Creo un nuevo proceso para que no se bloquee al escribir el proceso principal.
-            int pid = fork();
-            if (pid == 0 ){
+            //int pid = fork();
+            //if (pid == 0 ){
                 writeFifos[i].escribir( static_cast<const void*> (data.c_str()),data.length());
-                cerrar();
-                exit(0);
-            }
+              //  cerrar();
+                //exit(0);
+            //}
         }
 
     }

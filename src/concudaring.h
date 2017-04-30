@@ -12,6 +12,11 @@ class Concudaring {
     void createPlayers(int numberPlayers,std::vector<DeckOfCards>& decks);
     void configureCreator(int numberPlayers);
     Semaforo thereIsCard;
+    Semaforo readIdLoser;
+    Semaforo writeIdLoser;
+    void createSemaphores(int numberOfPlayers);
+    void freeSemaphores();
+    void createSharedMemories();
 
 public:
     Concudaring(int numberPlayers);

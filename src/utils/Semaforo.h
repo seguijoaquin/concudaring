@@ -1,26 +1,36 @@
-#ifndef SEMAFORO_H_
-#define SEMAFORO_H_
+#ifndef CONCUDARING_SEMAFORO_H
+#define CONCUDARING_SEMAFORO_H
 
 #include <sys/ipc.h>
 #include <sys/sem.h>
 #include <sys/types.h>
+#include <string>
+
+#define MAX_RETRIES 10
+
+union semun {
+    int val;
+    struct semid_ds *buf;
+    ushort *array;
+};
 
 class Semaforo {
 
 private:
     int id;
 
+    //int init(key_t key, int nsems);
+
 public:
     Semaforo();
     Semaforo (const std::string& nombre , char fkey );
     virtual ~Semaforo();
-    int inicializar (int valorInicial);
+    int inicializar (int valorInicial) const;
     int wait(); // decrementa
     int signal(); // incrementa
-    void eliminar ();
-    int add(short value); //incrementa en value
+    void eliminar () const;
     void barrier();
-
+    int add(int i);
 };
 
-#endif /* SEMAFORO_H_ */
+#endif //CONCUDARING_SEMAFORO_H

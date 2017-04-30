@@ -18,10 +18,7 @@ class Player {
 private:
     const int id;
     const int numberOfPlayers;
-    Semaforo endOfTurnGathering;
     DeckOfCards myDeckOfCards;
-    SharedMemory<Game_t> sharedMemory;
-    SharedMemory<bool> noOneWon;
 
     CommunicationChannel communicationChannel;
 
@@ -31,12 +28,13 @@ public:
     void present() const ;
 
     void play();
-    int increaseTurn(int turn);
     void setDeckOfCards(DeckOfCards& deck);
     bool itIsMyTurn(int turnNumber) const;
-    bool checkWinner() const;
+    bool checkWinner();
 
     void checkCardsAndPerformAction();
+
+    bool thereIsAWinner();
 };
 
 
