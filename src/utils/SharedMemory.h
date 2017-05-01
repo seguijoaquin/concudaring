@@ -10,6 +10,7 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <string>
+#include <iostream>
 
 
 template <class T> class SharedMemory {

@@ -45,10 +45,14 @@ bool DeckOfCards::theCardsAreSame() {
     }
 }
 
-//Obtengo la ultima carta pero la saco del maso
+//Obtengo la ultima carta pero no la saco del maso
 int DeckOfCards::at() const {
     int card = cards.back();
     return card;
+}
+
+int DeckOfCards::len(){
+  return cards.size();
 }
 
 //Saca del maso la ultima carta y la devuelvo

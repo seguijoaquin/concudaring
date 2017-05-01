@@ -28,21 +28,22 @@ private:
     Semaforo gatheringPoint;
     CommunicationChannel communicationChannel;
     CommunicationChannel specialCardActions;
-
-public:
-    Player(int _id,int _numberOfPlayers);
-    ~Player();
-    void present() const ;
-
-    void play();
-    void setDeckOfCards(DeckOfCards& deck);
-    bool itIsMyTurn(int turnNumber) const;
+    void sendInformationTheJudge();
+    bool itIsMyTurn() const;
     void checkCardsAndPerformAction();
     bool thereIsAWinner();
     void waitUntilTheOtherPlayersSaid(std::string message);
     void gather();
     void sayOrDoSomethingAndWaitForTheRestToDoTheSame(std::string messageOrAction);
     void freeCommunicationChannels();
+public:
+    Player(int _id,int _numberOfPlayers);
+    ~Player();
+    void play();
+    void setDeckOfCards(DeckOfCards& deck);
+
+
+
 
 
 };

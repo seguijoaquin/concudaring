@@ -15,6 +15,7 @@ class Concudaring {
     Semaforo readIdLoser;
     Semaforo writeIdLoser;
     Semaforo gatheringPoint;
+    //Semaforo writeNumberOfCards;
     void createSemaphores(int numberOfPlayers);
     void freeSemaphores();
     void createSharedMemories();

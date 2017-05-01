@@ -9,7 +9,8 @@ set(SOURCE_FILES src/main.cpp src/utils/SharedMemory.h src/utils/logger/logger.h
         src/deckOfCards.cpp src/deckOfCards.h src/creatorDeckOfCards.cpp src/creatorDeckOfCards.h
         src/CommunicationChannel.cpp src/CommunicationChannel.h
         src/utils/FifoEscritura.cpp src/utils/FifoEscritura.h src/utils/FifoLectura.cpp
-        src/utils/FifoLectura.h src/utils/Fifo.h src/utils/Fifo.cpp)
+        src/utils/FifoLectura.h src/utils/Fifo.h src/utils/Fifo.cpp
+        src/judge.h src/judge.cpp)
 add_executable(Concudaring ${SOURCE_FILES})
 
 #add_executable(Test Test/main.cpp)

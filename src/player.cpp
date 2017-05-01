@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include "stdlib.h"
-
+#include "judge.h"
 
 
 Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfPlayers){
@@ -13,19 +13,18 @@ Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfP
     communicationChannel = CommunicationChannel("./communicationChannel",numberOfPlayers,id);
     specialCardActions = CommunicationChannel("./specialCardActions", numberOfPlayers,id);
     turno = 0;
+    Judge::getInstance().setNumberOfPlayers(numberOfPlayers);
 }
 
 Player::~Player(){
 }
 
-void Player::present() const {
-}
 
 void Player::play() {
     Table& table = Table::getInstance();
     table.setNumberOfPlayers(numberOfPlayers);
     do  {
-        if (itIsMyTurn(turno)) {
+        if (itIsMyTurn()) {
             Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_ES_MI_TURNO);
             int card = myDeckOfCards.getCard();
             Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_PONIENDO_CARTA,card);
@@ -33,18 +32,25 @@ void Player::play() {
         }
         checkCardsAndPerformAction();
         turno++;
+        sendInformationTheJudge();
     } while ( !thereIsAWinner() );
     gather();
     freeCommunicationChannels();
 }
 
-bool Player::itIsMyTurn(int turnNumber) const {
-    int nextToPlay = turnNumber % numberOfPlayers;
+bool Player::itIsMyTurn() const {
+    int nextToPlay = turno % numberOfPlayers;
     return nextToPlay == this->id;
 }
 
 void Player::setDeckOfCards(DeckOfCards& deck) {
     myDeckOfCards = deck;
+}
+
+
+void Player::sendInformationTheJudge(){
+  Judge& judge = Judge::getInstance();
+  judge.writeNumberOfPlayerCards(id,myDeckOfCards.len());
 }
 
 
@@ -54,19 +60,22 @@ void Player::checkCardsAndPerformAction() {
     Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_ESPERANDO_VER_CARTA,turno);
     int idLoser;
     Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_VIENDO_CARTA);
+    //TODO:Es para ver cuales son las 2 cartas, sacar despues o ponerlo en otra parte
+    if (itIsMyTurn()){
+      lastTwoCards.print();
+    }
     //TODO: CUANDO FUNCIONE REFACTORIZAR
     if (lastTwoCards.theCardsAreSame() or lastTwoCards.at() == 7){
-        Logger::getInstance()->insert(KEY_PLAYER,MSJ_PONGO_MANO,id);
+        Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_PONGO_MANO);
         table.putHand(id);
-        Logger::getInstance()->insert(KEY_PLAYER,MSJ_VERIFICO_PERDEDOR,id);
+        Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_VERIFICO_PERDEDOR);
         idLoser = table.getIdLoser();
         //Si perdí
         if (idLoser == id){
-            Logger::getInstance()->insert(KEY_PLAYER,MSJ_PERDI);
+            Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_PERDI);
             DeckOfCards deck = table.getCards();
-            //myDeckOfCards = myDeckOfCards + deck;
-            //myDeckOfCards.addDeck(deck);
-            Logger::getInstance()->insert(KEY_PLAYER,MSJ_TOME_CARTAS_DE_MESA,id);
+            myDeckOfCards.addDeck(deck);
+            Logger::getInstance()->insert(KEY_PLAYER,id,MSJ_TOME_CARTAS_DE_MESA);
         }
     } else if(lastTwoCards.at() == 10){
         sayOrDoSomethingAndWaitForTheRestToDoTheSame(BUENOS_DIAS_SENIORITA);

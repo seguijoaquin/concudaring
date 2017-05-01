@@ -61,9 +61,11 @@ void Concudaring::createSemaphores(int numberOfPlayers) {
     thereIsCard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
     writeIdLoser = Semaforo(FILE_CONCUDARING,KEY_SEM_WRITE_LOSER);
     readIdLoser = Semaforo(FILE_CONCUDARING,KEY_SEM_READ_LOSER);
+    //writeNumberOfCards = Semaforo(FILE_CONCUDARING,KEY_SEM_WRITE_NUMBER_OF_CARDS);
     gatheringPoint = Semaforo(FILE_CONCUDARING,'g');
     writeIdLoser.inicializar(1);
     thereIsCard.inicializar(0);
+    //writeNumberOfCards.inicializar(1);
     readIdLoser.inicializar(numberOfPlayers);
     gatheringPoint.inicializar(numberOfPlayers);
 }
@@ -73,13 +75,18 @@ void Concudaring::freeSemaphores() {
     writeIdLoser.eliminar();
     readIdLoser.eliminar();
     gatheringPoint.eliminar();
+    //writeNumberOfCards.eliminar();
 }
 
-void Concudaring::createSharedMemories() {
+void Concudaring::createSharedMemories(){
     SharedMemory<int> numberOfPlayersPutHand;
-    numberOfPlayersPutHand.create(FILE_CONCUDARING,'n',1);
+    numberOfPlayersPutHand.create(FILE_CONCUDARING,KEY_SHME_TABLE_PLAYER_PUT_HAND,1);
     std::cout << "numberOfPlayersPutHand shmID: ";
     numberOfPlayersPutHand.printID();
     int initialValue =0;
     numberOfPlayersPutHand.write(initialValue);
+    //Inicializo la memoria del juez
+    SharedMemory<int> numberOfPlayerThatWrote;
+    numberOfPlayerThatWrote.create(FILE_CONCUDARING,KEY_SHME_JUDGE_NUMBER,1);
+    numberOfPlayerThatWrote.write(0);
 }
