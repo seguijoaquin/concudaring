@@ -19,15 +19,10 @@ class Concudaring {
     void createSemaphores(int numberOfPlayers);
     void freeSemaphores();
     void createSharedMemories();
-
-
 public:
     Concudaring(int numberPlayers);
     ~Concudaring();
     void start();
-
-
-
 };
 
 

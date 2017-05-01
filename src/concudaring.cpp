@@ -80,13 +80,17 @@ void Concudaring::freeSemaphores() {
 
 void Concudaring::createSharedMemories(){
     SharedMemory<int> numberOfPlayersPutHand;
-    numberOfPlayersPutHand.create(FILE_CONCUDARING,KEY_SHME_TABLE_PLAYER_PUT_HAND,1);
-    std::cout << "numberOfPlayersPutHand shmID: ";
-    numberOfPlayersPutHand.printID();
-    int initialValue =0;
-    numberOfPlayersPutHand.write(initialValue);
-    //Inicializo la memoria del juez
     SharedMemory<int> numberOfPlayerThatWrote;
+    SharedMemory<int> i;
+    //Inicializo la memoria de la mesa que cuenta la cantidad que jugadores que pusieron la mano
+    numberOfPlayersPutHand.create(FILE_CONCUDARING,KEY_SHME_TABLE_NUMBER_PLAYER_PUT_HAND,1);
+    numberOfPlayersPutHand.write(0);
+
+    //Inicializo la memoria del juez que cuenta la cantidad de jugadores que le mandaron informacion
     numberOfPlayerThatWrote.create(FILE_CONCUDARING,KEY_SHME_JUDGE_NUMBER,1);
     numberOfPlayerThatWrote.write(0);
+
+    //Inicializo la memoria de la mesa que cuenta cantidad de cartas que tiene
+    i.create(FILE_CONCUDARING,KEY_SHME_TABLE_I,1);
+    i.write(0);
 }

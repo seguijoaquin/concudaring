@@ -49,13 +49,13 @@ void CreatorDeckOfCards::mixCards() {
 }
 
 
-void CreatorDeckOfCards::print(){
+void CreatorDeckOfCards::print() const{
     for (int i = 0; i < quantity; ++i) {
         std::cout << cards[i] << ".";
     }
 }
 
-int CreatorDeckOfCards::generateRandomPos() {
+int CreatorDeckOfCards::generateRandomPos() const {
     return rand() % quantity-1;
 }
 
