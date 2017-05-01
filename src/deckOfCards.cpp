@@ -26,6 +26,13 @@ DeckOfCards& DeckOfCards::operator=(DeckOfCards anotherDeck) {
     return *this;
 }
 
+DeckOfCards& DeckOfCards::operator+(DeckOfCards anotherDeck) {
+    for (int i = 0; i < anotherDeck.cards.size() ; ++i) {
+        cards.push_back(anotherDeck.cards[i]);
+    }
+    return *this;
+}
+
 void DeckOfCards::print(){
     for (int i = 0; i < cards.size(); ++i) {
         std::cout << cards[i] << ".";
@@ -51,13 +58,13 @@ int DeckOfCards::at() const {
     return card;
 }
 
-int DeckOfCards::len(){
-  return cards.size();
-}
-
 //Saca del maso la ultima carta y la devuelvo
 int DeckOfCards::getCard() {
     int card =  cards.back();
     cards.pop_back();
     return card;
+}
+
+int DeckOfCards::amountOfCards() {
+    return cards.size();
 }

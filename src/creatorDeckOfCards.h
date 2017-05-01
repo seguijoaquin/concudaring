@@ -1,7 +1,3 @@
-//
-// Created by cristian on 05/04/17.
-//
-
 #ifndef CONCUDARING_CREATORDECKOFCARDS_H
 #define CONCUDARING_CREATORDECKOFCARDS_H
 

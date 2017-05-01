@@ -31,7 +31,6 @@ void Table::putCard(int card) {
     int pos = i.read();
     cards[pos] = card;
     i.write(pos+1);
-    //printCards();
     thereIsCard.add(numberOfPlayers);
 }
 
@@ -53,7 +52,6 @@ DeckOfCards Table::getLastTwoCards(){
     thereIsCard.wait();
     DeckOfCards deck;
     int lastPosition = i.read() -1;
-
     if (lastPosition == 0){
         deck.addCard(cards[lastPosition]);
         return deck;
@@ -100,5 +98,4 @@ int Table::getIdLoser() {
 }
 
 Table::~Table(){
-  //std::cout << "Destruyendo una mesa con process id:" <<getpid()<< std::endl;
 }

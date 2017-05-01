@@ -1,7 +1,3 @@
-//
-// Created by joaquin on 27/10/16.
-//
-
 #ifndef CONCUDARING_MENSAJES_H
 #define CONCUDARING_MENSAJES_H
 
@@ -19,13 +15,13 @@
 //PLAYER
 #define MSJ_ES_MI_TURNO "######## Es mi turno. ############"
 #define MSJ_PONIENDO_CARTA "Voy a poner la carta: "
-#define MSJ_ESPERANDO_VER_CARTA "Esperando ver cartas.Turno:"
+#define MSJ_ESPERANDO_VER_CARTA "Esperando ver cartas."
 #define MSJ_VIENDO_CARTA "Veo las cartas."
 #define MSJ_VERIFICO_SI_GANE "Verifico si gane el juego."
 #define MSJ_INCREMENTO_TURNO "Estoy en el final del turno."
 #define MSJ_PONGO_MANO "Voy a poner la mano."
-#define MSJ_VERIFICO_PERDEDOR "Veo quien perdio."
-#define MSJ_PERDI "Soy el perdedor."
+#define MSJ_VERIFICO_PERDEDOR "Veo quien perdio. "
+#define MSJ_PERDI "Soy el perdedor. "
 #define MSJ_TOME_CARTAS_DE_MESA "Tome todas las cartas de la mesa."
 #define MSJ_GANE_Y_LE_AVISO_A_LOS_DEMAS "Gane! Y le aviso a los demas."
 #define MSJ_OTRO_JUGADOR_GANO "Gano el jugador: "

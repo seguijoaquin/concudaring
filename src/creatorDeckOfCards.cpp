@@ -41,7 +41,6 @@ void CreatorDeckOfCards::mixCards() {
     for (int k = 0; k < 40 ; ++k) {
         int i = generateRandomPos();
         int j = generateRandomPos();
-        //std::cout <<"[i:"<<i<<"] [j:" << j <<"]";
         int aux = cards[i];
         int aux2 = cards[j];
         cards[i] = aux2;
@@ -72,15 +71,5 @@ std::vector<DeckOfCards> CreatorDeckOfCards::getDeckOfCards(){
         DeckOfCards& deck = myVector[pos];
         deck.addCard(cards[i]);
     }
-
-    /*
-    //TODO: este loop se debe borrar
-    std::cout << "Imprimiendo los masos de los jugadores" << std::endl;
-    for (int j = 0; j < myVector.size(); ++j) {
-        std::cout << "Mazo "<< j <<std::endl;
-        DeckOfCards deck = myVector[j];
-        deck.print();
-    }
-    */
     return myVector;
 }

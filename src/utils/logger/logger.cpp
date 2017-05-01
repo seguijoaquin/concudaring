@@ -58,25 +58,23 @@ void Logger::insert(std::string key, std::string value, int param) {
 }
 
 
-//TODO:Refactor
-void Logger::insert(std::string key, int id,std::string value, int param) {
-    std::stringstream log;
-    log << value << param;
-    Logger::insert(key,id,log.str());
-}
-
 //TODO: Refactor
-void Logger::insert(std::string key,int id,std::string value) {
+void Logger::insert(std::string key,int id,int turn,std::string value) {
     if (ioFile.is_open()) {
 
-        std::cout << "[" << key << ":" << id << "] " << value
-                  << std::endl;
+        std::stringstream ss;
+        ss << "[" << key << ":" << id << "] "
+           << "[" << "Turno" << ":" << turn << "] "
+           << value;
 
-        ioFile << Logger::getTime() << "[" << key << ":" << id << "] "
-               << value << std::endl;
+        std::cout << ss.str() << std::endl;
+
+        ioFile << Logger::getTime() << ss.str();
         ioFile.flush();
     }
 }
+
+
 
 void Logger::insert(std::string key, std::string value) {
     if (ioFile.is_open()) {
@@ -86,6 +84,21 @@ void Logger::insert(std::string key, std::string value) {
 
         ioFile << Logger::getTime() << "[" << key << ":" << getpid() << "] "
                << value << std::endl;
+        ioFile.flush();
+    }
+}
+
+void Logger::insert(std::string key, int id, int turn, std::string value, int param) {
+    if (ioFile.is_open()) {
+
+        std::stringstream ss;
+        ss << "[" << key << ":" << id << "] "
+           << "[" << TURN_KEY << ":" << turn << "] "
+           << value << param;
+
+        std::cout << ss.str() << std::endl;
+
+        ioFile << Logger::getTime() << ss.str();
         ioFile.flush();
     }
 }
