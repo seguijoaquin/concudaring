@@ -21,6 +21,9 @@ const std::string GANE("g");
 const std::string NO_GANE("n");
 const std::string ATREVIDO("¡Atrevido!");
 
+const std::string COMMUNICATION_CHANNEL_FILE("./CommunicationChannel");
+const std::string SPECIAL_CARD_ACTIONS("./SpecialCardActions");
+
 class Player {
 private:
     int turno;

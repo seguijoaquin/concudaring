@@ -10,8 +10,8 @@
 Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfPlayers){
     gatheringPoint = Semaforo(FILE_CONCUDARING,'g');
     thereIsACard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
-    communicationChannel = CommunicationChannel("./communicationChannel",numberOfPlayers,id);
-    specialCardActions = CommunicationChannel("./specialCardActions", numberOfPlayers,id);
+    communicationChannel = CommunicationChannel(COMMUNICATION_CHANNEL_FILE,numberOfPlayers,id);
+    specialCardActions = CommunicationChannel(SPECIAL_CARD_ACTIONS, numberOfPlayers,id);
     turno = 0;
 }
 
@@ -36,6 +36,7 @@ void Player::play() {
     gather();
     freeCommunicationChannels();
 }
+
 
 bool Player::itIsMyTurn(int turnNumber) const {
     int nextToPlay = turnNumber % numberOfPlayers;
@@ -89,6 +90,7 @@ void Player:: gather(){
 
 bool Player::thereIsAWinner() {
     //Aviso a los demas si gane o no
+    Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_INCREMENTO_TURNO);
     if (myDeckOfCards.isEmpty()){
         Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_GANE_Y_LE_AVISO_A_LOS_DEMAS);
         communicationChannel.sendToAll(GANE);
@@ -96,7 +98,6 @@ bool Player::thereIsAWinner() {
     } else {
         communicationChannel.sendToAll(NO_GANE);
     }
-    Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_INCREMENTO_TURNO);
     // Me fijo si alguno de los demas gano
     for (int i = 0; i < numberOfPlayers - 1 ; ++i) {
         MSG_t data = communicationChannel.receive(GANE.size());
@@ -113,6 +114,7 @@ bool Player::thereIsAWinner() {
 
 void Player::waitUntilTheOtherPlayersSaid(std::string message) {
     bool thePlayerSaidTheMessage[numberOfPlayers];
+    memset(thePlayerSaidTheMessage,0,numberOfPlayers*sizeof(bool));
     thePlayerSaidTheMessage[id] = true;
 
     for (int i = 0; i < numberOfPlayers - 1 ; ++i) {
@@ -131,7 +133,9 @@ void Player::waitUntilTheOtherPlayersSaid(std::string message) {
     }
 
     if (theyAllSaidTheMessage) {
-
+        std::stringstream ss;
+        ss << "Recibi: " << message << " de todos los demas jugadores";
+        Logger::getInstance()->insert(KEY_PLAYER,id,turno,ss.str());
     }
 }
 
