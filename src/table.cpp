@@ -6,11 +6,11 @@
 using namespace std;
 
 Table::Table(){
-    //std::cout << "Construyendo una mesa con process id:" <<getpid()<< std::endl;
-    cards.create(NOMBRE,'c',40);
-    i.create(NOMBRE2,'i',1);
-    idHand.create(NOMBRE,'d',1);  //acá es donde se pone los id de los jugadores, a medida que pone las mano.
-    numberOfPlayersPutHand.create(FILE_CONCUDARING,'n',1);
+    cards.create(NOMBRE,KEY_SHME_TABLE_CARDS,40);
+    i.create(FILE_CONCUDARING,KEY_SHME_TABLE_I,1);
+    //acá es donde se pone los id de los jugadores, a medida que ponen las mano.
+    idHand.create(FILE_CONCUDARING,KEY_SHME_TABLE_ID_HAND,1);
+    numberOfPlayersPutHand.create(FILE_CONCUDARING,KEY_SHME_TABLE_NUMBER_PLAYER_PUT_HAND,1);
     createSemaforo();
 }
 
@@ -32,8 +32,6 @@ void Table::putCard(int card) {
     int pos = i.read();
     cards[pos] = card;
     i.write(pos+1);
-    //TODO: Acordarse de borrarlo
-    //printCards();
     thereIsCard.add(numberOfPlayers);
 }
 
@@ -55,7 +53,6 @@ DeckOfCards Table::getLastTwoCards(){
     thereIsCard.wait();
     DeckOfCards deck;
     int lastPosition = i.read() -1;
-
     if (lastPosition == 0){
         deck.addCard(cards[lastPosition]);
         return deck;
@@ -94,6 +91,7 @@ int Table::getIdLoser() {
     writeIdLosser.wait();
     if (numberOfPlayersPutHand.read() == numberOfPlayers){
         result = idHand.read();
+        numberOfPlayersPutHand.write(0);
     }
     writeIdLosser.signal();
     return result;

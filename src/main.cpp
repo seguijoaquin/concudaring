@@ -44,16 +44,6 @@ static const struct option longOpts[] = {
 int main(int argc, char** argv) {
 
   __pid_t pid_main = getpid();
-  //TODO: Me parece que queda mejor en concudaring como lo puse. Ya que necesitamos el numero de jugadores
-  // para la inicializacion
-  /*Semaforo thereIsCard(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
-  Semaforo endOfTurnGathering(FILE_CONCUDARING,KEY_SEM_END_OF_TURN_GATHERING);
-  Semaforo writeIdLosser(FILE_CONCUDARING,KEY_SEM_WRITE_LOSER);
-  Semaforo readIdLosser(FILE_CONCUDARING,KEY_SEM_READ_LOSER);
-  thereIsCard.inicializar(0);
-  endOfTurnGathering.inicializar(0);
-  writeIdLosser.inicializar(1);
-  readIdLosser.inicializar(0);*/
 
   //Solo para borrar en cada arranque el archivo log.
   system("chmod +x deleteFile.sh");
@@ -106,11 +96,6 @@ int main(int argc, char** argv) {
     //ERROR AL QUERER CREAR ARCHIVO TEMPORAL PARA FTOK
   }
   if (pid_main == getpid()) {
-    //Libero recursos
-    /*thereIsCard.eliminar();
-    endOfTurnGathering.eliminar();
-    writeIdLosser.eliminar();
-    readIdLosser.eliminar();
-    Logger::getInstance()->insert(KEY_GAME, MENSAJE_FIN_JUEGO);*/
+    Logger::getInstance()->insert(KEY_GAME, MENSAJE_FIN_JUEGO);
   }
 }

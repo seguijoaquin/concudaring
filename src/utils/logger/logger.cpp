@@ -1,7 +1,3 @@
-//
-// Created by joaquin on 27/10/16.
-//
-
 #include "logger.h"
 
 Logger* Logger::logger = NULL;

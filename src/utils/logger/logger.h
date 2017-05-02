@@ -1,7 +1,3 @@
-//
-// Created by joaquin on 27/10/16.
-//
-
 #ifndef RESTORRENTE_LOGGER_H
 #define RESTORRENTE_LOGGER_H
 #include <iostream>

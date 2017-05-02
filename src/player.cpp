@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include "stdlib.h"
-
+#include "judge.h"
 
 
 Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfPlayers){
@@ -13,33 +13,34 @@ Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfP
     communicationChannel = CommunicationChannel(COMMUNICATION_CHANNEL_FILE,numberOfPlayers,id);
     specialCardActions = CommunicationChannel(SPECIAL_CARD_ACTIONS, numberOfPlayers,id);
     turno = 0;
+    Judge::getInstance().setNumberOfPlayers(numberOfPlayers);
 }
 
 Player::~Player(){
 }
 
-void Player::present() const {
-}
 
 void Player::play() {
     Table& table = Table::getInstance();
     table.setNumberOfPlayers(numberOfPlayers);
     do  {
-        if (itIsMyTurn(turno)) {
+        if (itIsMyTurn()) {
             Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_ES_MI_TURNO);
             int card = myDeckOfCards.getCard();
             Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_PONIENDO_CARTA,card);
             table.putCard(card);
         }
         checkCardsAndPerformAction();
+        turno++;
+        sendInformationTheJudge();
     } while ( !thereIsAWinner() );
     gather();
     freeCommunicationChannels();
 }
 
 
-bool Player::itIsMyTurn(int turnNumber) const {
-    int nextToPlay = turnNumber % numberOfPlayers;
+bool Player::itIsMyTurn() const {
+    int nextToPlay = turno % numberOfPlayers;
     return nextToPlay == this->id;
 }
 
@@ -48,13 +49,17 @@ void Player::setDeckOfCards(DeckOfCards& deck) {
 }
 
 
+void Player::sendInformationTheJudge(){
+  Judge& judge = Judge::getInstance();
+  judge.writeNumberOfPlayerCards(id,myDeckOfCards.amountOfCards());
+}
+
+
 void Player::checkCardsAndPerformAction() {
     Table& table = Table::getInstance();
     Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_ESPERANDO_VER_CARTA);
     DeckOfCards lastTwoCards = table.getLastTwoCards();
-
     int idLoser;
-
     Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_VIENDO_CARTA);
     //TODO: CUANDO FUNCIONE REFACTORIZAR
     if (lastTwoCards.theCardsAreSame() or lastTwoCards.at() == 7){
@@ -69,10 +74,10 @@ void Player::checkCardsAndPerformAction() {
         if (idLoser == id){
             Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_PERDI);
             DeckOfCards deck = table.getCards();
-            myDeckOfCards = myDeckOfCards + deck;
+            myDeckOfCards.addDeck(deck);
             myDeckOfCards.print();
             Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_TOME_CARTAS_DE_MESA);
-        }
+          }
     } else if(lastTwoCards.at() == 10){
         sayOrDoSomethingAndWaitForTheRestToDoTheSame(BUENOS_DIAS_SENIORITA);
     } else if(lastTwoCards.at() == 11){
@@ -116,23 +121,23 @@ void Player::waitUntilTheOtherPlayersSaid(std::string message) {
     bool thePlayerSaidTheMessage[numberOfPlayers];
     memset(thePlayerSaidTheMessage,0,numberOfPlayers*sizeof(bool));
     thePlayerSaidTheMessage[id] = true;
-
     for (int i = 0; i < numberOfPlayers - 1 ; ++i) {
         MSG_t data = specialCardActions.receive(message.size());
         std::stringstream ss;
         ss << "Recibi: " + data.message + " de: " << data.id;
         Logger::getInstance()->insert(KEY_PLAYER,id,turno,ss.str());
         if(data.message == message){
+            //Me aseguro de haber recibido el mensaje correcto por parte de cada jugador
             thePlayerSaidTheMessage[data.id] = true;
         }
     }
     bool theyAllSaidTheMessage = true;
-
     for (int j = 0; j < numberOfPlayers ; ++j) {
+        //Si alguno permanece en 0 (producto del memset) sera false y el AND dara false.
         theyAllSaidTheMessage = theyAllSaidTheMessage && thePlayerSaidTheMessage[j];
     }
-
     if (theyAllSaidTheMessage) {
+        //Logueo que escuche a todos.
         std::stringstream ss;
         ss << "Recibi: " << message << " de todos los demas jugadores";
         Logger::getInstance()->insert(KEY_PLAYER,id,turno,ss.str());

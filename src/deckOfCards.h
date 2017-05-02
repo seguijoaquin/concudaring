@@ -18,7 +18,6 @@ public:
     int at() const;
     bool theCardsAreSame();
     int getCard();
-
     int amountOfCards();
 };
 

@@ -13,6 +13,7 @@ private:
     SharedMemory<int> cards; //destinado para colocar las cartas
     SharedMemory<int> i;     //destinado para colocar el puntero al mazo
     SharedMemory<int> idHand; //destinado para guardar el id del ultimo jugador que puso la mano
+    SharedMemory<int> numberOfPlayersPutHand; //destinado para saber cantidad de jugadores que pusieron la mano.
     int numberOfPlayers;
     Semaforo thereIsCard;
     Semaforo writeIdLosser;
@@ -22,7 +23,6 @@ private:
     ~Table();
     void createSemaforo();
     void printCards() const ;
-    SharedMemory<int> numberOfPlayersPutHand;
 public:
     static Table& getInstance();
     void putCard(int card);
@@ -31,7 +31,6 @@ public:
     DeckOfCards getLastTwoCards();
     DeckOfCards getCards();
     void setNumberOfPlayers(int _numberOfPlayers);
-    void eliminar();
 };
 
 

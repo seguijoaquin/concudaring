@@ -1,7 +1,3 @@
-//
-// Created by joaquin on 27/10/16.
-//
-
 #ifndef CONCUDARING_MENSAJES_H
 #define CONCUDARING_MENSAJES_H
 

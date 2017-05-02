@@ -1,7 +1,3 @@
-//
-// Created by cristian on 05/04/17.
-//
-
 #ifndef CONCUDARING_CREATORDECKOFCARDS_H
 #define CONCUDARING_CREATORDECKOFCARDS_H
 
@@ -13,17 +9,17 @@ class CreatorDeckOfCards {
     int* cards;
     int firstNumber,lastNumber,quantity;
     int quantityPlayers;
-    int generateRandomPos();
+    int generateRandomPos() const;
+    void print() const;
+    void setNumbers(int _firstNumber,int _lastNumber);
+    void createDeckOfCards();
 public:
     CreatorDeckOfCards();
     void setNumberOfCards(int _quantity);
     ~CreatorDeckOfCards();
-    void setNumbers(int _firstNumber,int _lastNumber);
-    void createDeckOfCards();
-    void mixCards();
-    void print();
-    std::vector<DeckOfCards> getDeckOfCards();
     void setNumberOfPlayers(int _quantityPlayers);
+    void mixCards();
+    std::vector<DeckOfCards> getDeckOfCards();
 };
 
 
