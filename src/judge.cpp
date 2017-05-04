@@ -5,6 +5,8 @@
 #include <unistd.h> //fork()
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "utils/logger/logger.h"
+#include "utils/logger/mensajes.h"
 
 Judge::Judge(){
   writeNumberOfCards = Semaforo(FILE_CONCUDARING,KEY_SEM_WRITE_NUMBER_OF_CARDS);
@@ -41,12 +43,13 @@ void Judge::printInformation(){
   writeNumberOfCards.wait();
   conditionSem.wait();
   for (size_t i = 0; i < numberOfPlayers; i++){
-    logPlayer <<"J["<<i<< "] = " << numberOfPlayerCards[i] << " ";
+    logPlayer <<"J["<<i<< "] = " << numberOfPlayerCards[i] << "; ";
   }
   writeNumberOfCards.signal();
   conditionSem.signal();
-  logPlayer << "\n";
-  std::cout << "[  Juez  ]  " << logPlayer.str();
+  //logPlayer << "\n";
+  Logger::getInstance()->insert(KEY_JUDGE,logPlayer.str());
+  //std::cout << "[  Juez  ]  " << logPlayer.str();
 }
 
 
@@ -61,7 +64,7 @@ void Judge::start(){
     }
     exit(0);
   }else{
-    std::cout << "[ Juez  ]: Se lanzo el juez\n";
+    Logger::getInstance()->insert(KEY_JUDGE,LANZA_JUEZ);
   }
 }
 

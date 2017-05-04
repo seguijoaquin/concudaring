@@ -11,6 +11,7 @@
 
 //JUEZ
 #define CONSULTA_JUEZ "SE IMPRIME LA CONSULTA DEL JUEZ"
+#define LANZA_JUEZ "Se lanza el juez"
 
 //PLAYER
 #define MSJ_ES_MI_TURNO "######## Es mi turno. ############"
