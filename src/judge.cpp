@@ -54,11 +54,14 @@ void Judge::printInformation(){
 void Judge::start(){
   shower = fork();
   if (shower == 0){
+    setNumberOfPlayers(numberOfPlayers);
     while(iCanContinue()){
       sleep(0.1);
       printInformation();
     }
     exit(0);
+  }else{
+    std::cout << "[ Juez  ]: Se lanzo el juez\n";
   }
 }
 

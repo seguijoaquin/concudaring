@@ -11,7 +11,6 @@ Concudaring::Concudaring(int numberPlayers) {
     createSharedMemories();
     configureCreator(numberPlayers);
     std::vector<DeckOfCards> decks = creator.getDeckOfCards();
-    Judge::getInstance().setNumberOfPlayers(numberPlayers);
     createPlayers(numberPlayers,decks);
     freeSemaphores();
 }
@@ -25,7 +24,6 @@ void Concudaring::configureCreator(int numberPlayers){
 
 void Concudaring::throwJudge(int numberPlayers){
   Judge& judge = Judge::getInstance();
-  judge.setNumberOfPlayers(numberPlayers);
   judge.start();
 }
 
@@ -38,6 +36,7 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
     std::vector<pid_t> childrenIds;
     pid_t pid_padre = getpid();
     pid_t pid = 0;
+    Judge::getInstance().setNumberOfPlayers(numberPlayers);
     for (int i = 0; i < numberPlayers ; ++i) {
         pid = fork(); //Creo un hijo
         if (pid == 0){
@@ -58,8 +57,8 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
       for (int j = 0; j <  numberPlayers; ++j) {
         waitpid(childrenIds[j],NULL,0);
       }
+      stopJudge();
     }
-    stopJudge();
 }
 
 
