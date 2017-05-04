@@ -15,6 +15,7 @@ private:
   Semaforo writeNumberOfCards;
   Semaforo conditionSem;
   int numberOfPlayers;
+  pid_t shower;
   void createMemory();
   void printInformation();
   bool iCanContinue();

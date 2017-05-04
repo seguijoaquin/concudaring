@@ -59,7 +59,7 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
         waitpid(childrenIds[j],NULL,0);
       }
     }
-    //stopJudge();
+    stopJudge();
 }
 
 
@@ -114,5 +114,4 @@ void Concudaring::createSharedMemories(){
     condition.create(FILE_CONCUDARING,KEY_SHME_JUDGE_CONDITION,1);
     bool valor = true;
     condition.write(valor);
-    std::cout <<"Le meti el valor:"<<valor<<"\n";
 }

@@ -3,12 +3,14 @@
 #include <iostream>
 #include <sstream>
 #include <unistd.h> //fork()
-
+#include <sys/types.h>
+#include <sys/wait.h>
 
 Judge::Judge(){
   writeNumberOfCards = Semaforo(FILE_CONCUDARING,KEY_SEM_WRITE_NUMBER_OF_CARDS);
   conditionSem = Semaforo(FILE_CONCUDARING,KEY_SEM_JUDE_CONDITION);
   condition.create(FILE_CONCUDARING,KEY_SHME_JUDGE_CONDITION,1);
+  condition.write(true);
 }
 
 void Judge::setNumberOfPlayers(int _numberOfPlayers){
@@ -36,13 +38,13 @@ void Judge::writeNumberOfPlayerCards(int id, int number){
 
 void Judge::printInformation(){
   std::stringstream logPlayer;
-  std::cout << "Print information\n";
-  //writeNumberOfCards.wait();
-  std::cout << "Print information 2\n";
+  writeNumberOfCards.wait();
+  conditionSem.wait();
   for (size_t i = 0; i < numberOfPlayers; i++){
     logPlayer <<"J["<<i<< "] = " << numberOfPlayerCards[i] << " ";
   }
-  //writeNumberOfCards.signal();
+  writeNumberOfCards.signal();
+  conditionSem.signal();
   logPlayer << "\n";
   std::cout << "[  Juez  ]  " << logPlayer.str();
 }
@@ -50,31 +52,30 @@ void Judge::printInformation(){
 
 
 void Judge::start(){
-  std::cout << "El juez empieza a imrpimir la infor\n";
-  pid_t pid = fork();
-  if (pid == 0){
+  shower = fork();
+  if (shower == 0){
     while(iCanContinue()){
-      //sleep(1);
-      std::cout << "Dentro del while\n";
+      sleep(0.1);
       printInformation();
     }
+    exit(0);
   }
 }
 
 bool Judge::iCanContinue(){
-  std::cout<< "I can continue\n";
   int valor;
   conditionSem.wait();
   valor =  condition.read();
   conditionSem.signal();
-  std::cout<< "I can exit::"<< valor<<"\n";
   return valor;
 }
+
 void Judge::stop(){
-  std::cout << "judge stop\n";
   conditionSem.wait();
   condition.write(false);
   conditionSem.signal();
+  waitpid(shower,NULL,0);
+  std::cout << "[  Judge  ] stop.\n";
 }
 
 Judge::~Judge(){
