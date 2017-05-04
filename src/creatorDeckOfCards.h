@@ -4,6 +4,7 @@
 
 #include <vector>
 #include "deckOfCards.h"
+#include "utils/constants.h"
 
 class CreatorDeckOfCards {
     int* cards;

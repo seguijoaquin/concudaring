@@ -5,7 +5,7 @@
 
 
 CreatorDeckOfCards::CreatorDeckOfCards() {
-    quantity = 48;
+    quantity = CANTIDAD_CARTAS;
     cards = new int[quantity];
     setNumbers(1,12);
     createDeckOfCards();
