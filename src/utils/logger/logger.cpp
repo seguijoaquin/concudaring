@@ -69,7 +69,7 @@ void Logger::insert(std::string key,int id,int turn,std::string value) {
 
         std::cout << ss.str() << std::endl;
 
-        ioFile << Logger::getTime() << ss.str();
+        ioFile << Logger::getTime() << ss.str() << std::endl;
         ioFile.flush();
     }
 }
@@ -98,7 +98,7 @@ void Logger::insert(std::string key, int id, int turn, std::string value, int pa
 
         std::cout << ss.str() << std::endl;
 
-        ioFile << Logger::getTime() << ss.str();
+        ioFile << Logger::getTime() << ss.str() << std::endl;
         ioFile.flush();
     }
 }
