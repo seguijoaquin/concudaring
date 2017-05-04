@@ -76,7 +76,6 @@ void Concudaring::createSemaphores(int numberOfPlayers) {
     //Creacion de semaforos
     thereIsCard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
     writeIdLoser = Semaforo(FILE_CONCUDARING,KEY_SEM_WRITE_LOSER);
-    readIdLoser = Semaforo(FILE_CONCUDARING,KEY_SEM_READ_LOSER);
     writeNumberOfCards = Semaforo(FILE_CONCUDARING,KEY_SEM_WRITE_NUMBER_OF_CARDS);
     gatheringPoint = Semaforo(FILE_CONCUDARING,'g');
     conditionSem = Semaforo(FILE_CONCUDARING,KEY_SEM_JUDE_CONDITION);
@@ -84,7 +83,6 @@ void Concudaring::createSemaphores(int numberOfPlayers) {
     //Inicializacion de los semaforos
     writeIdLoser.inicializar(1);
     thereIsCard.inicializar(0);
-    readIdLoser.inicializar(numberOfPlayers);
     gatheringPoint.inicializar(numberOfPlayers);
     writeNumberOfCards.inicializar(1);
     conditionSem.inicializar(1);
@@ -93,7 +91,6 @@ void Concudaring::createSemaphores(int numberOfPlayers) {
 void Concudaring::freeSemaphores() {
     thereIsCard.eliminar();
     writeIdLoser.eliminar();
-    readIdLoser.eliminar();
     gatheringPoint.eliminar();
     writeNumberOfCards.eliminar();
     conditionSem.eliminar();

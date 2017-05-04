@@ -17,8 +17,6 @@ Table::Table(){
 void Table::createSemaforo() {
     thereIsCard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
     writeIdLosser = Semaforo(FILE_CONCUDARING,KEY_SEM_WRITE_LOSER);
-    readIdLosser = Semaforo(FILE_CONCUDARING,KEY_SEM_READ_LOSER);
-
 }
 
 Table& Table::getInstance() {

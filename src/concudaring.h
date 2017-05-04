@@ -12,7 +12,6 @@ class Concudaring {
     void createPlayers(int numberPlayers,std::vector<DeckOfCards>& decks, double judgeTimeBetweenChecks);
     void configureCreator(int numberPlayers);
     Semaforo thereIsCard;
-    Semaforo readIdLoser;
     Semaforo writeIdLoser;
     Semaforo gatheringPoint;
     Semaforo writeNumberOfCards;

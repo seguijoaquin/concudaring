@@ -17,7 +17,6 @@ private:
     int numberOfPlayers;
     Semaforo thereIsCard;
     Semaforo writeIdLosser;
-    Semaforo readIdLosser;
     Table(const Table& table);
     void operator=(const Table& table);
     ~Table();
