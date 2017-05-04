@@ -31,7 +31,7 @@ void Player::play() {
             table.putCard(card);
         }
         checkCardsAndPerformAction();
-        turno++;
+        //turno++;
         sendInformationTheJudge();
     } while ( !thereIsAWinner() );
     gather();

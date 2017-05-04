@@ -3,7 +3,7 @@ project(Concudaring)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++11")
 
-set(SOURCE_FILES src/main.cpp src/utils/SharedMemory.h src/utils/logger/logger.h src/utils/logger/logger.cpp
+set(SOURCE_FILES src/main.cpp src/judge.h src/judge.cpp src/utils/SharedMemory.h src/utils/logger/logger.h src/utils/logger/logger.cpp
         src/utils/logger/mensajes.h src/utils/types.h src/utils/constants.h src/concudaring.cpp src/concudaring.h
         src/table.cpp src/table.h src/player.cpp src/player.h src/utils/Semaforo.cpp src/utils/Semaforo.h
         src/deckOfCards.cpp src/deckOfCards.h src/creatorDeckOfCards.cpp src/creatorDeckOfCards.h
