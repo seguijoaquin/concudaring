@@ -56,8 +56,8 @@ void Judge::printInformation(){
 
 
 void Judge::start(){
-  shower = fork();
-  if (shower == 0){
+  printer = fork();
+  if (printer == 0){
     setNumberOfPlayers(numberOfPlayers);
     while(iCanContinue()){
       sleep(timeBetweenChecks);
@@ -81,7 +81,7 @@ void Judge::stop(){
   conditionSem.wait();
   condition.write(false);
   conditionSem.signal();
-  waitpid(shower,NULL,0);
+  waitpid(printer,NULL,0);
   std::cout << "[  Judge  ] stop.\n";
 }
 

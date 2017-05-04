@@ -31,7 +31,6 @@ void Player::play() {
             table.putCard(card);
         }
         checkCardsAndPerformAction();
-        //turno++;
         sendInformationTheJudge();
     } while ( !thereIsAWinner() );
     gather();
@@ -75,7 +74,6 @@ void Player::checkCardsAndPerformAction() {
             Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_PERDI);
             DeckOfCards deck = table.getCards();
             myDeckOfCards.addDeck(deck);
-            myDeckOfCards.print();
             Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_TOME_CARTAS_DE_MESA);
           }
     } else if(lastTwoCards.at() == 10){

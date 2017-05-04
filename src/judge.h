@@ -16,7 +16,7 @@ private:
   Semaforo conditionSem;
   int numberOfPlayers;
     double timeBetweenChecks;
-  pid_t shower;
+  pid_t printer;
   void createMemory();
   void printInformation();
   bool iCanContinue();

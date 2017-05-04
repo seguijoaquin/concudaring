@@ -26,5 +26,6 @@
 #define MSJ_TOME_CARTAS_DE_MESA "Tome todas las cartas de la mesa."
 #define MSJ_GANE_Y_LE_AVISO_A_LOS_DEMAS "Gane! Y le aviso a los demas."
 #define MSJ_OTRO_JUGADOR_GANO "Gano el jugador: "
+#define KEY_MESA "Mesa"
 
 #endif //RESTORRENTE_MENSAJES_H

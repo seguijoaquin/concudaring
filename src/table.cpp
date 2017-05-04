@@ -1,5 +1,8 @@
 #include <iostream>
 #include "table.h"
+#include "utils/logger/logger.h"
+#include "utils/logger/mensajes.h"
+
 #define NOMBRE "/bin/ls"
 #define NOMBRE2 "/bin/echo"
 
@@ -32,7 +35,12 @@ void Table::putCard(int card) {
     int pos = i.read();
     cards[pos] = card;
     i.write(pos+1);
+    std::stringstream ss;
+    ss<<  cards[pos-1] <<"-"<< cards[pos];
+    Logger::getInstance()->insert(KEY_MESA,ss.str());
     thereIsCard.add(numberOfPlayers);
+
+
 }
 
 
