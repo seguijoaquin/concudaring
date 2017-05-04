@@ -9,7 +9,7 @@
 
 class Concudaring {
     CreatorDeckOfCards creator;
-    void createPlayers(int numberPlayers,std::vector<DeckOfCards>& decks);
+    void createPlayers(int numberPlayers,std::vector<DeckOfCards>& decks, double judgeTimeBetweenChecks);
     void configureCreator(int numberPlayers);
     Semaforo thereIsCard;
     Semaforo readIdLoser;
@@ -20,10 +20,10 @@ class Concudaring {
     void createSemaphores(int numberOfPlayers);
     void freeSemaphores();
     void createSharedMemories();
-    void throwJudge(int numberPlayers);
+    void throwJudge(int numberPlayers, float timeBetweenChecks);
     void stopJudge();
 public:
-    Concudaring(int numberPlayers);
+    Concudaring(int numberPlayers,double judgeTimeBetweenChecks);
     ~Concudaring();
     void start();
 };

@@ -6,12 +6,12 @@
 #include <sys/wait.h>
 #include "judge.h"
 
-Concudaring::Concudaring(int numberPlayers) {
+Concudaring::Concudaring(int numberPlayers, double judgeTimeBetweenChecks) {
     createSemaphores(numberPlayers);
     createSharedMemories();
     configureCreator(numberPlayers);
     std::vector<DeckOfCards> decks = creator.getDeckOfCards();
-    createPlayers(numberPlayers,decks);
+    createPlayers(numberPlayers,decks,judgeTimeBetweenChecks);
     freeSemaphores();
 }
 
@@ -22,8 +22,9 @@ void Concudaring::configureCreator(int numberPlayers){
 }
 
 
-void Concudaring::throwJudge(int numberPlayers){
+void Concudaring::throwJudge(int numberPlayers,float timeBetweenChecks){
   Judge& judge = Judge::getInstance();
+    judge.setTimeBetweenChecks(timeBetweenChecks);
   judge.start();
 }
 
@@ -32,7 +33,7 @@ void Concudaring::stopJudge(){
   judge.stop();
 }
 
-void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& decks){
+void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& decks, double judgeTimeBetweenChecks){
     std::vector<pid_t> childrenIds;
     pid_t pid_padre = getpid();
     pid_t pid = 0;
@@ -53,7 +54,8 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
 
     //Si soy el padre entonces espero a mis hijos y libero los recursos
     if (pid_padre == getpid()) {
-      throwJudge(numberPlayers);
+      throwJudge(numberPlayers,judgeTimeBetweenChecks);
+
       for (int j = 0; j <  numberPlayers; ++j) {
         waitpid(childrenIds[j],NULL,0);
       }

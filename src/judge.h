@@ -15,6 +15,7 @@ private:
   Semaforo writeNumberOfCards;
   Semaforo conditionSem;
   int numberOfPlayers;
+    double timeBetweenChecks;
   pid_t shower;
   void createMemory();
   void printInformation();
@@ -23,6 +24,7 @@ public:
   static Judge& getInstance();
   void writeNumberOfPlayerCards(int id, int cant);
   void setNumberOfPlayers(int numberOfPlayers);
+    void setTimeBetweenChecks(double timeBetweenChecks);
   void start();
   void stop();
 };

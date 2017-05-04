@@ -9,6 +9,7 @@
 #include "utils/logger/logger.h"
 #include "utils/logger/mensajes.h"
 
+const double JUDGE_DEFAULT_TIME_BETWEEN_CHECKS = 0.1;
 
 bool createTmpFile() {
   FILE* file = fopen(FILE_CONCUDARING, "w");
@@ -28,14 +29,16 @@ void printMinPlayersError() {
 void printHelp() {
   std::cout << "Para lanzar el juego: ./Concudaring -p <cantidad_jugadores>" << '\n';
   std::cout << "NOTA: El juego no puede iniciar con menos de 4 jugadores." << '\n';
-  std::cout << "Para consultar cantidad de cartas de cada jugador: ./Concudaring -j" << '\n';
+  std::cout << "Para setear el tiempo entre las consultas del Arbitro/Juez utilizar: -j" << '\n';
+  std::cout << "Ejemplo: ./Concudaring -j 0.5 -p 4 " << '\n';
+  std::cout << "NOTA: El parametro -j debe estar antes que el -p. Sino se utilizara el valor por defecto 0.1" << '\n';
 }
 
 
-static const char *optString = "jp:h";
+static const char *optString = "j:p:h";
 
 static const struct option longOpts[] = {
-  { "judge", no_argument, NULL, 'j' },
+  { "judge", required_argument, NULL, 'j' },
   { "players", required_argument, NULL,'p' },
   { "help", no_argument, NULL, 'h' },
   { NULL, no_argument, NULL, 0 }
@@ -61,20 +64,23 @@ int main(int argc, char** argv) {
       int longIndex;
       opt = getopt_long(argc, argv, optString, longOpts, &longIndex);
 
+      double judgeTimeBetweenChecks = JUDGE_DEFAULT_TIME_BETWEEN_CHECKS;
+
       while (opt != -1) {
         switch (opt) {
+          case 'j': {
+            judgeTimeBetweenChecks = atof(optarg);
+            Logger::getInstance()->insert(KEY_JUDGE, CONSULTA_JUEZ);
+            break;
+          }
           case 'p': {
             int numberPlayers = atoi(optarg);
             if (numberPlayers >= 4) {
               Logger::getInstance()->insert(KEY_GAME,MENSAJE_CANTIDAD_JUGADORES,atoi(optarg));
-              Concudaring concudaring(numberPlayers);
+              Concudaring concudaring(numberPlayers,judgeTimeBetweenChecks);
             } else {
               printMinPlayersError();
             }
-            break;
-          }
-          case 'j': {
-            Logger::getInstance()->insert(KEY_JUDGE, CONSULTA_JUEZ);
             break;
           }
           case 'h': {
@@ -82,7 +88,7 @@ int main(int argc, char** argv) {
             break;
           }
         }
-        break;
+        opt = getopt_long(argc, argv, optString, longOpts, &longIndex);
       }
 
 

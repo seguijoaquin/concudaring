@@ -13,6 +13,7 @@ Judge::Judge(){
   conditionSem = Semaforo(FILE_CONCUDARING,KEY_SEM_JUDE_CONDITION);
   condition.create(FILE_CONCUDARING,KEY_SHME_JUDGE_CONDITION,1);
   condition.write(true);
+  timeBetweenChecks = 0.1;
 }
 
 void Judge::setNumberOfPlayers(int _numberOfPlayers){
@@ -59,7 +60,7 @@ void Judge::start(){
   if (shower == 0){
     setNumberOfPlayers(numberOfPlayers);
     while(iCanContinue()){
-      sleep(0.1);
+      sleep(timeBetweenChecks);
       printInformation();
     }
     exit(0);
@@ -85,4 +86,8 @@ void Judge::stop(){
 }
 
 Judge::~Judge(){
+}
+
+void Judge::setTimeBetweenChecks(double timeBetweenChecks) {
+  this->timeBetweenChecks = timeBetweenChecks;
 }
