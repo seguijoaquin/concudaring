@@ -97,9 +97,6 @@ void Concudaring::freeSemaphores() {
 }
 
 void Concudaring::createSharedMemories(){
-    SharedMemory<int> numberOfPlayersPutHand;
-    SharedMemory<int> i;
-    SharedMemory<bool> condition;
     //Inicializo la memoria de la mesa que cuenta la cantidad que jugadores que pusieron la mano
     numberOfPlayersPutHand.create(FILE_CONCUDARING,KEY_SHME_TABLE_NUMBER_PLAYER_PUT_HAND,1);
     numberOfPlayersPutHand.write(0);

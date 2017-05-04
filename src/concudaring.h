@@ -16,6 +16,12 @@ class Concudaring {
     Semaforo gatheringPoint;
     Semaforo writeNumberOfCards;
     Semaforo conditionSem;
+
+
+    SharedMemory<int> numberOfPlayersPutHand;
+    SharedMemory<int> i;
+    SharedMemory<bool> condition;
+
     void createSemaphores(int numberOfPlayers);
     void freeSemaphores();
     void createSharedMemories();
