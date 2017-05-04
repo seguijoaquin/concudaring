@@ -10,7 +10,7 @@
 Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfPlayers){
     gatheringPoint = Semaforo(FILE_CONCUDARING,'g');
     thereIsACard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
-    communicationChannel = CommunicationChannel(COMMUNICATION_CHANNEL_FILE,numberOfPlayers,id);
+    someoneWonCommunicationChannel = CommunicationChannel(COMMUNICATION_CHANNEL_FILE,numberOfPlayers,id);
     specialCardActions = CommunicationChannel(SPECIAL_CARD_ACTIONS, numberOfPlayers,id);
     turno = 0;
     Judge::getInstance().setNumberOfPlayers(numberOfPlayers);
@@ -98,14 +98,14 @@ bool Player::thereIsAWinner() {
     Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_INCREMENTO_TURNO);
     if (myDeckOfCards.isEmpty()){
         Logger::getInstance()->insert(KEY_PLAYER,id,turno,MSJ_GANE_Y_LE_AVISO_A_LOS_DEMAS);
-        communicationChannel.sendToAll(GANE);
+        someoneWonCommunicationChannel.sendToAll(GANE);
         return true;
     } else {
-        communicationChannel.sendToAll(NO_GANE);
+        someoneWonCommunicationChannel.sendToAll(NO_GANE);
     }
     // Me fijo si alguno de los demas gano
     for (int i = 0; i < numberOfPlayers - 1 ; ++i) {
-        MSG_t data = communicationChannel.receive(GANE.size());
+        MSG_t data = someoneWonCommunicationChannel.receive(GANE.size());
         if(data.message == GANE){
             std::stringstream ss;
             ss << MSJ_OTRO_JUGADOR_GANO << data.id;
@@ -151,8 +151,8 @@ void Player::sayOrDoSomethingAndWaitForTheRestToDoTheSame(std::string messageOrA
 }
 
 void Player::freeCommunicationChannels() {
-    communicationChannel.cerrar();
-    communicationChannel.eliminar();
+    someoneWonCommunicationChannel.cerrar();
+    someoneWonCommunicationChannel.eliminar();
     specialCardActions.cerrar();
     specialCardActions.eliminar();
 }
