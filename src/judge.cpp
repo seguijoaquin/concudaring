@@ -2,12 +2,13 @@
 #include "utils/constants.h"
 #include <iostream>
 #include <sstream>
+#include <unistd.h> //fork()
 
 
 Judge::Judge(){
-  numberOfPlayerThatWrote.create(FILE_CONCUDARING,KEY_SHME_JUDGE_NUMBER,1);
   writeNumberOfCards = Semaforo(FILE_CONCUDARING,KEY_SEM_WRITE_NUMBER_OF_CARDS);
-  turno = -1;
+  conditionSem = Semaforo(FILE_CONCUDARING,KEY_SEM_JUDE_CONDITION);
+  condition.create(FILE_CONCUDARING,KEY_SHME_JUDGE_CONDITION,1);
 }
 
 void Judge::setNumberOfPlayers(int _numberOfPlayers){
@@ -26,35 +27,55 @@ void Judge::createMemory(){
 }
 
 void Judge::writeNumberOfPlayerCards(int id, int number){
+  writeNumberOfCards.wait();
   numberOfPlayerCards[id] = number;
-  turno++;
-  incrementNumber();
-}
-
-
-void Judge::incrementNumber(){
-  int number = numberOfPlayerThatWrote.read() + 1;
-  numberOfPlayerThatWrote.write(number);
-  if (number == numberOfPlayers){
-    printInformation();
-    resetNumberOfPlayerThatWrote();
-  }
+  writeNumberOfCards.signal();
 
 }
 
-void Judge::printInformation() const{
+
+void Judge::printInformation(){
   std::stringstream logPlayer;
+  std::cout << "Print information\n";
+  //writeNumberOfCards.wait();
+  std::cout << "Print information 2\n";
   for (size_t i = 0; i < numberOfPlayers; i++){
     logPlayer <<"J["<<i<< "] = " << numberOfPlayerCards[i] << " ";
   }
+  //writeNumberOfCards.signal();
   logPlayer << "\n";
   std::cout << "[  Juez  ]  " << logPlayer.str();
 }
 
-void Judge::resetNumberOfPlayerThatWrote(){
-  numberOfPlayerThatWrote.write(0);
+
+
+void Judge::start(){
+  std::cout << "El juez empieza a imrpimir la infor\n";
+  pid_t pid = fork();
+  if (pid == 0){
+    while(iCanContinue()){
+      //sleep(1);
+      std::cout << "Dentro del while\n";
+      printInformation();
+    }
+  }
+}
+
+bool Judge::iCanContinue(){
+  std::cout<< "I can continue\n";
+  int valor;
+  conditionSem.wait();
+  valor =  condition.read();
+  conditionSem.signal();
+  std::cout<< "I can exit::"<< valor<<"\n";
+  return valor;
+}
+void Judge::stop(){
+  std::cout << "judge stop\n";
+  conditionSem.wait();
+  condition.write(false);
+  conditionSem.signal();
 }
 
 Judge::~Judge(){
-
 }

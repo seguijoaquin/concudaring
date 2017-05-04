@@ -4,12 +4,14 @@
 #include "utils/Semaforo.h"
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "judge.h"
 
 Concudaring::Concudaring(int numberPlayers) {
     createSemaphores(numberPlayers);
     createSharedMemories();
     configureCreator(numberPlayers);
     std::vector<DeckOfCards> decks = creator.getDeckOfCards();
+    Judge::getInstance().setNumberOfPlayers(numberPlayers);
     createPlayers(numberPlayers,decks);
     freeSemaphores();
 }
@@ -20,6 +22,17 @@ void Concudaring::configureCreator(int numberPlayers){
     creator.setNumberOfPlayers(numberPlayers); //seteo cantidad de jugadores
 }
 
+
+void Concudaring::throwJudge(int numberPlayers){
+  Judge& judge = Judge::getInstance();
+  judge.setNumberOfPlayers(numberPlayers);
+  judge.start();
+}
+
+void Concudaring::stopJudge(){
+  Judge& judge = Judge::getInstance();
+  judge.stop();
+}
 
 void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& decks){
     std::vector<pid_t> childrenIds;
@@ -41,11 +54,12 @@ void Concudaring::createPlayers(int numberPlayers, std::vector<DeckOfCards>& dec
 
     //Si soy el padre entonces espero a mis hijos y libero los recursos
     if (pid_padre == getpid()) {
+      throwJudge(numberPlayers);
       for (int j = 0; j <  numberPlayers; ++j) {
         waitpid(childrenIds[j],NULL,0);
       }
     }
-
+    //stopJudge();
 }
 
 
@@ -58,16 +72,21 @@ Concudaring::~Concudaring() {
 }
 
 void Concudaring::createSemaphores(int numberOfPlayers) {
+    //Creacion de semaforos
     thereIsCard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
     writeIdLoser = Semaforo(FILE_CONCUDARING,KEY_SEM_WRITE_LOSER);
     readIdLoser = Semaforo(FILE_CONCUDARING,KEY_SEM_READ_LOSER);
     writeNumberOfCards = Semaforo(FILE_CONCUDARING,KEY_SEM_WRITE_NUMBER_OF_CARDS);
     gatheringPoint = Semaforo(FILE_CONCUDARING,'g');
+    conditionSem = Semaforo(FILE_CONCUDARING,KEY_SEM_JUDE_CONDITION);
+
+    //Inicializacion de los semaforos
     writeIdLoser.inicializar(1);
     thereIsCard.inicializar(0);
-    writeNumberOfCards.inicializar(1);
     readIdLoser.inicializar(numberOfPlayers);
     gatheringPoint.inicializar(numberOfPlayers);
+    writeNumberOfCards.inicializar(1);
+    conditionSem.inicializar(1);
 }
 
 void Concudaring::freeSemaphores() {
@@ -76,21 +95,24 @@ void Concudaring::freeSemaphores() {
     readIdLoser.eliminar();
     gatheringPoint.eliminar();
     writeNumberOfCards.eliminar();
+    conditionSem.eliminar();
 }
 
 void Concudaring::createSharedMemories(){
     SharedMemory<int> numberOfPlayersPutHand;
-    SharedMemory<int> numberOfPlayerThatWrote;
     SharedMemory<int> i;
+    SharedMemory<bool> condition;
     //Inicializo la memoria de la mesa que cuenta la cantidad que jugadores que pusieron la mano
     numberOfPlayersPutHand.create(FILE_CONCUDARING,KEY_SHME_TABLE_NUMBER_PLAYER_PUT_HAND,1);
     numberOfPlayersPutHand.write(0);
 
-    //Inicializo la memoria del juez que cuenta la cantidad de jugadores que le mandaron informacion
-    numberOfPlayerThatWrote.create(FILE_CONCUDARING,KEY_SHME_JUDGE_NUMBER,1);
-    numberOfPlayerThatWrote.write(0);
-
     //Inicializo la memoria de la mesa que cuenta cantidad de cartas que tiene
     i.create(FILE_CONCUDARING,KEY_SHME_TABLE_I,1);
     i.write(0);
+
+    //Inicializo la memoria compartida que usa el juez para saber hasta cuando tiene que imprimir
+    condition.create(FILE_CONCUDARING,KEY_SHME_JUDGE_CONDITION,1);
+    bool valor = true;
+    condition.write(valor);
+    std::cout <<"Le meti el valor:"<<valor<<"\n";
 }

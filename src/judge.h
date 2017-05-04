@@ -11,18 +11,19 @@ private:
   Judge();
   ~Judge();
   SharedMemory<int> numberOfPlayerCards;
-  SharedMemory<int> numberOfPlayerThatWrote;
+  SharedMemory<bool> condition;
   Semaforo writeNumberOfCards;
+  Semaforo conditionSem;
   int numberOfPlayers;
   void createMemory();
-  void incrementNumber();
-  void printInformation() const;
-  void resetNumberOfPlayerThatWrote();
-  int turno;
+  void printInformation();
+  bool iCanContinue();
 public:
   static Judge& getInstance();
   void writeNumberOfPlayerCards(int id, int cant);
   void setNumberOfPlayers(int numberOfPlayers);
+  void start();
+  void stop();
 };
 
 
