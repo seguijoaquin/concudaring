@@ -9,11 +9,8 @@
 #include <vector>
 #include "utils/FifoEscritura.h"
 #include "utils/FifoLectura.h"
+#include "utils/types.h"
 
-typedef struct MSG {
-    int32_t id;
-    std::string message;
-}MSG_t;
 
 
 class CommunicationChannel {

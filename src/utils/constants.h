@@ -5,9 +5,10 @@
 //SHARED MEMORY CONSTS
 //TODO No se puede abrir el siguiente archivo
 #define FILE_CONCUDARING "concudaring.tmp"
-
-
 #define KEY_MEMORY 'm'
+
+//CREATOR OF cards
+#define CANTIDAD_CARTAS 48
 
 //SEMAPHORE CONSTS
 

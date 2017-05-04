@@ -53,10 +53,6 @@ int main(int argc, char** argv) {
   system("./deleteFile.sh");
 
   if (createTmpFile()) {
-    SharedMemory<Game_t> sharedMemory;
-    int memState = sharedMemory.create(FILE_CONCUDARING,KEY_MEMORY,2);
-    if (memState == SHM_OK) {
-
 
       Logger::getInstance()->insert(KEY_GAME, MENSAJE_INICIO_JUEGO);
 
@@ -91,12 +87,6 @@ int main(int argc, char** argv) {
         opt = getopt_long(argc, argv, optString, longOpts, &longIndex);
       }
 
-
-    } else {
-      //ERROR AL INICIALIZAR MEMORIA COMPARTIDA
-      Logger::getInstance()->insert(KEY_ERROR, ERROR_INICIO_MEMORIA);
-      //Liberar recursos tomados y salir
-    }
   } else {
     Logger::getInstance()->insert(KEY_ERROR, ERROR_CREACION_TMP_FILE);
     //ERROR AL QUERER CREAR ARCHIVO TEMPORAL PARA FTOK

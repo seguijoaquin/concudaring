@@ -8,8 +8,9 @@ struct Card {
   char letter;
 };
 
-struct Game_t {
-  bool gameFinished = false;
-};
+typedef struct MSG {
+    int32_t id;
+    std::string message;
+}MSG_t;
 
 #endif //CONCUDARING_TYPES_H

@@ -9,7 +9,6 @@
 
 Player::Player(int _id, int _numberOfPlayers):id(_id),numberOfPlayers(_numberOfPlayers){
     gatheringPoint = Semaforo(FILE_CONCUDARING,'g');
-    thereIsACard = Semaforo(FILE_CONCUDARING,KEY_SEM_THERE_IS_CARD);
     someoneWonCommunicationChannel = CommunicationChannel(COMMUNICATION_CHANNEL_FILE,numberOfPlayers,id);
     specialCardActions = CommunicationChannel(SPECIAL_CARD_ACTIONS, numberOfPlayers,id);
     turno = 0;
